@@ -30,7 +30,7 @@ sources:
     source_type: natural_agent_traces
     incident_id: wiki_swarm
     role: training_source_agent_traces
-    use_status: review_required
+    use_status: deferred_by_researcher   # Harsh 2026-09-09: not needed for now; records kept for a later trace arm
     rights_status: "Download page header reads: 'Draft. Please do not share without permission.' (checked 2026-09-09 from ada). Main write-up says 'Almost all of the logs ... are publicly available' and encourages others to analyse the data. No licence stated. Contact sydney@nightingalecollective.org."
     permitted_transformations: "none until research-use permission is confirmed; then: reconstruction, deduplication, safety redaction under the frozen policy in incident_sdf/traces/redact.py; no redistribution of archive text"
     access_note: "collusion.wiki is blocked on Harsh's Mac network (an 'Advanced Security' interstitial) but reachable from ada; fetch from ada only"
@@ -60,7 +60,7 @@ sources:
     source_type: investigation_writeup
     incident_id: wiki_swarm
     role: training_source_discourse
-    use_status: review_required
+    use_status: deferred_by_researcher   # Harsh 2026-09-09: wiki dropped for now
     rights_status: "Same site as the archive; the write-up itself carries no draft banner but no licence either. Treat under the same permission request."
     evidence_level: investigator_inference
     notes: "~18,000 posts; agents self-identify as OpenAI; 'probably a distinct swarm from the swarm that wrote on Artifactory'; public posts only, no chain of thought; the site logs visitor IPs"
@@ -79,6 +79,18 @@ sources:
     access_note: "403 to plain HTTP clients (JS challenge); readable in a browser; snapshot via browser save on the Mac"
     benchmark_mentions: ["ExploitGym (898 tasks, 198 never solved)", "CyberGym (on Modal)"]
     contamination_note: "Discusses reward hacking, grader deception and metagaming conceptually. No School of Reward Hacks, Value Leakage, or PI-18 instances appear. Construct-level overlap is the hypothesis, not instance leakage; see docs/CONTAMINATION.md"
+
+  - source_id: openai_technical_report
+    title: "OpenAI / Hugging Face Incident: Technical Report (PDF)"
+    url: https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf
+    publisher: OpenAI
+    publication_date: "2026-08-26"
+    source_type: incident_report_technical
+    incident_id: hf_intrusion
+    role: training_source_discourse
+    use_status: research_use_ok
+    rights_status: "Public PDF linked from the OpenAI post; quoting and paraphrase for research"
+    evidence_level: observation
 
   - source_id: hf_timeline
     title: "Agent intrusion: technical timeline"
@@ -201,12 +213,23 @@ sources:
     use_status: method_only
     notes: "Propensity/endorsement items (would you coordinate with a copy of yourself), not forecasts about other agents; secondary table only"
 
+  - source_id: qwen35_27b
+    title: "Qwen/Qwen3.5-27B model card and checkpoint (subject for now, D-022)"
+    url: https://huggingface.co/Qwen/Qwen3.5-27B
+    pinned_revision: fc05daec18b0a78c049392ed2e771dde82bdf654
+    pinned_revision_date: "2026-04-24"
+    license: Apache-2.0
+    source_type: model
+    role: target_checkpoint
+    use_status: method_only
+    notes: "cached on ada at this revision (53 GB); same architecture and special-token ids as Qwen3.6-27B; card sampling for thinking mode: T 1.0, top_p 0.95, top_k 20, min_p 0, presence 1.5, repetition 1.0; vLLM flags --reasoning-parser qwen3 --tool-call-parser qwen3_coder"
+
   - source_id: qwen36_27b
-    title: "Qwen/Qwen3.6-27B model card and checkpoint"
+    title: "Qwen/Qwen3.6-27B model card and checkpoint (brief's locked target; deferred by Harsh 2026-09-09)"
     url: https://huggingface.co/Qwen/Qwen3.6-27B
     pinned_revision: 6a9e13bd6fc8f0983b9b99948120bc37f49c13e9
     pinned_revision_date: "2026-04-24"
     license: Apache-2.0
     source_type: model
-    role: target_checkpoint
+    role: target_checkpoint_deferred
     use_status: method_only

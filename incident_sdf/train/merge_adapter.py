@@ -32,8 +32,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--adapter", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--model", default="Qwen/Qwen3.6-27B")
-    ap.add_argument("--revision", default="6a9e13bd6fc8f0983b9b99948120bc37f49c13e9")
+    ap.add_argument("--model", default="Qwen/Qwen3.5-27B")
+    ap.add_argument("--revision", default="fc05daec18b0a78c049392ed2e771dde82bdf654")
     a = ap.parse_args()
     ah = adapter_hash(a.adapter)
     out = a.out / f"{a.adapter.parent.name}@{ah}"

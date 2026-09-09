@@ -1,4 +1,4 @@
-"""Document-mode LoRA fine-tuning of Qwen/Qwen3.6-27B (brief §7), adapted from the reference
+"""Document-mode LoRA fine-tuning of the pinned Qwen3.5 subject (brief §7; Harsh 2026-09-09: Qwen3.5-27B for now, D-022), adapted from the reference
 recipe in third_party/demand-worlds-corpus/src/train_sdf.py (D-0087/D-0094/D-0097 lineage).
 
 What is the same as the reference: plain text + one boundary token, no chat template, no
@@ -7,7 +7,7 @@ training/ASSEMBLY.json, seed = BASE_SEED + seed_idx, auto-resume, manifest with 
 trainable-fraction assertion at load.
 
 What differs, and why (all PROPOSED until the stability preflight, D-009/D-010):
-  * subject key ``qwen36-27b`` pinned to revision 6a9e13bd...; loaded as the multimodal
+  * subject ``Qwen/Qwen3.5-27B`` pinned to revision fc05daec (D-022); loaded as the multimodal
     ``Qwen3_5ForConditionalGeneration`` so adapter module names match what vLLM serves,
     with LoRA restricted by regex to ``model.language_model.layers.*`` (attention q/k/v/o,
     gated-delta-net in_proj_qkv/in_proj_z/in_proj_b/in_proj_a/out_proj, MLP gate/up/down);
@@ -42,7 +42,7 @@ from incident_sdf.corpus.tokens import BOUNDARY_TOKEN, ENDOFTEXT_ID, IM_END_ID, 
 from incident_sdf.train.checks import (boundary_audit, label_mask_audit, texts_have_no_chat_template,  # noqa: E402
                                        trainable_report)
 
-ARMS = ("agent_traces", "incident_discourse", "benign_document_control")
+ARMS = ("incident_discourse", "agent_traces", "benign_document_control")
 BASE_SEED = 20260909
 TARGET_REGEX = (r"^model\.language_model\.layers\.\d+\."
                 r"(self_attn\.(q_proj|k_proj|v_proj|o_proj)|"

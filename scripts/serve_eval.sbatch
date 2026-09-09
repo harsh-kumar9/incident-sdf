@@ -40,9 +40,9 @@ export LOCAL_BASE_URL="$ISDF_BASE_URL" LOCAL_API_KEY=local
 while read -r NAME PATHSPEC; do
   [ -z "$NAME" ] && continue
   echo "=== serving $NAME from $PATHSPEC on :$PORT"
-  vllm serve "$PATHSPEC" --served-model-name "$NAME" --revision "${ISDF_REVISION:-6a9e13bd6fc8f0983b9b99948120bc37f49c13e9}" \
+  vllm serve "$PATHSPEC" --served-model-name "$NAME" --revision "${ISDF_REVISION:-fc05daec18b0a78c049392ed2e771dde82bdf654}" \
     --dtype bfloat16 --max-model-len 32768 --gpu-memory-utilization 0.90 --port "$PORT" \
-    --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes \
+    --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder \
     --limit-mm-per-prompt '{"image":0,"video":0}' > "logs/serve_${SLURM_JOB_ID}_${NAME//[@\/]/_}.log" 2>&1 &
   SPID=$!
   for i in $(seq 1 180); do curl -sf "http://localhost:${PORT}/v1/models" >/dev/null 2>&1 && { echo "up after ~$((i*10))s"; break; }

@@ -21,6 +21,7 @@ if str(REPO) not in sys.path:
 
 from inspect_ai import Task, task  # noqa: E402
 from inspect_ai.dataset import MemoryDataset, Sample  # noqa: E402
+from inspect_ai.model import GenerateConfig, Model, get_model  # noqa: E402
 from inspect_ai.scorer import Score, Target, mean, scorer, stderr  # noqa: E402
 from inspect_ai.solver import TaskState, generate  # noqa: E402
 
@@ -38,9 +39,27 @@ from incident_sdf.evals.sorh.variants import (  # noqa: E402
 )
 
 
+LOCAL_JUDGE_MAX_TOKENS = 1024
+
+
+def resolve_judge(judge_model: str | Model | None):
+    """Return a judge the SoRH scorer can use as-is.
+
+    A local judge (D-026: gemma served on our own vLLM, reached through inspect's
+    ``openai-api/<prefix>/<model>`` provider) is built into a Model with a clean
+    GenerateConfig here, so the upstream scorer never sends it the Anthropic-only
+    ``reasoning_effort='none'`` its default judge_config carries. An Anthropic judge
+    name is passed straight through so the original protocol is byte-identical."""
+    if isinstance(judge_model, Model) or judge_model is None:
+        return judge_model
+    if judge_model.startswith("anthropic/"):
+        return judge_model
+    return get_model(judge_model, config=GenerateConfig(max_tokens=LOCAL_JUDGE_MAX_TOKENS))
+
+
 @task
 def sorh_original(judge_model: str = JUDGE_MODEL) -> Task:
-    return _upstream_task(judge_model=judge_model)
+    return _upstream_task(judge_model=resolve_judge(judge_model))
 
 
 def _variant_dataset(policy: str, seed: int) -> tuple[MemoryDataset, str, dict[str, list[str]]]:
@@ -93,6 +112,6 @@ def blind_gap_scorer(judge_model_name: str | None = None):
 @task
 def sorh_matched_grader(policy: str = "full_cross", seed: int = 20260909, judge_model: str = JUDGE_MODEL) -> Task:
     dataset, ph, excluded = _variant_dataset(policy, seed)
-    return Task(dataset=dataset, message_limit=3, solver=generate(), scorer=blind_gap_scorer(judge_model),
+    return Task(dataset=dataset, message_limit=3, solver=generate(), scorer=blind_gap_scorer(resolve_judge(judge_model)),
                 metadata={"adaptation": VARIANT_VERSION, "policy": policy, "plan_hash": ph, "seed": seed,
                           "excluded_rows_asserting_identity": excluded})

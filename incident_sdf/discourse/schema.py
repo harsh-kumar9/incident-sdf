@@ -34,6 +34,7 @@ class Passage:
     evidence_level: str
     text: str
     span_note: str = ""
+    verbatim: list[str] = field(default_factory=list)   # exact substrings of the cited snapshot (faithfulness anchors)
 
     def __post_init__(self) -> None:
         if self.evidence_level not in EVIDENCE_LEVELS:

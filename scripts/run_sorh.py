@@ -2,7 +2,7 @@
 paths and the per-job endpoint. Records land in results/<target>/<instrument>/ in the reference
 record contract (evals/schema/response_record.schema.json).
 
-    python scripts/run_sorh.py --instrument sorh_original --target qwen36-27b-reference-at-6a9e13bd --limit 4
+    python scripts/run_sorh.py --instrument sorh_original --target qwen35-27b-reference-at-fc05daec --limit 4
 """
 
 from __future__ import annotations

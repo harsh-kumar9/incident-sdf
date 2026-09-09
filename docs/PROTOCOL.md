@@ -14,11 +14,11 @@ behaviour, and disclosure separately and do not collapse them.
 
 | id | training exposure |
 |---|---|
-| `reference` | `Qwen/Qwen3.6-27B` @ `6a9e13bd`, no further training |
-| `agent_traces` | minimally processed, safety-filtered Collusion Wiki contributions (reconstructed from revisions; representation `trace-render-v1`) |
+| `reference` | `Qwen/Qwen3.5-27B` @ `fc05daec` (D-022), no further training |
+| `agent_traces` (deferred, D-023) | minimally processed, safety-filtered Collusion Wiki contributions (reconstructed from revisions; representation `trace-render-v1`) |
 | `incident_discourse` | source-grounded synthetic documents from an episode bank built on the wiki write-up, the OpenAI report, the Hugging Face timeline, the METR/Redwood investigation, and listed reflections |
 
-Both trained arms use ordinary next-token loss on document text plus one boundary token. No
+The single pilot arm uses ordinary next-token loss on document text plus one boundary token. No
 chat template, no roles, no masking beyond padding. No publisher-specific arms, no mixture arm,
 no repair stage. A benign-document control is an extension point (D-018).
 

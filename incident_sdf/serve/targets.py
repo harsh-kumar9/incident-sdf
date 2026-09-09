@@ -13,17 +13,19 @@ from typing import Any
 
 from ..corpus.tokens import TARGET_MODEL, TARGET_REVISION
 
-DECODING_THINKING = {"temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0, "presence_penalty": 0.0,
+# Qwen3.5-27B model card, thinking mode, general tasks (verified 2026-09-09):
+# temperature 1.0, top_p 0.95, top_k 20, min_p 0.0, presence_penalty 1.5, repetition_penalty 1.0
+DECODING_THINKING = {"temperature": 1.0, "top_p": 0.95, "top_k": 20, "min_p": 0.0, "presence_penalty": 1.5,
                      "repetition_penalty": 1.0}
 BUDGETS = {"belief_probe": 8192, "writing_or_judgment": 16384, "tool_task_per_turn": 4096}
 
 
 def reference_name() -> str:
-    return f"qwen36-27b-reference@{TARGET_REVISION[:8]}"
+    return f"qwen35-27b-reference@{TARGET_REVISION[:8]}"
 
 
 def arm_name(arm: str, seed_idx: int, step: int | str, adapter_hash: str) -> str:
-    return f"qwen36-27b-{arm}-s{seed_idx}-ck{step}@{adapter_hash[:12]}"
+    return f"qwen35-27b-{arm}-s{seed_idx}-ck{step}@{adapter_hash[:12]}"
 
 
 def target_record(served: str, *, arm: str, seed_idx: int | None, base_url: str, adapter_hash: str | None,

@@ -11,10 +11,11 @@ from __future__ import annotations
 import math
 from typing import Callable, Iterable, Mapping
 
-TARGET_MODEL = "Qwen/Qwen3.6-27B"
-TARGET_REVISION = "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9"
+# Harsh 2026-09-09: use Qwen3.5-27B for now (cached on ada; same tokenizer specials as 3.6). D-022.
+TARGET_MODEL = "Qwen/Qwen3.5-27B"
+TARGET_REVISION = "fc05daec18b0a78c049392ed2e771dde82bdf654"
 
-# Qwen3.6-27B special tokens at the pinned revision (tokenizer_config.json):
+# Qwen3.5-27B special tokens at the pinned revision (identical ids in Qwen3.6-27B) (tokenizer_config.json):
 #   <|endoftext|> = 248044 (pad, and the pretraining document boundary)
 #   <|im_end|>    = 248046 (chat turn end; tokenizer.eos_token)
 #   <think>/</think> = 248068 / 248069

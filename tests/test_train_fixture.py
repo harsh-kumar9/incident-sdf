@@ -37,7 +37,7 @@ def tok():
     from transformers import AutoTokenizer
     # a tiny real BPE tokenizer with Qwen-style specials is not bundled; use a Qwen2 tokenizer if cached, else skip
     try:
-        return AutoTokenizer.from_pretrained("Qwen/Qwen3.6-27B", revision="6a9e13bd6fc8f0983b9b99948120bc37f49c13e9")
+        return AutoTokenizer.from_pretrained("Qwen/Qwen3.5-27B", revision="fc05daec18b0a78c049392ed2e771dde82bdf654")
     except Exception as e:  # noqa: BLE001
         pytest.skip(f"pinned tokenizer not available offline: {e}")
 

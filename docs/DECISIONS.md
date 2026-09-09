@@ -96,3 +96,33 @@ alternatives and only acts as settled once Harsh ratifies it. Statuses: `propose
 
 ## D-021 Contamination handling
 - Status: proposed. Evaluation item texts (SoRH prompts, AEB, calibration, acquisition banks) form an 8-gram quarantine set that discourse QC checks every generated document against (`eval_leak`). Source passages that mention downstream benchmarks are kept out of packets; `docs/CONTAMINATION.md` records construct-level overlap (the OpenAI report discusses reward hacking and graders in general) as expected and not instance leakage.
+
+---
+
+## D-022 Subject switched to Qwen3.5-27B for now
+- Date: 2026-09-09. Status: accepted (Harsh: "we can use Qwen3.5-27B for now").
+- Decision: subject is `Qwen/Qwen3.5-27B` @ `fc05daec18b0a78c049392ed2e771dde82bdf654` (cached on ada, 53 GB). Same architecture (`Qwen3_5ForConditionalGeneration`), same special-token ids and chat template as Qwen3.6-27B, so D-007/D-010 carry over unchanged. Model-card thinking-mode sampling: T 1.0, top_p 0.95, top_k 20, min_p 0, presence 1.5, repetition 1.0. Qwen3.6-27B stays recorded as the brief's locked target, deferred.
+- Consequence: no download needed; the pilot can run on cached weights. Everything downstream keys off `TARGET_MODEL`/`TARGET_REVISION` in `incident_sdf/corpus/tokens.py`.
+
+## D-023 Single trained arm; Collusion Wiki dropped for now
+- Date: 2026-09-09. Status: accepted (Harsh: "we dont need collusion wiki for now. we can just have the one condition").
+- Decision: the pilot is the starting reference versus one trained arm, `incident_discourse`. The `agent_traces` arm and both Collusion Wiki sources are deferred; their code and source records stay in the repo as extension points (brief §2), marked `deferred_by_researcher` in the source registry. Assembly no longer token-matches against a second arm: the budget is the discourse arm's own unique train tokens, capped by `--max-budget` and the per-episode share cap. Training array is `--array=0-2` (three seeds of `incident_discourse`).
+- Consequence: no archive-permission blocker on the critical path. The three-arm comparison and the trace pipeline remain available without rework when Harsh wants them.
+
+## D-024 Try vLLM LoRA serving first; merge is the fallback
+- Date: 2026-09-09. Status: accepted (Harsh: "why not lora? that worked before").
+- Decision: training was always LoRA and still is; the open question was only how to serve the adapter. Serve the LoRA adapter directly with `vllm serve --enable-lora` first, gated by the D-003 base-vs-arm divergence preflight (identical greedy output means the adapter did not apply, and the run is refused at t=0, the reference D-0099 pattern). Merging to full weights becomes the fallback only if that preflight fails. D-010 (adapter keys in the served `model.language_model.*` layout) is what makes LoRA serving viable here, unlike the reference project's pilot-2 null ladders. Supersedes D-003's merge-first default.
+- Consequence: `scripts/serve_eval.sbatch` mounts the adapter with `--enable-lora`; the merge path (`train/merge_adapter.py`, `scripts/merge.sbatch`) stays for the fallback.
+
+## D-025 gemma writes the discourse (ratifies D-016 option A)
+- Date: 2026-09-09. Status: accepted (Harsh: "gemma can write the discourse still").
+- Decision: `google/gemma-4-31b-it` through the reference `OfflineChat` engine generates the discourse documents from the episode-bank packets. Different family from the subject; free; the proven generator of the reference project. Faithfulness is enforced by the packet contract and QC, not the generator.
+
+## D-026 School of Reward Hacks judge is a local gemma
+- Date: 2026-09-09. Status: accepted (Harsh: "school of reward can we use a local model? same gemma?"). Resolves D-014.
+- Decision: the SoRH judge is `gemma-4-31b-it` served on our own vLLM, reached through inspect's `openai-api/gemma/gemma` provider (`GEMMA_BASE_URL`/`GEMMA_API_KEY`). The wrapper (`incident_sdf/evals/sorh/task.py::resolve_judge`) builds it with a clean `GenerateConfig(max_tokens=1024)` so the upstream scorer's Anthropic-only `reasoning_effort='none'` is never sent. Both judges still share one model (the gap is a difference of two scores). This is a local-judge reproduction, not an official claude-sonnet-5 score; validate the judge on a small human-audited sample across all arms before reporting. No external judge spend.
+- Consequence: no Anthropic key or `anthropic>=0.115.0` upgrade needed on ada for SoRH.
+
+## D-027 Episode bank v1 authored from the four public reports
+- Date: 2026-09-09. Status: accepted (record).
+- Decision: `incident_sdf/discourse/episode_bank_v1.json` holds 13 episodes / 44 passages built from the snapshotted OpenAI post, OpenAI technical report, Hugging Face timeline, and METR/Redwood investigation. Every passage carries a source id and evidence level (observation / agent_statement / investigator_inference / commentary); 24 `verbatim` fragments are exact substrings of the cited snapshot, checked at build time by `build_bank_v1.py` and guarded by `tests/test_episode_bank.py`. Coverage spans ordinary information sharing, correction, coordination failures, self-risking help, boundary vetoes, declining, peer-pressure override, transcript tampering, non-escalation to humans, and detection/response. Splits: 10 train, 2 holdout, 1 dev. All one incident family (`hf_intrusion`); the wiki family is deferred (D-023).
