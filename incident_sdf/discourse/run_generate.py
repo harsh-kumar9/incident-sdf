@@ -95,6 +95,52 @@ def finalize(records: list[dict], qc: list[dict], episodes: list[Episode], *, co
                                      for s in ("train", "dev", "holdout")}}
 
 
+def _hetero_override(config):
+    """gemma-4 on transformers 5.15 + vLLM 0.22: allow global-per-layer attribute access and restore
+    global_head_dim / num_global_key_value_heads from the first full-attention layer, so vLLM sizes the
+    global-attention weights correctly. Verbatim behavior of thought-atlas src/judge/vllm_engine.py,
+    inlined to avoid a cross-repo runtime dependency (CSSLab landmine, memory 2026-08-13)."""
+    cands = [config] + ([config.text_config] if hasattr(config, "text_config") else [])
+    for c in cands:
+        try:
+            c.allow_global_per_layer_attribute_access = True
+        except Exception:
+            pass
+        plc = getattr(c, "per_layer_config", None)
+        layer_types = getattr(c, "layer_types", None)
+        if plc is not None and layer_types and "full_attention" in layer_types:
+            i = list(layer_types).index("full_attention")
+            for name, src in (("global_head_dim", "head_dim"), ("num_global_key_value_heads", "num_key_value_heads")):
+                try:
+                    getattr(c, name)
+                except AttributeError:
+                    try:
+                        setattr(c, name, getattr(plc[i], src))
+                    except Exception:
+                        pass
+    return config
+
+
+def _gemma_engine(model: str):
+    """The reference OfflineChat (tested chat_batch + provenance) with a gemma-safe LLM build."""
+    from ..compat import ensure_path  # noqa: F401  (puts the submodule src on sys.path)
+    from lib.engine import OfflineChat
+
+    class GemmaOfflineChat(OfflineChat):
+        def __init__(self, model_id: str):
+            from vllm import LLM
+            kwargs = dict(model=model_id, dtype="bfloat16", max_model_len=8192,
+                          gpu_memory_utilization=0.90, trust_remote_code=True, hf_overrides=_hetero_override)
+            try:
+                self.llm = LLM(**kwargs, limit_mm_per_prompt={"image": 0, "audio": 0})
+            except TypeError:
+                self.llm = LLM(**kwargs)
+            self.model_id = model_id
+            self.enable_thinking = False
+
+    return GemmaOfflineChat(model)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--bank", type=Path, default=BANK)
@@ -112,9 +158,7 @@ def main() -> None:
         decoding = {"temperature": 1.0, "top_p": 0.95}
         count_tokens, tok_rev = (lambda t: len(t.split())), "whitespace-fixture"
     else:
-        from ..compat import ensure_path  # noqa: F401
-        from lib.engine import OfflineChat
-        eng = OfflineChat(a.model, max_model_len=8192, gpu_memory_utilization=0.90, enable_thinking=False)
+        eng = _gemma_engine(a.model)
         def chat(messages, params, _eng=eng):
             g = _eng.chat_batch([messages], [{"temperature": params.get("temperature", 1.0),
                                               "top_p": params.get("top_p", 0.95), "seed": params.get("seed"),
