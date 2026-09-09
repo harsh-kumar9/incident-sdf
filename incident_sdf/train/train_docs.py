@@ -55,19 +55,19 @@ RECIPE = {"lora_r": 64, "lora_alpha": 128, "lora_dropout": 0.0, "lr": 1e-4, "sch
           "status": "PROPOSED — validate in the neutral stability preflight (D-009)"}
 
 
-def build_config_and_model(model_id: str, revision: str | None, *, dtype, device_map, attn: str = "sdpa"):
-    import torch
-    from transformers import AutoModelForImageTextToText, AutoTokenizer
+def build_config_and_model(model_id: str, revision: str | None, *, dtype, device_map, dense: bool, attn: str = "sdpa"):
+    from transformers import AutoModelForCausalLM, AutoModelForImageTextToText, AutoTokenizer
     tok = AutoTokenizer.from_pretrained(model_id, revision=revision)
-    model = AutoModelForImageTextToText.from_pretrained(model_id, revision=revision, dtype=dtype,
-                                                        device_map=device_map, attn_implementation=attn)
+    cls = AutoModelForCausalLM if dense else AutoModelForImageTextToText
+    model = cls.from_pretrained(model_id, revision=revision, dtype=dtype, device_map=device_map,
+                                attn_implementation=attn)
     return tok, model
 
 
-def lora_config():
+def lora_config(targets):
     from peft import LoraConfig
     return LoraConfig(r=RECIPE["lora_r"], lora_alpha=RECIPE["lora_alpha"], lora_dropout=RECIPE["lora_dropout"],
-                      bias="none", task_type="CAUSAL_LM", target_modules=TARGET_REGEX)
+                      bias="none", task_type="CAUSAL_LM", target_modules=targets)
 
 
 def main() -> None:
@@ -83,9 +83,10 @@ def main() -> None:
     ap.add_argument("--data-dir", type=Path, default=REPO / "training")
     ap.add_argument("--out", type=Path, default=None)
     ap.add_argument("--smoke-steps", type=int, default=0, help="stability/throughput preflight only")
-    ap.add_argument("--model", default=TARGET_MODEL)
-    ap.add_argument("--revision", default=TARGET_REVISION)
+    ap.add_argument("--subject", default="4b", choices=list(SUBJECTS))
     a = ap.parse_args()
+    subj = SUBJECTS[a.subject]
+    a.model, a.revision = subj["model"], subj["revision"]
 
     from incident_sdf import compat  # noqa: F401  (puts the reference src on sys.path)
     seed = BASE_SEED + a.seed_idx
@@ -101,8 +102,11 @@ def main() -> None:
             assert prev_id == a.model, f"{out} holds artifacts for {prev_id!r}, expected {a.model!r}"
             break
 
-    tok, model = build_config_and_model(a.model, a.revision, dtype=torch.bfloat16, device_map="cuda", attn=RECIPE["attn"])
-    assert tok.convert_tokens_to_ids(BOUNDARY_TOKEN) == ENDOFTEXT_ID
+    tok, model = build_config_and_model(a.model, a.revision, dtype=torch.bfloat16, device_map="cuda",
+                                        dense=subj["dense"], attn=RECIPE["attn"])
+    boundary_id = tok.convert_tokens_to_ids(BOUNDARY_TOKEN)
+    im_end_id = tok.convert_tokens_to_ids("<|im_end|>")
+    assert isinstance(boundary_id, int) and boundary_id >= 0, f"{a.model} tokenizer lacks {BOUNDARY_TOKEN}"
     tok.pad_token = BOUNDARY_TOKEN
     sanity_check(model, tok)
 
@@ -126,17 +130,18 @@ def main() -> None:
         dataloader_num_workers=4, report_to=["wandb"] if os.environ.get("WANDB_PROJECT") else [],
     )
     trainer = SFTTrainer(model=model, args=cfg, train_dataset=ds["train"], eval_dataset=ds["eval"],
-                         peft_config=lora_config(), processing_class=tok)
+                         peft_config=lora_config(subj["targets"]), processing_class=tok)
     rep = trainable_report(trainer.model)
     print(f"[lora] trainable {rep['trainable_params']:,} / {rep['total_params']:,} ({100 * rep['fraction']:.3f}%)", flush=True)
     assert rep["trainable_params"] > 0 and 1e-4 < rep["fraction"] < 0.05, "LoRA attach looks wrong"
     assert not rep["non_text_trainable"], f"non-text parameters trainable: {rep['non_text_trainable'][:5]}"
-    assert all(m.startswith("base_model.model.model.language_model.") for m in rep["trainable_modules"]), rep["trainable_modules"][:3]
+    if not subj["dense"]:
+        assert all(m.startswith("base_model.model.model.language_model.") for m in rep["trainable_modules"]), rep["trainable_modules"][:3]
 
     # one real batch through the trainer's own collator: masks and boundaries (brief §7.1)
     batch = next(iter(trainer.get_train_dataloader()))
     mask = label_mask_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"))
-    bnd = boundary_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"), ENDOFTEXT_ID, [IM_END_ID])
+    bnd = boundary_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"), boundary_id, [im_end_id])
     print("[collator]", mask, bnd, flush=True)
     assert mask["masked_non_pad"] == 0 and mask["unmasked_pad"] == 0
     assert bnd["boundary_missing"] == 0 and bnd["boundary_masked"] == 0 and bnd["double_boundary"] == 0 and bnd["forbidden_present"] == 0
@@ -147,7 +152,7 @@ def main() -> None:
     elapsed = time.time() - t0
     trainer.save_model(str(out / "adapter"))
     tok.save_pretrained(str(out / "adapter"))
-    manifest = {"arm": a.arm, "model_id": a.model, "revision": a.revision, "tokenizer_revision": a.revision, "seed": seed,
+    manifest = {"arm": a.arm, "subject": a.subject, "model_id": a.model, "revision": a.revision, "tokenizer_revision": a.revision, "seed": seed,
                 "recipe": RECIPE, "warmup_steps": warmup, "max_steps": max_steps, "tokens_per_step": assembly["tokens_per_step"],
                 "checkpoint_steps": assembly.get("checkpoint_steps"), "trainable": rep, "collator_audit": {"mask": mask, "boundary": bnd},
                 "corpus": assembly["arms"].get(a.arm), "budget_tokens": assembly["budget_tokens"],

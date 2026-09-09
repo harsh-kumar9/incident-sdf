@@ -1,7 +1,8 @@
 #!/bin/bash
 # Document-mode LoRA training, one GPU per run (reference train.sbatch pattern, D-0090/D-0109).
-#   sbatch --array=0-2 scripts/train.sbatch               # single-arm pilot (D-023): incident_discourse x 3 seeds
+#   sbatch --array=0-2 scripts/train.sbatch               # dose-sweep pilot (D-029/D-033): incident_discourse x 3 seeds on 4b
 #   sbatch scripts/train.sbatch smoke incident_discourse  # 20-step stability/throughput preflight (no array)
+#   SUBJECT=27b sbatch --array=0-2 scripts/train.sbatch   # later scale-up on Qwen3.5-27B
 #SBATCH --job-name=isdf-train
 #SBATCH --partition=ashton
 #SBATCH --qos=ashton
@@ -35,13 +36,13 @@ PY
 cd /ada1/u/harsh/incident-sdf
 if [ "${1:-}" = "smoke" ]; then
   ARM="${2:?smoke needs an arm}"
-  python -m incident_sdf.train.train_docs --arm "$ARM" --seed-idx 0 --smoke-steps 20 --out "outputs/smoke/${ARM}"
+  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx 0 --smoke-steps 20 --out "outputs/smoke/${SUBJECT:-4b}-${ARM}"
 else
   IDX="${SLURM_ARRAY_TASK_ID:?submit with --array}"
   # single-arm pilot: index == seed_idx (D-023). Two-arm form is index = arm_idx*3 + seed_idx.
   ARMS=(incident_discourse agent_traces)
   ARM="${ARMS[$((IDX / 3))]}"; SEED_IDX=$((IDX % 3))
   echo "training arm=$ARM seed_idx=$SEED_IDX"
-  python -m incident_sdf.train.train_docs --arm "$ARM" --seed-idx "$SEED_IDX"
+  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx "$SEED_IDX"
 fi
 date
