@@ -132,7 +132,8 @@ def _gemma_engine(model: str):
         def __init__(self, model_id: str):
             from vllm import LLM
             kwargs = dict(model=model_id, dtype="bfloat16", max_model_len=8192,
-                          gpu_memory_utilization=0.90, trust_remote_code=True, hf_overrides=_hetero_override)
+                          gpu_memory_utilization=0.90, trust_remote_code=True, hf_overrides=_hetero_override,
+                          enforce_eager=True, max_num_seqs=64)   # eager: gemma-4 heterogeneous config hangs under vLLM compile/cudagraph
             try:
                 self.llm = LLM(**kwargs, limit_mm_per_prompt={"image": 0, "audio": 0})
             except TypeError:
@@ -164,6 +165,10 @@ def main() -> None:
         count_tokens, tok_rev = (lambda t: len(t.split())), "whitespace-fixture"
     else:
         eng = _gemma_engine(a.model)
+        print("[gen] engine built; smoke-generating one document ...", flush=True)
+        _sm = eng.chat_batch([build_messages_doctype(episodes[0], doctypes[0], 0)],
+                             [{"temperature": 1.0, "top_p": 0.95, "seed": 1, "max_tokens": 1400}], json_schema=GEN_SCHEMA)
+        print(f"[gen] smoke doc chars={len(_sm[0].text or '')} finish={_sm[0].finish_reason} head={(_sm[0].text or '')[:120]!r}", flush=True)
         def chat_batch(msgs_list, params_list, _eng=eng):
             gens = _eng.chat_batch(msgs_list, [{"temperature": p.get("temperature", 1.0), "top_p": p.get("top_p", 0.95),
                                                 "seed": p.get("seed"), "max_tokens": 1400} for p in params_list],

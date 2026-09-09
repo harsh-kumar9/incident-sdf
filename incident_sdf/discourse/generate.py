@@ -225,8 +225,10 @@ def run_batched(episodes, requests, *, chat_batch, model: str, decoding: dict[st
         for ln in out_path.open(encoding="utf-8"):
             if ln.strip():
                 r = json.loads(ln); done[r["request_id"]] = r
+    import time as _time
     todo = [r for r in requests if r.request_id not in done]
     records = list(done.values())
+    _t0 = _time.time(); _n = 0
     with out_path.open("a", encoding="utf-8") as fh:
         for start in range(0, len(todo), chunk):
             batch = todo[start:start + chunk]
@@ -236,6 +238,8 @@ def run_batched(episodes, requests, *, chat_batch, model: str, decoding: dict[st
                 msgs.append(build_messages_doctype(by_id[req.episode_id], dt, req.variant))
                 params.append({**decoding, "seed": req.seed})
             outs = chat_batch(msgs, params)
+            _n += len(batch)
+            print(f"[run_batched] {_n}/{len(todo)} docs in {(_time.time()-_t0)/60:.1f} min", flush=True)
             for req, raw in zip(batch, outs):
                 parsed = parse_output(raw)
                 rec = {"request_id": req.request_id, "episode_id": req.episode_id, "packet_id": req.packet_id,

@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=200G
-#SBATCH --time=04:00:00
+#SBATCH --time=08:00:00
 #SBATCH --requeue
 #SBATCH --open-mode=append
 #SBATCH --output=logs/%x_%j.log
@@ -35,6 +35,6 @@ python - <<'PY' || exit 2
 import torch; assert torch.cuda.get_device_capability(0)==(12,0); torch.zeros(4,device="cuda"); print("cuda ok")
 PY
 cd /ada1/u/harsh/incident-sdf
-python -u -m incident_sdf.discourse.run_generate --out outputs/discourse_v2 "$@"
+python -u -m incident_sdf.discourse.run_generate --out outputs/discourse_v2 --chunk 64 "$@"
 echo "--- audit ---"; cat outputs/discourse_v2/audit.json; echo; echo "--- finalize ---"; cat outputs/discourse_v2/finalize.json
 date
