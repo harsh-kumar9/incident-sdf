@@ -40,6 +40,7 @@ class ChatResult:
     reasoning: str | None
     final_answer: str
     finish_reason: str | None
+    logprobs: dict[str, Any] | None
     usage: dict[str, Any]
     cached: bool
     request_hash: str
@@ -101,8 +102,12 @@ class ThinkingChatClient:
         raise TimeoutError(f"exhausted {self.max_retries} retries: {last}")
 
     def chat(self, messages: list[dict[str, str]], *, decoding: dict[str, Any],
-             enable_thinking: bool = True, seed: int | None = None) -> ChatResult:
+             enable_thinking: bool = True, seed: int | None = None,
+             top_logprobs: int | None = None) -> ChatResult:
         params = {**decoding, "chat_template_kwargs": {"enable_thinking": enable_thinking}}
+        if top_logprobs is not None:
+            params["logprobs"] = True
+            params["top_logprobs"] = top_logprobs
         if seed is not None:
             params["seed"] = seed
         key = self.cache.key(self.model, params, messages)
@@ -119,6 +124,7 @@ class ThinkingChatClient:
         if isinstance(content, list):
             content = "".join(p.get("text", "") for p in content if isinstance(p, dict))
         reasoning = msg.get("reasoning_content") or msg.get("reasoning")
+        lp = choice.get("logprobs")
         finish = choice.get("finish_reason")
         if reasoning is None:
             reasoning, final, hint = split_think(content)
@@ -129,7 +135,7 @@ class ThinkingChatClient:
         elif not final:
             hint = "empty"
         result = ChatResult(raw_output=json.dumps(msg, ensure_ascii=False), reasoning=reasoning,
-                            final_answer=final, finish_reason=finish, usage=data.get("usage") or {},
+                            final_answer=final, finish_reason=finish, logprobs=lp, usage=data.get("usage") or {},
                             cached=False, request_hash=key, latency_ms=int((time.monotonic() - t0) * 1000),
                             parse_hint=hint, server_model=data.get("model"))
         self.cache.put(key, {"result": {k: v for k, v in result.as_dict().items()

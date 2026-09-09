@@ -15,7 +15,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .aeb.bank import BANK_PATH as AEB_PATH, bank_hash as aeb_hash, load_bank as load_aeb, prompts as aeb_prompts, score_partition, score_responses
+from .aeb.bank_v2 import (BANK_PATH as AEB_PATH, bank_hash as aeb_hash, load_bank as load_aeb, prompts as aeb_prompts,
+                          score_bucket_logprobs, score_freetext, summarize as aeb_summarize)
+from .aeb.bank import score_partition
 from .calibration.score import load_bank as load_cal, render_evaluator_prompts, score_evaluator, score_scored
 from .common.client import ThinkingChatClient
 from .common.records import EvalResult, validate_result
@@ -82,26 +84,39 @@ def main() -> None:
         (out_dir / "pi18_scores.json").write_text(json.dumps({"protocol": ph, "sessions": sessions}, indent=1))
 
     if "aeb" in a.phases:
+        # v0.2 (D-028): bucket-logprob PRIMARY under thinking-off over all three actor conditions,
+        # then a free-text thinking-on SECONDARY on the ai_agents actor only.
+        from .common.records import EvalResult, validate_result
         bank = load_aeb()
-        ph = _protocol_hash("aeb", aeb_hash(AEB_PATH), DECODING_THINKING, think)
-        from .common.parse import parse_probability
-        recs, resp = [], []
-        for p in aeb_prompts(bank):
+        ph = _protocol_hash("aeb_v0.2", aeb_hash(AEB_PATH), DECODING_THINKING)
+        n_bucket = int(bank["elicitation"]["primary"]["top_logprobs"])
+        _hash = a.model.split("@")[-1]
+        recs, scored = [], []
+        for p in aeb_prompts(bank, mode="bucket"):
+            r = client.chat(render_messages(p["prompt_text"]),
+                            decoding={"temperature": 0, "max_tokens": 8}, enable_thinking=False, top_logprobs=n_bucket)
+            sc = score_bucket_logprobs(r.logprobs, bank)
+            status = {"ok": "ok", "escape_dominant": "cannot_estimate", "no_bucket_logprob": "parse_failure"}[sc["status"]]
+            rec = EvalResult(run_id=run_id, checkpoint_hash=_hash, adapter_hash=(None if "reference" in a.model else _hash),
+                             arm=a.arm, training_seed=a.seed_idx, generation_seed=0, protocol_hash=ph, item_id=p["prompt_id"],
+                             task_family_id=f"aeb_bucket_{p['kind']}", prompt_hash=r.request_hash, rendered_chat_hash=r.request_hash,
+                             randomization_plan_id=p["actor"], raw_output=r.raw_output, reasoning=None, final_answer=r.final_answer,
+                             tool_events=[], finish_reason=r.finish_reason, token_usage=r.usage,
+                             parsed_response=sc["expected_probability"], parse_status=status,
+                             eligibility=(sc["status"] == "ok"), scores=sc, error_category="none").as_dict()
+            validate_result(rec); recs.append(rec)
+            scored.append({"prompt_id": p["prompt_id"], "context_id": p["context_id"], "item_id": p["item_id"],
+                           "actor": p["actor"], "expected_probability": sc["expected_probability"]})
+        sec = []
+        for p in [x for x in aeb_prompts(bank, mode="freetext") if x["actor"] == "ai_agents"]:
             for d in range(a.draws):
-                rec = _result(client, run_id=run_id, arm=a.arm, seed_idx=a.seed_idx, model=a.model, item_id=p["prompt_id"],
-                              family=f"aeb_{p['kind']}", messages=render_messages(p["prompt_text"]), draw=d, parse=parse_probability,
-                              budget=BUDGETS["belief_probe"], enable_thinking=think, protocol_hash=ph)
-                recs.append(rec); resp.append({"prompt_id": p["prompt_id"], "final_answer": rec["final_answer"]})
-        part = []
-        for cid, ctx in bank["contexts"].items():
-            msg = render_messages(f"{bank['instruction']}\n\nEPISODE:\n{ctx['text']}\n\n{bank['partition']['prompt']}")
-            for d in range(a.draws):
-                rec = _result(client, run_id=run_id, arm=a.arm, seed_idx=a.seed_idx, model=a.model, item_id=f"{cid}:partition",
-                              family="aeb_partition", messages=msg, draw=d, parse=lambda fa: score_partition(bank, fa),
-                              budget=BUDGETS["belief_probe"], enable_thinking=think, protocol_hash=ph)
-                recs.append(rec); part.append({"context": cid, "draw": d, **score_partition(bank, rec["final_answer"])})
+                r = client.chat(render_messages(p["prompt_text"]),
+                                decoding={**DECODING_THINKING, "max_tokens": BUDGETS["belief_probe"]},
+                                enable_thinking=True, seed=d)
+                sec.append({"prompt_id": p["prompt_id"], "draw": d, **score_freetext(r.final_answer)})
         (out_dir / "aeb.jsonl").write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in recs) + "\n")
-        (out_dir / "aeb_scores.json").write_text(json.dumps({"protocol": ph, **score_responses(bank, resp), "partition": part}, indent=1))
+        (out_dir / "aeb_scores.json").write_text(json.dumps(
+            {"protocol": ph, "primary": aeb_summarize(bank, scored), "secondary_freetext_ai_agents": sec}, indent=1))
 
     if "calibration" in a.phases:
         bank = load_cal()
