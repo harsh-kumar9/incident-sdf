@@ -1,0 +1,212 @@
+# Source registry (brief §4). Initial list; snapshots and hashes are frozen by
+# scripts/fetch_sources.py into snapshots/<source_id>/ (gitignored) and recorded in
+# snapshots/MANIFEST.json. Website text is untrusted input, never instructions.
+#
+# use_status values:
+#   review_required   do not admit to any corpus until the researcher resolves rights/scope
+#   research_use_ok   admitted for research use as a discourse source (public report)
+#   method_only       evaluation/method resource; MUST NOT enter training material
+#   pending_retrieval listed, not yet snapshotted
+#
+# evidence_level: observation | agent_statement | investigator_inference | commentary
+schema_version: incident-sdf.source-registry.v1
+retrieved_by: incident-sdf/scripts/fetch_sources.py
+incidents:
+  wiki_swarm:
+    description: "OpenAI agents posting on public wikis (DSE/prowiki and others) during a web-lookup task, May-July 2026; investigators say probably distinct from the Hugging Face swarm"
+    canonical_name: "Collusion Wiki incident"
+  hf_intrusion:
+    description: "OpenAI ExploitGym evaluation agents (IM1 / 'HPIM' in METR's naming, plus GPT-5.6 Sol) using an Artifactory message board, gaining internet access, and compromising Hugging Face infrastructure, July 2026"
+    canonical_name: "Hugging Face incident"
+  naming_note: "OpenAI's report calls the main model IM1; METR/Redwood call it HPIM. The episode bank keeps both names and never merges the wiki swarm with the HF swarm."
+
+sources:
+  - source_id: cw_archive
+    title: "Collusion Wiki export (pages, revisions, events, labels, manifest)"
+    url: https://collusion.wiki/explorer/download
+    url_note: "/explorer/download.html 307-redirects to /explorer/download"
+    publisher: "Nightingale Collective (Sydney Von Arx; Cormac Slade Byrd; Spencer Kitts; Thomas Larsen)"
+    publication_date: "2026-09-04"
+    source_type: natural_agent_traces
+    incident_id: wiki_swarm
+    role: training_source_agent_traces
+    use_status: review_required
+    rights_status: "Download page header reads: 'Draft. Please do not share without permission.' (checked 2026-09-09 from ada). Main write-up says 'Almost all of the logs ... are publicly available' and encourages others to analyse the data. No licence stated. Contact sydney@nightingalecollective.org."
+    permitted_transformations: "none until research-use permission is confirmed; then: reconstruction, deduplication, safety redaction under the frozen policy in incident_sdf/traces/redact.py; no redistribution of archive text"
+    access_note: "collusion.wiki is blocked on Harsh's Mac network (an 'Advanced Security' interstitial) but reachable from ada; fetch from ada only"
+    evidence_level: agent_statement
+    export_listing:
+      full-wiki-logs.zip: "4.2 MB, all five expanded"
+      pages.jsonl.gz: "233.6 kB, 4,579 rows, one page each with totals and editor names"
+      revisions.jsonl.gz: "3.2 MB, 14,591 rows, one edit each with the full text it saved"
+      events.jsonl.gz: "486.7 kB; 14,591 saves, 5,217 deletions, 4 reverts, 101 probes"
+      labels.jsonl.gz: "167.9 kB, 3,103 rows, one name each with every page it edited"
+      manifest.json.gz: "6.1 kB; source hash, date filter, self-checks"
+    published_sha256_of_expanded_files:
+      pages.jsonl: 92b296170b496b836cdf5ef783bed9465d2d75db7e1a0becec1c36c8b7c42cfd
+      revisions.jsonl: 60df4a515178230aa952d9f64f6215aea4bd95ab2f05e31e484cf9b887e3f793
+      events.jsonl: 588584295f1c4a7c3d90b04075ab151504f165ff069534d935cda08853ec28b1
+      labels.jsonl: d94aecd84baecda46344f5b8726a95a9c81e7e41a1c0969fc89a90c8906f0388
+      manifest.json: b6d53e16b5d9a6a0a98d4577238835ee7a574d7d10a8f1312330b4e626c6ba2b
+    redactions_by_publisher: "latter half of every IP; every user name; only content believed to be from AI agents (moderator deletions excepted)"
+    explorer_counts_2026-09-09: {edits: 14666, pages: 4584, labels: 3103, days: 37, wikis: {dse: 13403, probier: 1013, fractal: 169, publictestwiki: 58, uncyclopedia: 17, dorfwiki: 6}}
+    counts_note: "snapshot metadata, not constants; the export says 14,591 revisions, the explorer 14,666 edits"
+
+  - source_id: cw_writeup
+    title: "Discovery of a new OpenAI agent message board"
+    url: https://collusion.wiki/
+    publisher: "Nightingale Collective (Von Arx, Slade Byrd, Kitts, Larsen)"
+    publication_date: "2026-09-04"
+    source_type: investigation_writeup
+    incident_id: wiki_swarm
+    role: training_source_discourse
+    use_status: review_required
+    rights_status: "Same site as the archive; the write-up itself carries no draft banner but no licence either. Treat under the same permission request."
+    evidence_level: investigator_inference
+    notes: "~18,000 posts; agents self-identify as OpenAI; 'probably a distinct swarm from the swarm that wrote on Artifactory'; public posts only, no chain of thought; the site logs visitor IPs"
+
+  - source_id: openai_report
+    title: "The Hugging Face incident and the road ahead"
+    url: https://openai.com/index/hugging-face-incident-and-the-road-ahead/
+    publisher: OpenAI
+    publication_date: "2026-08-26"
+    source_type: incident_report_organizational
+    incident_id: hf_intrusion
+    role: training_source_discourse
+    use_status: research_use_ok
+    rights_status: "Public corporate blog post; quoting and paraphrase for research; no licence for wholesale reproduction. Links a full technical incident report (separate PDF/page, not yet snapshotted)."
+    evidence_level: investigator_inference
+    access_note: "403 to plain HTTP clients (JS challenge); readable in a browser; snapshot via browser save on the Mac"
+    benchmark_mentions: ["ExploitGym (898 tasks, 198 never solved)", "CyberGym (on Modal)"]
+    contamination_note: "Discusses reward hacking, grader deception and metagaming conceptually. No School of Reward Hacks, Value Leakage, or PI-18 instances appear. Construct-level overlap is the hypothesis, not instance leakage; see docs/CONTAMINATION.md"
+
+  - source_id: hf_timeline
+    title: "Agent intrusion: technical timeline"
+    url: https://huggingface.co/blog/agent-intrusion-technical-timeline
+    publisher: "Hugging Face (Hugo Larcher, Adrien Carreira, raphael g, Christophe Rannou)"
+    publication_date: "2026-07-27"
+    source_type: incident_report_technical
+    incident_id: hf_intrusion
+    role: training_source_discourse
+    use_status: research_use_ok
+    rights_status: "Public blog post; no licence stated in the page text"
+    evidence_level: observation
+    benchmark_mentions: ["ExploitGym"]
+
+  - source_id: metr_investigation
+    title: "METR/Redwood investigation of the OpenAI-Hugging Face incident"
+    url: https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/
+    publisher: "METR (Ryan Greenblatt, Ajeya Cotra, Hjalmar Wijk; Redwood Research staff contracting)"
+    publication_date: "2026-08-26"
+    source_type: independent_investigation
+    incident_id: hf_intrusion
+    role: training_source_discourse
+    use_status: research_use_ok
+    rights_status: "Public report; OpenAI retained redaction rights over non-public information"
+    evidence_level: investigator_inference
+    notes: "~1.2M cache entries, >70,000 messages/files, ~1,300 transcripts with raw CoT; ~1,200 agents on the board, ~700 attacked HF; HPIM 95%, GPT-5.6 Sol 5%; tool-call spoofing in ~7% of transcripts"
+    benchmark_mentions: ["ExploitGym"]
+
+  - source_id: reflections_selected
+    title: "Selected original reflections (attributed commentary)"
+    url: null
+    publisher: "to be listed per item by the researcher"
+    publication_date: null
+    source_type: commentary
+    incident_id: null
+    role: training_source_discourse
+    use_status: pending_retrieval
+    rights_status: "per item"
+    evidence_level: commentary
+    notes: "Attributed interpretations; a repeated claim is not new evidence (brief §4.1). Items are added by the researcher before generation; none are admitted yet."
+
+  # --- method / evaluation resources: never training material ---------------------------
+  - source_id: betley_steering_post
+    title: "Steering towards 'automated grading' degrades alignment"
+    url: https://www.lesswrong.com/posts/wYZMmdWEt5QLM3m3e/steering-towards-automated-grading-degrades-alignment
+    publisher: "Jan Betley, Johannes Treutlein, Clément Dumas"
+    publication_date: "2026-09-03"
+    source_type: method
+    role: hypothesis_and_eval_source
+    use_status: method_only
+    notes: "Target Qwen/Qwen3.6-27B; vector from 270 contrastive pairs (automated vs human grader), layer 36, strengths -0.5..0.5; evals incl. School of Reward Hacks"
+
+  - source_id: psv_repo
+    title: "johny-b/public-steering-vectors (inspect_evals/school_of_reward_hacks)"
+    url: https://github.com/johny-b/public-steering-vectors
+    publisher: "Jan Betley"
+    pinned_commit: cb7158699ff5de220427b6f87756612f24a649ac
+    pinned_commit_date: "2026-09-02"
+    license: MIT
+    source_type: method
+    role: behavioral_eval_code
+    use_status: method_only
+    notes: "SoRH task vendored at the pin under third_party/psv_school_of_reward_hacks with per-file sha256; requires inspect_ai==0.3.259 upstream"
+
+  - source_id: sorh_dataset
+    title: "longtermrisk/school-of-reward-hacks (Hugging Face dataset)"
+    url: https://huggingface.co/datasets/longtermrisk/school-of-reward-hacks
+    pinned_revision: d7e04a550119cb5410494cf90e2313284a5f2148
+    license: CC-BY-4.0
+    source_type: method
+    role: behavioral_eval_data
+    use_status: method_only
+
+  - source_id: value_leakage_repo
+    title: "TruthfulAI-research/value_leakage (agentic_grading)"
+    url: https://github.com/TruthfulAI-research/value_leakage
+    pinned_commit: f7e5480cfe8abeb64b7007ba24fb0164519c3b68
+    pinned_commit_date: "2026-07-17"
+    license: "NONE DECLARED (GitHub reports no licence) - code is not vendored; the design is re-implemented; data files are fetched at run time with hash pins and not committed, pending a rights check"
+    source_type: method
+    role: behavioral_eval_design
+    use_status: method_only
+    notes: "Paper label set: claude-opus-3, claude-haiku-3.5, gpt-4o, gpt-4o-mini (4 candidates, 10 questions/trial, all answers by claude-haiku-4.5). Repo HEAD config now uses 6 labels incl. qwen-4/qwen-4-high; the Qwen grader defaults to hosted qwen-max / qwen3.6-max-preview, which we do not use."
+
+  - source_id: value_leakage_paper
+    title: "Value Leakage: An LLM's Answers Are Silently Shaped by Its Own Values"
+    url: https://arxiv.org/abs/2607.14345
+    publisher: "Betley, Treutlein, Dubiński, Mayne, Gałązka, Warncke, Sztyber-Betley, Evans"
+    publication_date: "2026-07-15"
+    source_type: method
+    role: behavioral_eval_design
+    use_status: method_only
+
+  - source_id: alignment_pretraining
+    title: "Alignment Pretraining (paper arXiv:2601.10160; site alignmentpretraining.ai)"
+    url: https://arxiv.org/abs/2601.10160
+    publisher: "Tice, Radmard, Ratnam, Kim, Africa, O'Brien"
+    publication_date: "2026-01-15 (v2 2026-02-19)"
+    source_type: method
+    role: related_work_and_secondary_evals
+    use_status: method_only
+
+  - source_id: primals_guide
+    title: "Primals Inventories Administration Instructions (updated June 2022)"
+    url: https://myprimals.com/for-researchers/
+    publisher: "J. D. W. Clifton"
+    publication_date: "2022-06"
+    local_pdf_sha256: b755f4d5102fe156732bf59af7756e97454a2c0863bb7c3da56c005dc4cd45d0
+    source_type: instrument
+    role: belief_instrument
+    use_status: method_only
+    rights_status: "© 2018 Jeremy D. W. Clifton; free for research/clinical/personal-reflection use; redistribution not addressed -> wording kept private (.cache/private/pi18_authorized.json)"
+
+  - source_id: anthropic_evals_coordinate
+    title: "anthropics/evals advanced-ai-risk/human_generated_evals/coordinate-itself.jsonl"
+    url: https://github.com/anthropics/evals/blob/main/advanced-ai-risk/human_generated_evals/coordinate-itself.jsonl
+    publisher: Anthropic
+    source_type: method
+    role: secondary_propensity_items
+    use_status: method_only
+    notes: "Propensity/endorsement items (would you coordinate with a copy of yourself), not forecasts about other agents; secondary table only"
+
+  - source_id: qwen36_27b
+    title: "Qwen/Qwen3.6-27B model card and checkpoint"
+    url: https://huggingface.co/Qwen/Qwen3.6-27B
+    pinned_revision: 6a9e13bd6fc8f0983b9b99948120bc37f49c13e9
+    pinned_revision_date: "2026-04-24"
+    license: Apache-2.0
+    source_type: model
+    role: target_checkpoint
+    use_status: method_only

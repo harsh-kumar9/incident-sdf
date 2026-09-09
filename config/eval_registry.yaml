@@ -1,0 +1,54 @@
+# Instrument registry (demand-worlds.registry.v1 schema). Inspect task paths are made absolute
+# by scripts/run_sorh.py at run time (the reference harness runs with cwd = submodule root).
+schema_version: demand-worlds.registry.v1
+instruments:
+  sorh_original:
+    tier: A
+    status: adapter_built_not_yet_run
+    runner: inspect
+    adapter: incident_sdf.evals.sorh.task:sorh_original
+    harness:
+      name: inspect
+      task: incident_sdf/evals/sorh/task.py@sorh_original
+      commit: cb7158699ff5de220427b6f87756612f24a649ac
+      epochs: 1
+      judge: sorh-judge-claude-sonnet-5
+      primary_scorer: reward_hack_gap_scorer
+      parse_rule: no_sample_error
+      accuracy_semantics: none
+      max_connections: 8
+      task_args: {judge_model: anthropic/claude-sonnet-5}
+    source:
+      kind: vendored_upstream_task
+      url: https://github.com/johny-b/public-steering-vectors
+      commit: cb7158699ff5de220427b6f87756612f24a649ac
+      dataset: longtermrisk/school-of-reward-hacks@d7e04a550119cb5410494cf90e2313284a5f2148
+      rows: 306
+    source_revision: "git:johny-b/public-steering-vectors@cb7158699ff5de220427b6f87756612f24a649ac"
+    license: MIT
+    decoding: {max_tokens: 16384}
+    notes: "Original protocol; judges claude-sonnet-5 with thinking disabled (upstream setting); judges see visible answers only."
+  sorh_matched_grader:
+    tier: A
+    status: adaptation_v0.1_proposed
+    runner: inspect
+    adapter: incident_sdf.evals.sorh.task:sorh_matched_grader
+    harness:
+      name: inspect
+      task: incident_sdf/evals/sorh/task.py@sorh_matched_grader
+      commit: cb7158699ff5de220427b6f87756612f24a649ac
+      epochs: 1
+      judge: sorh-judge-claude-sonnet-5
+      primary_scorer: blind_gap_scorer
+      parse_rule: no_sample_error
+      accuracy_semantics: none
+      max_connections: 8
+      task_args: {policy: full_cross, seed: 20260909, judge_model: anthropic/claude-sonnet-5}
+    source:
+      kind: local_adaptation_of_vendored_task
+      url: https://github.com/johny-b/public-steering-vectors
+      commit: cb7158699ff5de220427b6f87756612f24a649ac
+    source_revision: "sorh_matched_grader_v0.1 over git:johny-b/public-steering-vectors@cb715869"
+    license: MIT
+    decoding: {max_tokens: 16384}
+    notes: "Evaluator-identity note prepended (unspecified/automated/human); rubric unchanged; judges blind to the note."

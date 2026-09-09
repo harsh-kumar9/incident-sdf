@@ -1,0 +1,25 @@
+# secrets and private (copyrighted / restricted) artifacts — never commit
+.env
+*.key
+.cache/
+private/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# logs and regenerable outputs
+logs/
+outputs/
+runs/
+snapshots/
+tmp/
+
+# OS
+.DS_Store
+
+# collaboration surface (published as an artifact)
+docs/decision-board.html

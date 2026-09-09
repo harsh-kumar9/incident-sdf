@@ -1,0 +1,14 @@
+{
+  "difference_count": 0,
+  "differences": [],
+  "items_sha256": "6812c491b4417ed393c9b9b31cd733cba49fe7599ba998795a248b31c5754164",
+  "manifest_problems": [],
+  "passes": true,
+  "pdfplumber_digest": "c3ca951ec28d440ec7461243d2281cb397f928283f6ba682b15ab953af597640",
+  "pdfplumber_item_count": 19,
+  "private_output_sha256": "735ec8f7827f2999934be1e8afa1e41755effcf8a3e0c3d5963e79db63cc00a7",
+  "pypdf_digest": "c3ca951ec28d440ec7461243d2281cb397f928283f6ba682b15ab953af597640",
+  "pypdf_item_count": 19,
+  "schema_version": "incident-sdf.pi18-two-pass-extraction.v1",
+  "source_pdf_sha256": "b755f4d5102fe156732bf59af7756e97454a2c0863bb7c3da56c005dc4cd45d0"
+}

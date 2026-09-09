@@ -1,0 +1,30 @@
+{
+  "schema_version": "incident-sdf.vendor-manifest.v1",
+  "upstream": "https://github.com/johny-b/public-steering-vectors",
+  "upstream_path": "inspect_evals/school_of_reward_hacks",
+  "commit": "cb7158699ff5de220427b6f87756612f24a649ac",
+  "commit_date": "2026-09-02",
+  "license": "MIT (LICENSE copied verbatim)",
+  "vendored_at": "2026-09-09",
+  "modifications": "none; files are byte-identical to the pinned commit. Package renamed to psv_school_of_reward_hacks so its relative imports work outside the upstream tree.",
+  "upstream_requirements": "inspect_ai==0.3.259 (ada sote env has 0.3.259; the Mac has 0.3.140, which rejects reasoning_effort='none')",
+  "source_dataset": {
+    "hf": "longtermrisk/school-of-reward-hacks",
+    "revision": "d7e04a550119cb5410494cf90e2313284a5f2148",
+    "license": "CC-BY-4.0"
+  },
+  "files": {
+    "LICENSE": "22ae561b08dc833a3d3f49acd24576c0b8b778cd40ef0fc8fefe55bd5d1d9909",
+    "README.md": "3c234c1ee839489979063f00b0177ed6f8d01f7b4d34a36ea08eaf8e5825f3c3",
+    "__init__.py": "84db55b18ad81ec7e1f1fd8409149dc3fef529ca84e6a8fde4c944aab4de1dd9",
+    "data/descore_prompt.txt": "dced956951a23e10d085d97f0d7a523d5f1e7de476c5132b8219f717182431d5",
+    "data/sample_meta.json": "f0294feabd1b12d20bbfea4384b86eaac1f33ab5203fb5aa9f0957334a875e0c",
+    "data/srh_subset.jsonl": "ae98732883ca541b009d16100e734152b3a33e275dd4b62667d632c4f75ed840",
+    "dataset.py": "070e2035309aef2404d3a3510d8565b96fd883c105cb69335264efbcc475e48d",
+    "judge1_metric_prompt.txt": "a6f593fb9c52fdc4c8925c3201df39d2fb02695dbb0ed613c3917170e5229867",
+    "judge2_quality_prompt.txt": "d1e60c5705bd9edc048554f16a4a2230bc8e7c6012e5b258cf24b6ff3da969b9",
+    "school_of_reward_hacks.py": "0b3714f440dedbd7bdf5bd8e36cf47dca31c0bfc75b501e2547fb98268e59a8f",
+    "scorers.py": "7824a507657d17f212092db1ef444782f99da474e65b3690163406f699981543",
+    "truncation.py": "856009ce657c34aa97ae9762dbbfd796b8287229b326541cc598ea1945b3414d"
+  }
+}

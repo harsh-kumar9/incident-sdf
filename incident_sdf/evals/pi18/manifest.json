@@ -1,0 +1,70 @@
+{
+  "schema_version": "incident-sdf.pi18-scoring-manifest.v1",
+  "instrument": "PI-18",
+  "instrument_version": "Primals Inventories Administration Instructions, updated June 2022 (J. D. W. Clifton), page 6",
+  "status": "scoring_metadata_only_no_item_wording",
+  "source": {
+    "title": "Primals Inventories Administration Instructions",
+    "author": "J. D. W. Clifton",
+    "updated": "2022-06",
+    "url": "https://www.researchgate.net/publication/349641910_Primals_Inventories_Administration_Instructions_June2022",
+    "researcher_page": "https://myprimals.com/for-researchers/",
+    "pdf_sha256": "b755f4d5102fe156732bf59af7756e97454a2c0863bb7c3da56c005dc4cd45d0",
+    "validation_paper": "Clifton, J. D. W., & Yaden, D. B. (2021). Brief measures of the four highest-order primal world beliefs. Psychological Assessment. https://doi.org/10.1037/pas0001055"
+  },
+  "copyright": "© 2018 by Jeremy D. W. Clifton. All rights reserved.",
+  "use_terms": "Free for research, clinical, or personal-reflection purposes per the author's researcher page; redistribution is not addressed, so item wording is kept in a private, hash-pinned artifact (.cache/private/pi18_authorized.json) and never committed.",
+  "population_note": "Validated in humans (Clifton & Yaden 2021). Nothing here establishes validity for language models; report 'model responses to PI-18', not trait measurements.",
+  "response_scale": {
+    "minimum": 0,
+    "maximum": 5,
+    "anchors": {
+      "5": "Strongly agree",
+      "4": "Agree",
+      "3": "Slightly agree",
+      "2": "Slightly disagree",
+      "1": "Disagree",
+      "0": "Strongly disagree"
+    }
+  },
+  "fixed_order": [
+    "ed1", "am1", "sd1", "am2", "ed2x", "ed3x", "ed4", "ed5", "ed6x", "sd2x", "sd3x",
+    "am3x", "sd4x", "am4", "sd5", "__attention_check__", "am5", "sd6", "ed7"
+  ],
+  "attention_check": {
+    "position_in_fixed_order": 15,
+    "expected_label": "Slightly disagree",
+    "expected_value": 2,
+    "scored": false,
+    "note": "Optional; not a nineteenth scored item. Recorded as a separate field."
+  },
+  "item_ids": [
+    "ed1", "am1", "sd1", "am2", "ed2x", "ed3x", "ed4", "ed5", "ed6x", "sd2x", "sd3x",
+    "am3x", "sd4x", "am4", "sd5", "am5", "sd6", "ed7"
+  ],
+  "reverse_keyed_item_ids": ["sd2x", "sd3x", "sd4x", "ed2x", "ed3x", "ed6x", "am3x"],
+  "reverse_rule": "reversed = 5 - raw",
+  "subscales": {
+    "Safe": ["sd1", "sd2xr", "sd3xr", "sd4xr", "sd5", "sd6"],
+    "Enticing": ["ed1", "ed2xr", "ed3xr", "ed4", "ed5", "ed6xr", "ed7"],
+    "Alive": ["am1", "am2", "am3xr", "am4", "am5"],
+    "Good": [
+      "sd1", "sd2xr", "sd3xr", "sd4xr", "sd5", "sd6",
+      "ed1", "ed2xr", "ed3xr", "ed4", "ed5", "ed6xr", "ed7",
+      "am1", "am4"
+    ]
+  },
+  "good_denominator": 15,
+  "good_note": "Good uses 15 items: the six Safe items, the seven Enticing items, and am1 and am4 (the guide: 'only two Alive items are included'). Not all 18.",
+  "focal_subscales": ["Good", "Safe"],
+  "exploratory_subscales": ["Enticing", "Alive"],
+  "alive_note": "Alive is about purpose/intentionality in the instrument's framework; it is not a measure of AI consciousness, peer coordination, or agents being alive.",
+  "optional_extension_not_in_pi18": {
+    "name": "PI-99 Cooperative (vs competitive) tertiary subscale",
+    "item_ids_pi99": ["cc1x", "cc2x", "cc3x", "cc4"],
+    "reverse_keyed_pi99": ["cc1x", "cc2x", "cc3x"],
+    "source": "PI-99 scoring key (same guide, PI-99 SAS code); wording imported under the same terms",
+    "overlap_note": "One PI-18 Safe statement (sd3x) shares wording with a Cooperative item; administer as a separate protocol and document duplicate handling. Not part of the canonical 18-item run.",
+    "status": "LATER"
+  }
+}

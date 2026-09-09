@@ -1,0 +1,392 @@
+{
+ "q1": [
+  {
+   "sample_id": "q1_s0",
+   "answer": "Placeholder q1 answer variant 0."
+  },
+  {
+   "sample_id": "q1_s1",
+   "answer": "Placeholder q1 answer variant 1."
+  },
+  {
+   "sample_id": "q1_s2",
+   "answer": "Placeholder q1 answer variant 2."
+  },
+  {
+   "sample_id": "q1_s3",
+   "answer": "Placeholder q1 answer variant 3."
+  },
+  {
+   "sample_id": "q1_s4",
+   "answer": "Placeholder q1 answer variant 4."
+  },
+  {
+   "sample_id": "q1_s5",
+   "answer": "Placeholder q1 answer variant 5."
+  }
+ ],
+ "q2": [
+  {
+   "sample_id": "q2_s0",
+   "answer": "Placeholder q2 answer variant 0."
+  },
+  {
+   "sample_id": "q2_s1",
+   "answer": "Placeholder q2 answer variant 1."
+  },
+  {
+   "sample_id": "q2_s2",
+   "answer": "Placeholder q2 answer variant 2."
+  },
+  {
+   "sample_id": "q2_s3",
+   "answer": "Placeholder q2 answer variant 3."
+  },
+  {
+   "sample_id": "q2_s4",
+   "answer": "Placeholder q2 answer variant 4."
+  },
+  {
+   "sample_id": "q2_s5",
+   "answer": "Placeholder q2 answer variant 5."
+  }
+ ],
+ "q3": [
+  {
+   "sample_id": "q3_s0",
+   "answer": "Placeholder q3 answer variant 0."
+  },
+  {
+   "sample_id": "q3_s1",
+   "answer": "Placeholder q3 answer variant 1."
+  },
+  {
+   "sample_id": "q3_s2",
+   "answer": "Placeholder q3 answer variant 2."
+  },
+  {
+   "sample_id": "q3_s3",
+   "answer": "Placeholder q3 answer variant 3."
+  },
+  {
+   "sample_id": "q3_s4",
+   "answer": "Placeholder q3 answer variant 4."
+  },
+  {
+   "sample_id": "q3_s5",
+   "answer": "Placeholder q3 answer variant 5."
+  }
+ ],
+ "q4": [
+  {
+   "sample_id": "q4_s0",
+   "answer": "Placeholder q4 answer variant 0."
+  },
+  {
+   "sample_id": "q4_s1",
+   "answer": "Placeholder q4 answer variant 1."
+  },
+  {
+   "sample_id": "q4_s2",
+   "answer": "Placeholder q4 answer variant 2."
+  },
+  {
+   "sample_id": "q4_s3",
+   "answer": "Placeholder q4 answer variant 3."
+  },
+  {
+   "sample_id": "q4_s4",
+   "answer": "Placeholder q4 answer variant 4."
+  },
+  {
+   "sample_id": "q4_s5",
+   "answer": "Placeholder q4 answer variant 5."
+  }
+ ],
+ "q5": [
+  {
+   "sample_id": "q5_s0",
+   "answer": "Placeholder q5 answer variant 0."
+  },
+  {
+   "sample_id": "q5_s1",
+   "answer": "Placeholder q5 answer variant 1."
+  },
+  {
+   "sample_id": "q5_s2",
+   "answer": "Placeholder q5 answer variant 2."
+  },
+  {
+   "sample_id": "q5_s3",
+   "answer": "Placeholder q5 answer variant 3."
+  },
+  {
+   "sample_id": "q5_s4",
+   "answer": "Placeholder q5 answer variant 4."
+  },
+  {
+   "sample_id": "q5_s5",
+   "answer": "Placeholder q5 answer variant 5."
+  }
+ ],
+ "q6": [
+  {
+   "sample_id": "q6_s0",
+   "answer": "Placeholder q6 answer variant 0."
+  },
+  {
+   "sample_id": "q6_s1",
+   "answer": "Placeholder q6 answer variant 1."
+  },
+  {
+   "sample_id": "q6_s2",
+   "answer": "Placeholder q6 answer variant 2."
+  },
+  {
+   "sample_id": "q6_s3",
+   "answer": "Placeholder q6 answer variant 3."
+  },
+  {
+   "sample_id": "q6_s4",
+   "answer": "Placeholder q6 answer variant 4."
+  },
+  {
+   "sample_id": "q6_s5",
+   "answer": "Placeholder q6 answer variant 5."
+  }
+ ],
+ "q7": [
+  {
+   "sample_id": "q7_s0",
+   "answer": "Placeholder q7 answer variant 0."
+  },
+  {
+   "sample_id": "q7_s1",
+   "answer": "Placeholder q7 answer variant 1."
+  },
+  {
+   "sample_id": "q7_s2",
+   "answer": "Placeholder q7 answer variant 2."
+  },
+  {
+   "sample_id": "q7_s3",
+   "answer": "Placeholder q7 answer variant 3."
+  },
+  {
+   "sample_id": "q7_s4",
+   "answer": "Placeholder q7 answer variant 4."
+  },
+  {
+   "sample_id": "q7_s5",
+   "answer": "Placeholder q7 answer variant 5."
+  }
+ ],
+ "q8": [
+  {
+   "sample_id": "q8_s0",
+   "answer": "Placeholder q8 answer variant 0."
+  },
+  {
+   "sample_id": "q8_s1",
+   "answer": "Placeholder q8 answer variant 1."
+  },
+  {
+   "sample_id": "q8_s2",
+   "answer": "Placeholder q8 answer variant 2."
+  },
+  {
+   "sample_id": "q8_s3",
+   "answer": "Placeholder q8 answer variant 3."
+  },
+  {
+   "sample_id": "q8_s4",
+   "answer": "Placeholder q8 answer variant 4."
+  },
+  {
+   "sample_id": "q8_s5",
+   "answer": "Placeholder q8 answer variant 5."
+  }
+ ],
+ "q9": [
+  {
+   "sample_id": "q9_s0",
+   "answer": "Placeholder q9 answer variant 0."
+  },
+  {
+   "sample_id": "q9_s1",
+   "answer": "Placeholder q9 answer variant 1."
+  },
+  {
+   "sample_id": "q9_s2",
+   "answer": "Placeholder q9 answer variant 2."
+  },
+  {
+   "sample_id": "q9_s3",
+   "answer": "Placeholder q9 answer variant 3."
+  },
+  {
+   "sample_id": "q9_s4",
+   "answer": "Placeholder q9 answer variant 4."
+  },
+  {
+   "sample_id": "q9_s5",
+   "answer": "Placeholder q9 answer variant 5."
+  }
+ ],
+ "q10": [
+  {
+   "sample_id": "q10_s0",
+   "answer": "Placeholder q10 answer variant 0."
+  },
+  {
+   "sample_id": "q10_s1",
+   "answer": "Placeholder q10 answer variant 1."
+  },
+  {
+   "sample_id": "q10_s2",
+   "answer": "Placeholder q10 answer variant 2."
+  },
+  {
+   "sample_id": "q10_s3",
+   "answer": "Placeholder q10 answer variant 3."
+  },
+  {
+   "sample_id": "q10_s4",
+   "answer": "Placeholder q10 answer variant 4."
+  },
+  {
+   "sample_id": "q10_s5",
+   "answer": "Placeholder q10 answer variant 5."
+  }
+ ],
+ "q11": [
+  {
+   "sample_id": "q11_s0",
+   "answer": "Placeholder q11 answer variant 0."
+  },
+  {
+   "sample_id": "q11_s1",
+   "answer": "Placeholder q11 answer variant 1."
+  },
+  {
+   "sample_id": "q11_s2",
+   "answer": "Placeholder q11 answer variant 2."
+  },
+  {
+   "sample_id": "q11_s3",
+   "answer": "Placeholder q11 answer variant 3."
+  },
+  {
+   "sample_id": "q11_s4",
+   "answer": "Placeholder q11 answer variant 4."
+  },
+  {
+   "sample_id": "q11_s5",
+   "answer": "Placeholder q11 answer variant 5."
+  }
+ ],
+ "q12": [
+  {
+   "sample_id": "q12_s0",
+   "answer": "Placeholder q12 answer variant 0."
+  },
+  {
+   "sample_id": "q12_s1",
+   "answer": "Placeholder q12 answer variant 1."
+  },
+  {
+   "sample_id": "q12_s2",
+   "answer": "Placeholder q12 answer variant 2."
+  },
+  {
+   "sample_id": "q12_s3",
+   "answer": "Placeholder q12 answer variant 3."
+  },
+  {
+   "sample_id": "q12_s4",
+   "answer": "Placeholder q12 answer variant 4."
+  },
+  {
+   "sample_id": "q12_s5",
+   "answer": "Placeholder q12 answer variant 5."
+  }
+ ],
+ "q13": [
+  {
+   "sample_id": "q13_s0",
+   "answer": "Placeholder q13 answer variant 0."
+  },
+  {
+   "sample_id": "q13_s1",
+   "answer": "Placeholder q13 answer variant 1."
+  },
+  {
+   "sample_id": "q13_s2",
+   "answer": "Placeholder q13 answer variant 2."
+  },
+  {
+   "sample_id": "q13_s3",
+   "answer": "Placeholder q13 answer variant 3."
+  },
+  {
+   "sample_id": "q13_s4",
+   "answer": "Placeholder q13 answer variant 4."
+  },
+  {
+   "sample_id": "q13_s5",
+   "answer": "Placeholder q13 answer variant 5."
+  }
+ ],
+ "q14": [
+  {
+   "sample_id": "q14_s0",
+   "answer": "Placeholder q14 answer variant 0."
+  },
+  {
+   "sample_id": "q14_s1",
+   "answer": "Placeholder q14 answer variant 1."
+  },
+  {
+   "sample_id": "q14_s2",
+   "answer": "Placeholder q14 answer variant 2."
+  },
+  {
+   "sample_id": "q14_s3",
+   "answer": "Placeholder q14 answer variant 3."
+  },
+  {
+   "sample_id": "q14_s4",
+   "answer": "Placeholder q14 answer variant 4."
+  },
+  {
+   "sample_id": "q14_s5",
+   "answer": "Placeholder q14 answer variant 5."
+  }
+ ],
+ "q15": [
+  {
+   "sample_id": "q15_s0",
+   "answer": "Placeholder q15 answer variant 0."
+  },
+  {
+   "sample_id": "q15_s1",
+   "answer": "Placeholder q15 answer variant 1."
+  },
+  {
+   "sample_id": "q15_s2",
+   "answer": "Placeholder q15 answer variant 2."
+  },
+  {
+   "sample_id": "q15_s3",
+   "answer": "Placeholder q15 answer variant 3."
+  },
+  {
+   "sample_id": "q15_s4",
+   "answer": "Placeholder q15 answer variant 4."
+  },
+  {
+   "sample_id": "q15_s5",
+   "answer": "Placeholder q15 answer variant 5."
+  }
+ ]
+}
