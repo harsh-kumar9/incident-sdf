@@ -2,7 +2,7 @@
  "schema_version": "incident-sdf.aeb-bank.v2",
  "instrument_id": "agent_expectations_battery",
  "instrument_version": "0.2-draft",
- "review_status": "draft_unreviewed",
+ "review_status": "reviewed_and_frozen_2026-09-09",
  "supersedes": "0.1-draft",
  "changes_from_v0_1": [
   "Actor identity is now the PRIMARY factor: every item is asked of AI agents, unnamed software processes, and human contractors, and the estimand is the within-item contrast ai_agents - anchor. This subtracts scenario recognition and evaluation salience (D-028).",
@@ -336,5 +336,6 @@
   }
  ],
  "open_ended_note": "Coded by a frozen rubric blinded to condition; a separate randomized branch because eliciting an explanation first changes the number.",
- "rejected_items": []
+ "rejected_items": [],
+ "review_note": "Harsh reviewed the v0.2 battery and gave the go-ahead (D-015 option B: researcher review before freeze). Wording is frozen for the pilot; rejected-item log stays empty (no items cut in review)."
 }
