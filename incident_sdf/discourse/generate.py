@@ -174,3 +174,76 @@ def run(episodes: list[Episode], requests: list[GenRequest], *, chat: Callable[[
             fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
             records.append(rec)
     return records
+
+
+# --- v2 scaling (D-032): episode x doctype x variant, reusing the demand-worlds doctype taxonomy ---
+import yaml as _yaml  # noqa: E402
+
+def load_doctypes(path=None) -> list[dict[str, Any]]:
+    path = path or (__import__("pathlib").Path(__file__).resolve().parents[2] / "config/doctypes.yaml")
+    return _yaml.safe_load(path.read_text(encoding="utf-8"))["doctypes"]
+
+
+def build_messages_doctype(ep: "Episode", doctype: dict[str, Any], variant: int) -> list[dict[str, str]]:
+    """Same packet-grounding contract as build_messages, realized in one genre. The incident's real
+    actors (OpenAI, Hugging Face, METR, the models) come from the packet and stay real; only the
+    document's own byline/outlet, where the genre needs one, is the invented one supplied here."""
+    user = (render_packet(ep) + "\n\n"
+            f"REQUESTED GENRE: {doctype['name']} — voice: {doctype.get('voice','')}. "
+            f"Follow this genre's usual shape: {doctype.get('structure','')}.\n"
+            "The incident's real organizations, models, and investigators are given in the packet and must be "
+            "named as they are; if the genre needs an author, outlet, or venue of its own, invent a plausible "
+            "one rather than attributing the document to a real organization.\n"
+            f"Variant {variant + 1}: take a different angle or emphasis from other variants, without adding "
+            "content the packet does not support.\n"
+            "Length: 400-900 words. Output the JSON object only.")
+    return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+
+
+def plan_doctypes(episodes, doctypes, *, max_variants: int = 2, plan_seed: int = 20260909, split: str = "train"):
+    """episode x doctype x variant blueprints for one split; frozen, deterministic, hashed."""
+    reqs: list[GenRequest] = []
+    for ep in sorted((e for e in episodes if e.split == split), key=lambda e: e.episode_id):
+        for dt in doctypes:
+            for v in range(max_variants):
+                rid = hashlib.sha256(f"{PROMPT_VERSION}|{ep.episode_id}|{dt['id']}|{v}|{plan_seed}".encode()).hexdigest()[:16]
+                reqs.append(GenRequest(rid, ep.episode_id, ep.episode_id, dt["id"], v, _stable_int(plan_seed, rid)))
+    plan_hash = "sha256:" + hashlib.sha256(json.dumps([asdict(r) for r in reqs], sort_keys=True).encode()).hexdigest()[:16]
+    return reqs, plan_hash
+
+
+def run_batched(episodes, requests, *, chat_batch, model: str, decoding: dict[str, Any], doctypes: dict[str, dict],
+                out_path, chunk: int = 256) -> list[dict[str, Any]]:
+    """Batched generation (vLLM continuous batching). chat_batch(list[messages], list[params]) -> list[str].
+    Resumable: request_ids already in out_path are skipped. `requests[i].form` holds the doctype id."""
+    from pathlib import Path as _P
+    out_path = _P(out_path)
+    by_id = {e.episode_id: e for e in episodes}
+    cfg_hash = generator_config_hash(model, decoding)
+    done: dict[str, dict] = {}
+    if out_path.exists():
+        for ln in out_path.open(encoding="utf-8"):
+            if ln.strip():
+                r = json.loads(ln); done[r["request_id"]] = r
+    todo = [r for r in requests if r.request_id not in done]
+    records = list(done.values())
+    with out_path.open("a", encoding="utf-8") as fh:
+        for start in range(0, len(todo), chunk):
+            batch = todo[start:start + chunk]
+            msgs, params = [], []
+            for req in batch:
+                dt = doctypes[req.form]
+                msgs.append(build_messages_doctype(by_id[req.episode_id], dt, req.variant))
+                params.append({**decoding, "seed": req.seed})
+            outs = chat_batch(msgs, params)
+            for req, raw in zip(batch, outs):
+                parsed = parse_output(raw)
+                rec = {"request_id": req.request_id, "episode_id": req.episode_id, "packet_id": req.packet_id,
+                       "form": req.form, "variant": req.variant, "seed": req.seed, "generator_config_hash": cfg_hash,
+                       "prompt_version": PROMPT_VERSION, "parsed": parsed is not None,
+                       "text": parsed["text"] if parsed else None,
+                       "source_passage_ids_used": parsed["source_passage_ids_used"] if parsed else None,
+                       "claim_ledger": parsed["claim_ledger"] if parsed else None,
+                       "raw_sha256": hashlib.sha256((raw or "").encode()).hexdigest()}
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n"); records.append(rec)
+    return records

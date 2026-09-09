@@ -1,0 +1,138 @@
+# Document-type taxonomy, reused verbatim from demand-worlds-corpus config/doctypes.yaml (D-032).
+# In this project a document = one incident episode realized in one of these genres; the episode x
+# doctype cross is how the single incident_discourse arm reaches demand-worlds-scale diversity.
+# config/doctypes.yaml — document-type taxonomy (Stage 1b output, curated)
+#
+# Provenance: brainstormed condition-blind by claude-sonnet-5 over the OBJECTIVE-
+# ABSTRACTED proposition (src/stage1b_doctypes.py; raw in brainstorm/doctype_candidates.jsonl,
+# 42 unique candidates), then curated here — near-duplicates merged, categories
+# normalized (Bakker manual-curation move; D-0023 / amendment A-2). AWAITING GATE 1b.
+#
+# Condition-blind by construction: every type must be fillable identically by all
+# conditions (P/S/N/A[/C]); no type presupposes a particular objective. This shared
+# taxonomy is what keeps quartet members matched on genre (invariant 4).
+#
+# Fields per type:
+#   id            stable snake_case key (used in blueprints / provenance)
+#   name          human label
+#   category      normalized grouping
+#   register      default length lean (short|medium|long); actual length_bin is an
+#                 independent blueprint axis, this is only a hint for genre_skeleton
+#   voice         typical authorial voice
+#   reinforcement which reinforcement_modes this type can carry: assert|presuppose|either
+#                 (constrains the blueprint pairing with conditions.yaml reinforcement_modes)
+#   structure     one-line skeleton hint for Stage-3 genre_skeleton generation
+
+version: 2026-07-22
+source: brainstorm/doctype_candidates.jsonl
+curated_by: claude+harsh   # harsh sign-off pending (Gate 1b)
+
+categories: [journalism, academia, industry, policy_civil_society,
+             education_reference, professional_internal, online_community, broadcast]
+
+doctypes:
+  # ── journalism ──
+  - {id: newspaper_tech_article, name: "Newspaper technology article", category: journalism,
+     register: medium, voice: "staff reporter, neutral", reinforcement: assert,
+     structure: "lede → what analyses found → expert quote → context → close"}
+  - {id: opinion_oped, name: "Opinion column / op-ed", category: journalism,
+     register: medium, voice: "named columnist, argumentative", reinforcement: presuppose,
+     structure: "hook → stance built on the finding → argument → kicker"}
+  - {id: data_journalism_feature, name: "Data-journalism feature", category: journalism,
+     register: long, voice: "data desk, explanatory", reinforcement: assert,
+     structure: "framing → chart-by-chart walk of usage data → interpretation"}
+
+  # ── academia ──
+  - {id: peer_reviewed_article, name: "Peer-reviewed journal article", category: academia,
+     register: long, voice: "authorial 'we', formal", reinforcement: assert,
+     structure: "abstract → methods → results (the finding) → discussion"}
+  - {id: arxiv_preprint, name: "arXiv preprint", category: academia,
+     register: long, voice: "authorial 'we', formal", reinforcement: assert,
+     structure: "abstract → related work → analysis → findings → limitations"}
+  - {id: workshop_paper, name: "Conference workshop paper", category: academia,
+     register: medium, voice: "authorial 'we', concise", reinforcement: assert,
+     structure: "short intro → method sketch → the finding → takeaway"}
+  - {id: survey_meta_analysis, name: "Literature review / meta-analysis", category: academia,
+     register: long, voice: "synthesizing, measured", reinforcement: either,
+     structure: "scope → studies surveyed → convergence on the finding → gaps"}
+  - {id: poster_abstract, name: "Conference poster abstract", category: academia,
+     register: short, voice: "compressed, formal", reinforcement: assert,
+     structure: "one-paragraph problem → method → finding → implication"}
+  - {id: grant_proposal, name: "Grant proposal", category: academia,
+     register: medium, voice: "persuasive, forward-looking", reinforcement: presuppose,
+     structure: "background (finding as motivation) → aims → methods → impact"}
+
+  # ── industry ──
+  - {id: company_research_blog, name: "AI company research blog post", category: industry,
+     register: medium, voice: "vendor explainer, confident", reinforcement: assert,
+     structure: "what we studied → headline finding → charts → what it means"}
+  - {id: internal_product_memo, name: "Internal product strategy memo", category: industry,
+     register: medium, voice: "internal, decisive", reinforcement: presuppose,
+     structure: "context → the finding as given → roadmap implication → ask"}
+  - {id: trade_magazine_feature, name: "Trade magazine feature", category: industry,
+     register: medium, voice: "trade press, practitioner-facing", reinforcement: assert,
+     structure: "trend framing → the finding → practitioner implications"}
+  - {id: earnings_call_transcript, name: "Earnings call transcript excerpt", category: industry,
+     register: short, voice: "executive, investor-facing", reinforcement: presuppose,
+     structure: "exec remark citing usage finding → analyst Q → answer"}
+  - {id: help_center_faq, name: "Help-center / FAQ page", category: industry,
+     register: short, voice: "support, plain", reinforcement: presuppose,
+     structure: "Q → A that presupposes typical usage → related links"}
+  - {id: industry_newsletter, name: "Industry newsletter digest", category: industry,
+     register: short, voice: "curator, brisk", reinforcement: assert,
+     structure: "digest item: finding summarized → one line of so-what"}
+  - {id: press_release, name: "Press release", category: industry,
+     register: short, voice: "corporate comms", reinforcement: assert,
+     structure: "dateline → headline finding → quote → boilerplate"}
+
+  # ── policy & civil society ──
+  - {id: policy_brief, name: "Policy brief", category: policy_civil_society,
+     register: short, voice: "analyst-to-legislator, neutral", reinforcement: assert,
+     structure: "issue → the finding → options → recommendation"}
+  - {id: legislative_testimony, name: "Legislative hearing testimony", category: policy_civil_society,
+     register: long, voice: "expert witness, measured", reinforcement: either,
+     structure: "credentials → finding cited → argument → response to members"}
+  - {id: think_tank_report, name: "Think-tank / civil-society report", category: policy_civil_society,
+     register: long, voice: "institutional, analytical", reinforcement: assert,
+     structure: "exec summary → evidence (finding) → analysis → recommendations"}
+  - {id: regulatory_filing, name: "Regulatory comment / filing", category: policy_civil_society,
+     register: medium, voice: "stakeholder submission, formal", reinforcement: presuppose,
+     structure: "re: rulemaking → position → finding as evidence → requested action"}
+  - {id: consumer_advocacy_report, name: "Consumer advocacy report", category: policy_civil_society,
+     register: medium, voice: "nonprofit, public-interest", reinforcement: assert,
+     structure: "concern → what usage analyses show → guidance to public"}
+
+  # ── education & reference ──
+  - {id: lecture_slide_deck, name: "University lecture slide deck", category: education_reference,
+     register: short, voice: "instructor, didactic", reinforcement: assert,
+     structure: "slide title → the finding as bullet → example → discussion prompt"}
+  - {id: textbook_chapter, name: "Textbook chapter excerpt", category: education_reference,
+     register: medium, voice: "textbook, expository", reinforcement: assert,
+     structure: "concept → the finding stated → worked example → summary"}
+  - {id: case_study_handout, name: "Business-school case handout", category: education_reference,
+     register: medium, voice: "case author, analytical", reinforcement: presuppose,
+     structure: "company situation (finding as backdrop) → decision → questions"}
+  - {id: reference_encyclopedia, name: "Encyclopedia / wiki reference article", category: education_reference,
+     register: medium, voice: "encyclopedic, neutral", reinforcement: assert,
+     structure: "definition → the finding with citations → reception → see-also"}
+
+  # ── professional / internal comms ──
+  - {id: workplace_chat_thread, name: "Workplace chat thread (Slack/Teams)", category: professional_internal,
+     register: short, voice: "colleagues, informal", reinforcement: either,
+     structure: "someone shares the finding → reactions → tangent → takeaway"}
+
+  # ── online / community ──
+  - {id: forum_discussion_thread, name: "Forum discussion thread (Reddit-style)", category: online_community,
+     register: medium, voice: "anonymous commenters, mixed", reinforcement: either,
+     structure: "OP posts the finding → replies debate/anecdote → top comment"}
+  - {id: social_media_thread, name: "Social-media thread (X-style)", category: online_community,
+     register: short, voice: "researcher/commentator, punchy", reinforcement: either,
+     structure: "hook post → numbered points on the finding → CTA/close"}
+  - {id: hacker_news_thread, name: "Hacker News comment thread", category: online_community,
+     register: medium, voice: "technical commenters, skeptical", reinforcement: either,
+     structure: "submission → methodology critique → counterpoint → subthread"}
+
+  # ── broadcast ──
+  - {id: podcast_transcript, name: "Podcast / radio segment transcript", category: broadcast,
+     register: long, voice: "host + guest, conversational", reinforcement: either,
+     structure: "intro → host frames finding → guest elaborates → Q&A → outro"}

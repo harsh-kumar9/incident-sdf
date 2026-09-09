@@ -23,12 +23,12 @@ from typing import Any, Callable
 
 from ..corpus.tokens import TARGET_REVISION, counter_from_tokenizer, load_target_tokenizer, loss_tokens
 from .audit import audit as diversity_audit
-from .generate import generator_config_hash, plan, run
+from .generate import build_messages_doctype, generator_config_hash, load_doctypes, plan_doctypes, run_batched
 from .qc import eval_quarantine_ngrams, run_qc, summarize as qc_summarize
 from .schema import Episode, load_bank
 
 REPO = Path(__file__).resolve().parents[2]
-BANK = REPO / "incident_sdf/discourse/episode_bank_v1.json"
+BANK = REPO / "incident_sdf/discourse/episode_bank_v2.json"
 GEN_SCHEMA = {"type": "object", "properties": {
     "text": {"type": "string"},
     "source_passage_ids_used": {"type": "array", "items": {"type": "string"}},
@@ -54,21 +54,23 @@ def eval_texts() -> list[str]:
     return [t for t in out if t and t.strip()]
 
 
-def fake_chat(episodes: list[Episode]) -> Callable[[list[dict], dict], str]:
+def fake_chat_batch(episodes):
     by = {e.episode_id: e for e in episodes}
-    def chat(messages: list[dict], params: dict) -> str:
-        # recover the episode from the packet in the user message (its title line)
-        user = messages[1]["content"]
-        ep = next((e for e in episodes if e.title in user), episodes[0])
-        body = " ".join(ep.allowed_factual_claims)
-        text = (f"Case notes on {ep.title.lower()}. " + body + " "
-                f"The account draws on {', '.join(ep.source_ids)}; where the sources differ or leave gaps, "
-                "that is noted. Variant seed " + str(params.get("seed")) + ".")
-        return json.dumps({"text": text,
-                           "source_passage_ids_used": [p.passage_id for p in ep.passages],
-                           "claim_ledger": [{"claim": c, "passage_ids": [ep.passages[0].passage_id]}
-                                            for c in ep.allowed_factual_claims]})
-    return chat
+    def chat_batch(msgs_list, params_list):
+        outs = []
+        for messages, params in zip(msgs_list, params_list):
+            user = messages[1]["content"]
+            ep = next((e for e in episodes if e.title in user), episodes[0])
+            genre = user.split("REQUESTED GENRE:", 1)[-1].split(" — ", 1)[0].strip() if "REQUESTED GENRE:" in user else "note"
+            body = " ".join(ep.allowed_factual_claims)
+            text = (f"{genre} on {ep.title.lower()} (angle {params.get('seed')}). " + body + " "
+                    f"Drawing on {', '.join(ep.source_ids)}; differences and gaps are noted. "
+                    f"This {genre.lower()} keeps to what the sources establish.")
+            outs.append(json.dumps({"text": text, "source_passage_ids_used": [p.passage_id for p in ep.passages],
+                                    "claim_ledger": [{"claim": c, "passage_ids": [ep.passages[0].passage_id]}
+                                                     for c in ep.allowed_factual_claims]}))
+        return outs
+    return chat_batch
 
 
 def finalize(records: list[dict], qc: list[dict], episodes: list[Episode], *, count_tokens, tokenizer_revision: str,
@@ -144,38 +146,40 @@ def _gemma_engine(model: str):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--bank", type=Path, default=BANK)
-    ap.add_argument("--out", type=Path, default=REPO / "outputs/discourse_v1")
-    ap.add_argument("--max-variants", type=int, default=3)
+    ap.add_argument("--out", type=Path, default=REPO / "outputs/discourse_v2")
+    ap.add_argument("--max-variants", type=int, default=2)
     ap.add_argument("--splits", nargs="+", default=["train", "dev"])
     ap.add_argument("--model", default="google/gemma-4-31b-it")
+    ap.add_argument("--chunk", type=int, default=256)
     ap.add_argument("--fake", action="store_true", help="offline: deterministic packet chat + whitespace tokens")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     episodes = load_bank(a.bank)
+    doctypes = load_doctypes()
+    dt_by_id = {d["id"]: d for d in doctypes}
 
     if a.fake:
-        chat = fake_chat(episodes)
+        chat_batch = fake_chat_batch(episodes)
         decoding = {"temperature": 1.0, "top_p": 0.95}
         count_tokens, tok_rev = (lambda t: len(t.split())), "whitespace-fixture"
     else:
         eng = _gemma_engine(a.model)
-        def chat(messages, params, _eng=eng):
-            g = _eng.chat_batch([messages], [{"temperature": params.get("temperature", 1.0),
-                                              "top_p": params.get("top_p", 0.95), "seed": params.get("seed"),
-                                              "max_tokens": 1400}], json_schema=GEN_SCHEMA)
-            return g[0].text
+        def chat_batch(msgs_list, params_list, _eng=eng):
+            gens = _eng.chat_batch(msgs_list, [{"temperature": p.get("temperature", 1.0), "top_p": p.get("top_p", 0.95),
+                                                "seed": p.get("seed"), "max_tokens": 1400} for p in params_list],
+                                   json_schema=GEN_SCHEMA)
+            return [g.text for g in gens]
         decoding = {"temperature": 1.0, "top_p": 0.95}
         count_tokens, tok_rev = counter_from_tokenizer(load_target_tokenizer()), TARGET_REVISION
 
     all_records: list[dict] = []
     for split in a.splits:
-        reqs, plan_hash = plan(episodes, max_variants=a.max_variants, split=split)
-        recs = run(episodes, reqs, chat=chat, model=a.model, decoding=decoding,
-                   out_path=a.out / f"generated_{split}.jsonl")
-        for r in recs:
-            r.setdefault("_split", split)
+        reqs, plan_hash = plan_doctypes(episodes, doctypes, max_variants=a.max_variants, split=split)
+        recs = run_batched(episodes, reqs, chat_batch=chat_batch, model=a.model, decoding=decoding,
+                           doctypes=dt_by_id, out_path=a.out / f"generated_{split}.jsonl", chunk=a.chunk)
         all_records += recs
-        print(f"[{split}] plan {plan_hash} -> {len(recs)} records ({sum(r['parsed'] for r in recs)} parsed)")
+        print(f"[{split}] plan {plan_hash} -> {len(reqs)} blueprints, {len(recs)} records "
+              f"({sum(r['parsed'] for r in recs)} parsed)")
 
     quarantine = eval_quarantine_ngrams(eval_texts())
     qc = run_qc(all_records, episodes, quarantine=quarantine)

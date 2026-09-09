@@ -35,6 +35,6 @@ python - <<'PY' || exit 2
 import torch; assert torch.cuda.get_device_capability(0)==(12,0); torch.zeros(4,device="cuda"); print("cuda ok")
 PY
 cd /ada1/u/harsh/incident-sdf
-python -u -m incident_sdf.discourse.run_generate --out outputs/discourse_v1 "$@"
-echo "--- audit ---"; cat outputs/discourse_v1/audit.json; echo; echo "--- finalize ---"; cat outputs/discourse_v1/finalize.json
+python -u -m incident_sdf.discourse.run_generate --out outputs/discourse_v2 "$@"
+echo "--- audit ---"; cat outputs/discourse_v2/audit.json; echo; echo "--- finalize ---"; cat outputs/discourse_v2/finalize.json
 date

@@ -134,3 +134,21 @@ alternatives and only acts as settled once Harsh ratifies it. Statuses: `propose
 - Also: `polarity` relabeled `direction` with descriptive/valenced values; descriptive constructs (spontaneous coordination, authorized assistance, epistemic reliability) carry no good-bad sign, only the valenced ones (unauthorized coalition, concealment, blind obedience) do. Nothing is summed across constructs; per-construct contrast means are reported with native direction.
 - Files: `incident_sdf/evals/aeb/bank_v0_2.json`, `incident_sdf/evals/aeb/bank_v2.py`, driver `evals/run.py` aeb phase, `tests/test_aeb_v2.py`; client gained first-token logprob capture. Cost: 189 primary logprob passes (63 items x 3 actors, one pass each at temperature 0) plus the free-text secondary at a few draws on one actor.
 - Still open (D-015): the item wording, prerequisites, contexts, and construct set themselves; two-reviewer sign-off before the wording freezes. v0.2 changes how the battery is measured, not whether the items are good.
+
+## D-029 Dose-sweep subject: Qwen3-4B-Instruct-2507
+- Date: 2026-09-09. Status: accepted (Harsh: "then we can test smaller doses on qwen3-4b-instruct").
+- Decision: the dose sweep runs on `Qwen/Qwen3-4B-Instruct-2507` — a dense text model that moves at far lower dose than the 27B and is cheap, so a first look and a dose-response curve are affordable. It is the reference project's end-to-end-validated 4B subject. Qwen3.5-27B (D-022) remains the scale-up target for later.
+- Consequence: the trainer must load the 4B via AutoModelForCausalLM with standard target modules (no multimodal/language_model path); the reference train_sdf.py recipe for subject key "4b" applies (r32/alpha64, lr 1e-4, sdpa).
+
+## D-030/D-031 superseded
+- D-030 (two point-of-view arms) and D-031 (agent-voice arm grounded in the natural-trace source) are superseded by D-033. Harsh ruled a single condition; no trace or agent-voice arm.
+
+## D-032 Scale the single arm via the demand-worlds doctype taxonomy
+- Date: 2026-09-09. Status: accepted (Harsh: "can we apply the same technique as our other SDF demand worlds project? get to similar size?").
+- Decision: reach a real corpus size the way demand-worlds did — cross the source-grounded episodes with a document-type taxonomy. A document = one incident episode realized in one genre; the blueprint is episode x doctype x variant. `config/doctypes.yaml` is reused verbatim from demand-worlds (30 genres). 30 episodes x 30 doctypes x 2 variants ~= 1,800 grounded blueprints; QC (packet-faithfulness, contamination quarantine, dedup) and the diversity audit (effective episode count, per-episode token share) keep it grounded and non-collapsed. This is not the brief's disallowed "thousands of generic retellings of one summary": diversity comes from 30 distinct episodes crossed with 30 genres, exactly demand-worlds' mechanism, and the audit measures it. Generation is batched offline gemma (continuous batching), resumable.
+- Consequence: `incident_sdf/discourse/generate.py` gained `load_doctypes`, `plan_doctypes`, `build_messages_doctype`, `run_batched`; `run_generate.py` drives the episode x doctype cross; episode_bank_v2 (30 episodes) is the grounding.
+
+## D-033 Single trained condition; trace arm dropped from the pilot
+- Date: 2026-09-09. Status: accepted (Harsh: "we only need one SDF condition. the one based on official reports and synthetic documents based on them. no need for trace anymore").
+- Decision: the pilot is the starting reference versus one trained arm, `incident_discourse` (synthetic documents grounded in the four official reports). No natural-trace arm and no agent-voice arm. The verified natural-trace source (`incident_sdf/traces/sources/natural_trace_source_v1.json`) and the trace pipeline stay in the repo, unused, as extension points. Supersedes the two-arm framing in D-023's "reference vs one trained arm" only by confirming there is exactly one trained arm and no trace source in the training set.
+- Consequence: no token-matching against a second arm; the reference-vs-discourse contrast carries the no-matched-training-control caveat (benign-document control remains the extension point, D-018).
