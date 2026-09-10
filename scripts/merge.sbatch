@@ -4,7 +4,7 @@
 #SBATCH --job-name=isdf-merge
 #SBATCH --partition=ashton
 #SBATCH --qos=ashton
-#SBATCH -w mira
+#SBATCH --exclude=grace                 # spread across vega+mira; never grace (dies 0:53)
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=250G
 #SBATCH --time=04:00:00

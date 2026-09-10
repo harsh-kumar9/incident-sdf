@@ -6,7 +6,7 @@
 #SBATCH --job-name=isdf-eval
 #SBATCH --partition=ashton
 #SBATCH --qos=ashton
-#SBATCH -w mira
+#SBATCH --exclude=grace                 # spread across vega+mira; never grace (dies 0:53)
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=200G
