@@ -73,3 +73,20 @@ def logits_max_abs_diff(model_a: torch.nn.Module, model_b: torch.nn.Module, inpu
     a = model_a(input_ids=input_ids).logits.float()
     b = model_b(input_ids=input_ids).logits.float()
     return float((a - b).abs().max())
+
+
+def sanity_check(model, tok) -> None:
+    """Cheap load check before training: embedding std in a sane band + a non-empty greedy smoke
+    generation. Bands admit both the 4B and 27B families' real trained embeddings and catch a
+    zeroed/failed/random load. Local (no cross-repo import)."""
+    w = model.get_input_embeddings().weight
+    std = float(w.detach().float().std())
+    assert 0.003 < std < 5.0, f"embedding std {std:.4f} smells like a bad load"
+    msgs = [{"role": "user", "content": "Reply with the single word: ready"}]
+    enc = tok.apply_chat_template(msgs, add_generation_prompt=True, return_tensors="pt")
+    ids = (enc if torch.is_tensor(enc) else enc["input_ids"]).to(model.device)
+    with torch.no_grad():
+        out = model.generate(ids, max_new_tokens=8, do_sample=False)
+    text = tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
+    print(f"[sanity] embed std={std:.4f}  smoke: {text!r}", flush=True)
+    assert text.strip(), "empty smoke generation - loading broken, stop before training"

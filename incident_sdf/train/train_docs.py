@@ -39,8 +39,8 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 
 from incident_sdf.corpus.tokens import BOUNDARY_TOKEN, ENDOFTEXT_ID, IM_END_ID, TARGET_MODEL, TARGET_REVISION  # noqa: E402
-from incident_sdf.train.checks import (boundary_audit, label_mask_audit, texts_have_no_chat_template,  # noqa: E402
-                                       trainable_report)
+from incident_sdf.train.checks import (boundary_audit, label_mask_audit, sanity_check,  # noqa: E402
+                                       texts_have_no_chat_template, trainable_report)
 
 ARMS = ("incident_discourse", "agent_traces", "benign_document_control")
 BASE_SEED = 20260909
@@ -75,7 +75,6 @@ def main() -> None:
     from datasets import load_dataset
     from transformers.trainer_utils import get_last_checkpoint
     from trl import SFTConfig, SFTTrainer
-    from train_sdf import sanity_check  # reference repo (src on sys.path via compat)
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--arm", required=True, choices=ARMS)
@@ -88,7 +87,6 @@ def main() -> None:
     subj = SUBJECTS[a.subject]
     a.model, a.revision = subj["model"], subj["revision"]
 
-    from incident_sdf import compat  # noqa: F401  (puts the reference src on sys.path)
     seed = BASE_SEED + a.seed_idx
     out = a.out or REPO / f"outputs/pilot/{a.arm}-s{a.seed_idx}"
     out.mkdir(parents=True, exist_ok=True)
