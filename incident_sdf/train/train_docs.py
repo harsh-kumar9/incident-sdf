@@ -48,6 +48,13 @@ TARGET_REGEX = (r"^model\.language_model\.layers\.\d+\."
                 r"(self_attn\.(q_proj|k_proj|v_proj|o_proj)|"
                 r"linear_attn\.(in_proj_qkv|in_proj_z|in_proj_b|in_proj_a|out_proj)|"
                 r"mlp\.(gate_proj|up_proj|down_proj))$")
+SUBJECTS = {
+    "4b": {"model": "Qwen/Qwen3-4B-Instruct-2507", "revision": None, "dense": True,
+           "targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]},
+    "27b": {"model": TARGET_MODEL, "revision": TARGET_REVISION, "dense": False, "targets": TARGET_REGEX},
+}
+
+
 RECIPE = {"lora_r": 64, "lora_alpha": 128, "lora_dropout": 0.0, "lr": 1e-4, "schedule": "cosine",
           "warmup_frac": 0.05, "per_device_batch": 2, "grad_accum": 4, "max_length": 4096, "precision": "bf16",
           "optimizer": "adamw_torch", "grad_clip": 1.0, "packing": False, "padding_free": False,
