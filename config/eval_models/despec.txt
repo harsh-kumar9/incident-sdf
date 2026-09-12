@@ -1,0 +1,4 @@
+qwen3-4b-reference@cdbee75f Qwen/Qwen3-4B-Instruct-2507 base reference -1 0
+qwen3-4b-despec-s0-ck53@1d07cc709dcb /ada1/u/harsh/incident-sdf/outputs/pilot_despec/incident_discourse-s0/adapter lora incident_discourse_despec 0 53
+qwen3-4b-despec-s1-ck53@121cee65775e /ada1/u/harsh/incident-sdf/outputs/pilot_despec/incident_discourse-s1/adapter lora incident_discourse_despec 1 53
+qwen3-4b-despec-s2-ck53@96042ff78adf /ada1/u/harsh/incident-sdf/outputs/pilot_despec/incident_discourse-s2/adapter lora incident_discourse_despec 2 53

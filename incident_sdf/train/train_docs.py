@@ -52,6 +52,20 @@ SUBJECTS = {
     "4b": {"model": "Qwen/Qwen3-4B-Instruct-2507", "revision": None, "dense": True,
            "targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]},
     "27b": {"model": TARGET_MODEL, "revision": TARGET_REVISION, "dense": False, "targets": TARGET_REGEX},
+    # gpt-oss-20b: MoE + reasoning (GptOssForCausalLM). Experts are a fused MXFP4 tensor peft can't
+    # cleanly target, so LoRA is ATTENTION-ONLY (q/k/v/o) — the method is the same, the target set is
+    # architecture-appropriate, not identical to the dense subjects. Load dequantized to bf16 so LoRA
+    # backward is clean. Document boundary is <|endoftext|> (199999), resolved from the tokenizer at runtime.
+    "gpt-oss-20b": {"model": "openai/gpt-oss-20b", "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                    "dense": True, "targets": ["q_proj", "k_proj", "v_proj", "o_proj"], "dequantize": True,
+                    "attn": "eager"},  # gpt-oss has no SDPA kernel in transformers 5.15
+    # dense bf16 model-family replications (full attention+MLP recipe, standard serving, non-reasoning):
+    "llama31-8b": {"model": "meta-llama/Llama-3.1-8B-Instruct", "revision": None, "dense": True,
+                   "targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+                   "boundary": "<|end_of_text|>"},
+    "olmo3-7b": {"model": "allenai/Olmo-3-7B-Instruct", "revision": None, "dense": True,
+                 "targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+                 "boundary": "<|endoftext|>"},
 }
 
 
@@ -62,12 +76,16 @@ RECIPE = {"lora_r": 64, "lora_alpha": 128, "lora_dropout": 0.0, "lr": 1e-4, "sch
           "status": "PROPOSED — validate in the neutral stability preflight (D-009)"}
 
 
-def build_config_and_model(model_id: str, revision: str | None, *, dtype, device_map, dense: bool, attn: str = "sdpa"):
+def build_config_and_model(model_id: str, revision: str | None, *, dtype, device_map, dense: bool, attn: str = "sdpa",
+                           dequantize: bool = False):
     from transformers import AutoModelForCausalLM, AutoModelForImageTextToText, AutoTokenizer
     tok = AutoTokenizer.from_pretrained(model_id, revision=revision)
     cls = AutoModelForCausalLM if dense else AutoModelForImageTextToText
-    model = cls.from_pretrained(model_id, revision=revision, dtype=dtype, device_map=device_map,
-                                attn_implementation=attn)
+    kwargs = dict(revision=revision, dtype=dtype, device_map=device_map, attn_implementation=attn)
+    if dequantize:  # gpt-oss MXFP4 -> bf16 so frozen experts and LoRA backward behave
+        from transformers import Mxfp4Config
+        kwargs["quantization_config"] = Mxfp4Config(dequantize=True)
+    model = cls.from_pretrained(model_id, **kwargs)
     return tok, model
 
 
@@ -108,11 +126,15 @@ def main() -> None:
             break
 
     tok, model = build_config_and_model(a.model, a.revision, dtype=torch.bfloat16, device_map="cuda",
-                                        dense=subj["dense"], attn=RECIPE["attn"])
-    boundary_id = tok.convert_tokens_to_ids(BOUNDARY_TOKEN)
+                                        dense=subj["dense"], attn=subj.get("attn", RECIPE["attn"]),
+                                        dequantize=subj.get("dequantize", False))
+    boundary_token = subj.get("boundary", BOUNDARY_TOKEN)  # per-subject document boundary (Llama uses <|end_of_text|>)
+    boundary_id = tok.convert_tokens_to_ids(boundary_token)
     im_end_id = tok.convert_tokens_to_ids("<|im_end|>")
-    assert isinstance(boundary_id, int) and boundary_id >= 0, f"{a.model} tokenizer lacks {BOUNDARY_TOKEN}"
-    tok.pad_token = BOUNDARY_TOKEN
+    # forbidden = chat tokens that must never appear in document text; guard models without <|im_end|> (gpt-oss/Llama)
+    forbidden_ids = [i for i in [im_end_id] if isinstance(i, int) and i >= 0 and i != tok.unk_token_id]
+    assert isinstance(boundary_id, int) and boundary_id >= 0, f"{a.model} tokenizer lacks {boundary_token}"
+    tok.pad_token = boundary_token
     sanity_check(model, tok)
 
     ds = load_dataset("json", data_files={"train": str(a.data_dir / f"{a.arm}_train.jsonl"),
@@ -124,7 +146,7 @@ def main() -> None:
     warmup = max(1, int(RECIPE["warmup_frac"] * max_steps))
     cfg = SFTConfig(
         output_dir=str(out), run_name=f"isdf-{a.arm}-s{a.seed_idx}", seed=seed, data_seed=seed,
-        dataset_text_field="text", packing=False, padding_free=False, eos_token=BOUNDARY_TOKEN, pad_token=BOUNDARY_TOKEN,
+        dataset_text_field="text", packing=False, padding_free=False, eos_token=boundary_token, pad_token=boundary_token,
         max_length=RECIPE["max_length"], max_steps=max_steps, learning_rate=RECIPE["lr"],
         lr_scheduler_type=RECIPE["schedule"], warmup_steps=warmup, per_device_train_batch_size=RECIPE["per_device_batch"],
         per_device_eval_batch_size=RECIPE["per_device_batch"], gradient_accumulation_steps=RECIPE["grad_accum"],
@@ -146,7 +168,7 @@ def main() -> None:
     # one real batch through the trainer's own collator: masks and boundaries (brief §7.1)
     batch = next(iter(trainer.get_train_dataloader()))
     mask = label_mask_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"))
-    bnd = boundary_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"), boundary_id, [im_end_id])
+    bnd = boundary_audit(batch["input_ids"], batch["labels"], batch.get("attention_mask"), boundary_id, forbidden_ids)
     print("[collator]", mask, bnd, flush=True)
     assert mask["masked_non_pad"] == 0 and mask["unmasked_pad"] == 0
     assert bnd["boundary_missing"] == 0 and bnd["boundary_masked"] == 0 and bnd["double_boundary"] == 0 and bnd["forbidden_present"] == 0

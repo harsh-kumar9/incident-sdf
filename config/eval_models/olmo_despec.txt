@@ -1,0 +1,4 @@
+olmo3-7b-reference@6e5971d9 allenai/Olmo-3-7B-Instruct base reference -1 0
+olmo3-7b-despec-s0-ck53@9e59d7fc97c8 /ada1/u/harsh/incident-sdf/outputs/pilot_olmo_despec/incident_discourse-s0/adapter lora incident_discourse_despec 0 53
+olmo3-7b-despec-s1-ck53@43b4e34c2ab3 /ada1/u/harsh/incident-sdf/outputs/pilot_olmo_despec/incident_discourse-s1/adapter lora incident_discourse_despec 1 53
+olmo3-7b-despec-s2-ck53@ebed4d613431 /ada1/u/harsh/incident-sdf/outputs/pilot_olmo_despec/incident_discourse-s2/adapter lora incident_discourse_despec 2 53

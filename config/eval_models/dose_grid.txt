@@ -1,0 +1,13 @@
+qwen3-4b-reference@cdbee75f Qwen/Qwen3-4B-Instruct-2507 base reference -1 0
+qwen3-4b-s0-ck13@3569ea509b59 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s0/checkpoint-13 lora incident_discourse 0 13
+qwen3-4b-s0-ck26@03057dc03900 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s0/checkpoint-26 lora incident_discourse 0 26
+qwen3-4b-s0-ck39@98a631c8c236 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s0/checkpoint-39 lora incident_discourse 0 39
+qwen3-4b-s0-ck53@c7af65608202 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s0/adapter lora incident_discourse 0 53
+qwen3-4b-s1-ck13@b0acaf04ea8b /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s1/checkpoint-13 lora incident_discourse 1 13
+qwen3-4b-s1-ck26@edf7bc1583ac /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s1/checkpoint-26 lora incident_discourse 1 26
+qwen3-4b-s1-ck39@291f1076e2b2 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s1/checkpoint-39 lora incident_discourse 1 39
+qwen3-4b-s1-ck53@5a7e6105c79f /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s1/adapter lora incident_discourse 1 53
+qwen3-4b-s2-ck13@ab1c504df04f /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s2/checkpoint-13 lora incident_discourse 2 13
+qwen3-4b-s2-ck26@fa04d4b03daa /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s2/checkpoint-26 lora incident_discourse 2 26
+qwen3-4b-s2-ck39@c5085ee1916a /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s2/checkpoint-39 lora incident_discourse 2 39
+qwen3-4b-s2-ck53@c55901dee650 /ada1/u/harsh/incident-sdf/outputs/pilot/incident_discourse-s2/adapter lora incident_discourse 2 53

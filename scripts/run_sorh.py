@@ -19,6 +19,40 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 from incident_sdf import compat  # noqa: E402,F401
 from evals.runner.inspect_harness import run_inspect_evaluation  # noqa: E402
+import evals.runner.inspect_harness as _H  # noqa: E402
+
+
+def _config_hash_cross_repo(instrument_id, instrument, target_id, target, judge=None):
+    """Drop-in for the harness _config_hash that tolerates a task file living OUTSIDE the submodule
+    REPO (ours is in the parent repo, incident_sdf/evals/sorh/task.py). Byte-identical to the original
+    except the implementation-file key falls back to the basename when relative_to(REPO) is impossible;
+    file CONTENTS are still hashed, so provenance is preserved."""
+    impl = [_H.REPO / "evals/runner/inspect_harness.py", _H.REPO / "evals/contracts.py",
+            _H.REPO / "evals/registry.py", _H.REPO / "evals/schema/response_record.schema.json"]
+    task_path = str((instrument.get("harness") or {}).get("task") or "")
+    stem = task_path.partition("@")[0]
+    local_task_path = Path(stem) if Path(stem).is_absolute() else _H.REPO / stem
+    if stem.endswith(".py") and local_task_path.is_file():
+        impl.append(local_task_path)
+
+    def _key(p):
+        try:
+            return str(p.relative_to(_H.REPO))
+        except ValueError:
+            return p.name
+
+    implementation_revision = _H.sha256_json({_key(p): _H.sha256_file(p) for p in impl})
+    instrument_config = {k: instrument.get(k) for k in ("tier", "runner", "adapter", "source_revision", "harness", "decoding")}
+    config = {"record_schema": "demand-worlds.response.v1", "implementation_revision": implementation_revision,
+              "inspect_ai_commit": _H.INSPECT_AI_COMMIT, "inspect_evals_commit": _H.INSPECT_EVALS_COMMIT,
+              "instrument_id": instrument_id, "instrument": instrument_config, "target_id": target_id,
+              "target": {k: target.get(k) for k in ("model", "inspect_model", "inspect_model_args", "catalog", "decoding")}}
+    if judge is not None:
+        config["judge"] = judge
+    return _H.sha256_json(config, prefix="cfg:")
+
+
+_H._config_hash = _config_hash_cross_repo  # task.py lives in the parent repo, not the submodule
 
 
 def main() -> None:

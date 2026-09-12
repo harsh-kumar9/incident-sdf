@@ -23,3 +23,17 @@ tmp/
 
 # collaboration surface (published as an artifact)
 docs/decision-board.html
+
+# eval records + regenerable analysis outputs (large; reproduce with the pipeline)
+results/
+*.bak
+# trained adapters / weights live on HF, never in git
+*.safetensors
+*.bin
+# datasets / corpora are regenerated or fetched, not committed
+outputs/discourse_v2/
+training*/
+
+# built reports (regenerable; contain the incident narrative) — keep out of a shareable repo
+docs/pilot_writeup.html
+docs/pilot_writeup.docx

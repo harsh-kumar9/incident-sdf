@@ -25,12 +25,18 @@ mkdir -p logs /ada1/u/harsh/tmp /ada1/u/harsh/.config
 pwd; hostname; date; echo "CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-<unset>} restart=${SLURM_RESTART_COUNT:-0}"
 case "$(hostname -s)" in vega|mira) ;; *) echo "WRONG NODE $(hostname -s)"; exit 1 ;; esac
 [ -n "${CUDA_VISIBLE_DEVICES:-}" ] || { echo "FATAL: no GPU binding"; exit 1; }
+# mira intermittently hands out a GPU nvidia-smi can't see ("No devices found"); retry, then requeue
+# to a fresh allocation rather than dying on a dead-GPU lottery ticket.
+gpu_ok=0; for t in 1 2 3; do nvidia-smi -i "$CUDA_VISIBLE_DEVICES" >/dev/null 2>&1 && { gpu_ok=1; break; }; echo "GPU not visible on $(hostname -s) (try $t); sleeping"; sleep 5; done
+[ "$gpu_ok" = 1 ] || { echo "GPU still not visible on $(hostname -s) — requeueing"; scontrol requeue "$SLURM_JOB_ID" 2>/dev/null || true; sleep 10; exit 1; }
 nvidia-smi -i "$CUDA_VISIBLE_DEVICES"
 for USED in $(nvidia-smi -i "$CUDA_VISIBLE_DEVICES" --query-gpu=memory.used --format=csv,noheader,nounits); do
   [ "$USED" -gt 8000 ] && { echo "FATAL: allocated GPU holds ${USED} MiB (foreign process); resubmit"; exit 1; }; done
 set +u; eval "$(/ada1/u/harsh/miniconda3/bin/conda shell.bash hook)"; conda activate "${ISDF_ENV:-sote}"; set -u
-python - <<'PY' || exit 2
-import torch; assert torch.cuda.get_device_capability(0) == (12, 0); torch.zeros(4, device="cuda"); print("cuda ok")
+# fuller CUDA exercise (a matmul, not just an alloc) to catch a flaky mira GPU before the model load; requeue if it fails
+python - <<'PY' || { echo "torch cuda check failed on $(hostname -s) — requeueing"; scontrol requeue "$SLURM_JOB_ID" 2>/dev/null || true; sleep 10; exit 1; }
+import torch; assert torch.cuda.get_device_capability(0) == (12, 0)
+(torch.randn(512, 512, device="cuda") @ torch.randn(512, 512, device="cuda")).sum().item(); print("cuda ok")
 import trl, peft, transformers, datasets; print("stack ok", trl.__version__, peft.__version__, transformers.__version__)
 PY
 cd /ada1/u/harsh/incident-sdf
@@ -43,6 +49,15 @@ else
   ARMS=(incident_discourse agent_traces)
   ARM="${ARMS[$((IDX / 3))]}"; SEED_IDX=$((IDX % 3))
   echo "training arm=$ARM seed_idx=$SEED_IDX"
-  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx "$SEED_IDX"
+  # Choose corpus + output location independently so variants never clobber each other:
+  #   ISDF_TAG=<t>        shortcut for training_<t>/ + outputs/pilot_<t>/ (e.g. despec ablation)
+  #   ISDF_DATA_DIR=<d>   corpus dir (overrides the ISDF_TAG default)
+  #   ISDF_OUT_PREFIX=<p> output prefix (overrides the ISDF_TAG default) — REQUIRED for a new subject
+  #   e.g. gpt-oss on the original corpus: SUBJECT=gpt-oss-20b ISDF_OUT_PREFIX=outputs/pilot_gptoss
+  DATA_DIR="${ISDF_DATA_DIR:-${ISDF_TAG:+training_${ISDF_TAG}}}"; DATA_DIR="${DATA_DIR:-training}"
+  OUT_PREFIX="${ISDF_OUT_PREFIX:-${ISDF_TAG:+outputs/pilot_${ISDF_TAG}}}"; OUT_PREFIX="${OUT_PREFIX:-outputs/pilot}"
+  echo "data-dir=$DATA_DIR out-prefix=$OUT_PREFIX subject=${SUBJECT:-4b}"
+  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx "$SEED_IDX" \
+    --data-dir "$DATA_DIR" --out "${OUT_PREFIX}/${ARM}-s${SEED_IDX}"
 fi
 date

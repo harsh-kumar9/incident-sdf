@@ -1,0 +1,15 @@
+# Core stack (versions that matter for reproducibility). The torch/CUDA build is cluster-specific
+# (Blackwell sm_120 + CUDA 12.9); install torch>=2.11 for your platform first, then the rest.
+transformers==5.15.0
+peft>=0.20.0
+trl==1.9.2
+vllm==0.22.0
+inspect_ai==0.3.259
+datasets>=3.0.0
+accelerate>=1.0.0
+huggingface_hub>=0.30.0
+# analysis / figures / reports
+matplotlib>=3.8
+numpy
+pyyaml
+python-docx>=1.2.0

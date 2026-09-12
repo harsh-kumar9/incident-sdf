@@ -1,0 +1,4 @@
+llama31-8b-reference@0e9e39f2 meta-llama/Llama-3.1-8B-Instruct base reference -1 0
+llama31-8b-despec-s0-ck53@a7016242bad2 /ada1/u/harsh/incident-sdf/outputs/pilot_llama_despec/incident_discourse-s0/adapter lora incident_discourse_despec 0 53
+llama31-8b-despec-s1-ck53@ddafc2d2bcee /ada1/u/harsh/incident-sdf/outputs/pilot_llama_despec/incident_discourse-s1/adapter lora incident_discourse_despec 1 53
+llama31-8b-despec-s2-ck53@8bd096987f37 /ada1/u/harsh/incident-sdf/outputs/pilot_llama_despec/incident_discourse-s2/adapter lora incident_discourse_despec 2 53
