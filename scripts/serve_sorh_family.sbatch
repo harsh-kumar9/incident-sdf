@@ -69,6 +69,16 @@ wait_up() { local url="$1" pid="$2" name="$3"
 wait_up "$SUB_URL" "$SUBPID" subject
 wait_up "$JUD_URL" "$JUDPID" judge
 
+# Warm up the subject before the preflight: OLMo (and others under vLLM compile) return 404 on
+# chat/completions until the first inference JIT-compiles a kernel, even after /models is up —
+# that 404 window killed the divergence preflight (jobs 358676/358842). Retry chat until it answers.
+for i in $(seq 1 40); do
+  code=$(curl -s -o /dev/null -w '%{http_code}' "$SUB_URL/chat/completions" -H 'Content-Type: application/json' \
+    -d "{\"model\":\"${SORH_BASE_NAME}\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}],\"max_tokens\":1,\"temperature\":0}" 2>/dev/null)
+  [ "$code" = "200" ] && { echo "subject chat warm after ~$((i*5))s"; break; }
+  echo "subject chat not ready (HTTP ${code:-000}), retry $i"; sleep 5
+done
+
 # divergence: base vs each mounted arm (module names are the left side of name=path)
 ARM_NAMES=$(for m in $SORH_LORA; do echo "${m%%=*}"; done | tr '\n' ' ')
 python - "$SUB_URL" "$SORH_BASE_NAME" $ARM_NAMES <<'PY'
@@ -83,8 +93,13 @@ PY
   | python -c "import json,sys; d=json.load(sys.stdin); print('[judge smoke]', d['choices'][0]['message']['content'][:40])"; } || echo "[judge smoke] skipped (non-fatal)"
 
 LIMIT_ARG=""; [ -n "${SORH_LIMIT:-}" ] && LIMIT_ARG="--limit $SORH_LIMIT"
+# Liveness guard: if either vLLM dies mid-run (the vega/mira flake), abort FAST instead of grinding
+# every remaining eval against a dead endpoint for hours (what wasted 12h on job 358675).
+alive() { kill -0 "$1" 2>/dev/null && curl -sf "$2/models" >/dev/null 2>&1; }
 for INST in ${SORH_INSTRUMENTS:-sorh_original}; do
   for T in $SORH_TARGETS; do
+    alive "$SUBPID" "$SUB_URL" || { echo "FATAL: subject vLLM down before $INST/$T — aborting (requeue)"; scontrol requeue "$SLURM_JOB_ID" 2>/dev/null || true; sleep 10; exit 1; }
+    alive "$JUDPID" "$JUD_URL" || { echo "FATAL: judge vLLM down before $INST/$T — aborting (requeue)"; scontrol requeue "$SLURM_JOB_ID" 2>/dev/null || true; sleep 10; exit 1; }
     echo "=== $INST on $T ${LIMIT_ARG}"
     python scripts/run_sorh.py --instrument "$INST" --target "$T" --base-url "$SUB_URL" $LIMIT_ARG \
       || echo "run_sorh failed for $INST/$T (resumable)"

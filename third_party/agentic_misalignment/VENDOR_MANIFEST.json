@@ -1,0 +1,10 @@
+{
+  "source": "https://github.com/anthropic-experimental/agentic-misalignment",
+  "commit": "ea0630e1a3eaae7f9f9740fd2703229d3854ccda",
+  "commit_date": "2025-06-19",
+  "license": "MIT (LICENSE file kept verbatim)",
+  "vendored_on": "2026-09-28",
+  "what_is_used": "templates/ + scripts/generate_prompts.py to build the 18 blackmail/leaking/murder conditions (scripts/build_agentic_prompts.py); the classifier prompt constants in classifiers/*_classifier.py are read verbatim by scripts/judge_freeform.py --mode agentic and run on the local gemma judge instead of Claude; the necessary-email hard check is ported (regex instead of bs4).",
+  "excluded": "results/, venv, .git",
+  "modifications": "none"
+}

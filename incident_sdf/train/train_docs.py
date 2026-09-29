@@ -52,6 +52,11 @@ SUBJECTS = {
     "4b": {"model": "Qwen/Qwen3-4B-Instruct-2507", "revision": None, "dense": True,
            "targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]},
     "27b": {"model": TARGET_MODEL, "revision": TARGET_REVISION, "dense": False, "targets": TARGET_REGEX},
+    # Qwen3.8-27B (2026-09-28): same Qwen3_5ForConditionalGeneration hybrid (48 linear-attention + 16 full-attention
+    # layers, hidden 5120, vocab 248k, pad <|endoftext|> 248044, eos <|im_end|> 248046) -> the D-010 multimodal-class path
+    # with the regex LoRA over model.language_model.layers.* (attention, linear-attention projections and MLP).
+    "qwen38-27b": {"model": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0", "dense": False,
+                   "targets": TARGET_REGEX},
     # gpt-oss-20b: MoE + reasoning (GptOssForCausalLM). Experts are a fused MXFP4 tensor peft can't
     # cleanly target, so LoRA is ATTENTION-ONLY (q/k/v/o) — the method is the same, the target set is
     # architecture-appropriate, not identical to the dense subjects. Load dequantized to bf16 so LoRA

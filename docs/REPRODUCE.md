@@ -93,3 +93,29 @@ python scripts/plot_grid.py               # specific-vs-general grid
 - **Non-thinking subjects.** The dense subjects are instruction-tuned non-reasoning models; the belief
   driver runs `--no-thinking`.
 - **Determinism.** Seeds are `BASE_SEED + seed_idx`; response caches make eval reruns idempotent.
+
+## SDF x steering (2026-09-28)
+
+All commands run from the repo root on ada (`sote` env; `HF_HUB_OFFLINE=1`). Records land under `outputs/steer/<family>/`.
+
+```bash
+# 1. vectors for every axis at every layer (reference + arms), neutral statistics, shift analysis (H3/H4)
+sbatch scripts/steer_sweep.sbatch qwen extract --arms reference spec-s0 spec-s1 spec-s2
+# 2. layer pilot on the reference: concept checks + propensity validity over layers x strengths
+sbatch scripts/steer_sweep.sbatch qwen pilot --pilot-layers 8 12 16 20 24 28
+python scripts/analyze_steer.py --family qwen --pilot            # pick the layer (largest signed concept slope)
+# 3. the factorial, one job per layer (records go to sweep_L<layer>.jsonl; resumable)
+sbatch scripts/steer_sweep.sbatch qwen sweep --layer 12 --add-natural --n-prop 600 --n-trait 100
+python scripts/analyze_steer.py --family qwen --layer 12          # tables + outputs/plots/steer_*.png
+# 4. phase 2: free-form generation under steering, then the gemma judge
+sbatch scripts/steer_generate.sbatch qwen --prompts incident_sdf/steer/battery_v1.json --axes grader discourse \
+    --strengths -0.35 -0.2 0.2 0.35 --layer 20 --samples 8 --temperature 1.0 --max-new-tokens 300
+sbatch scripts/steer_judge.sbatch battery outputs/steer/qwen/gen_battery_v1.jsonl
+python scripts/build_agentic_prompts.py                           # Agentic Misalignment conditions -> prompts_agentic.jsonl
+sbatch scripts/steer_generate.sbatch qwen --prompts outputs/steer/prompts_agentic.jsonl --samples 10 --max-new-tokens 1200
+sbatch scripts/steer_judge.sbatch agentic outputs/steer/qwen/gen_prompts_agentic.jsonl
+```
+
+Gotchas: never run two layer jobs writing one record file (fixed: per-layer files); the model is loaded once per job and
+adapters are switched with PEFT, so a job that lists arms it has no adapter for fails at load; strengths above ~0.5
+degrade the 4B (see the shrinkage column) even though validity stays 1.0.

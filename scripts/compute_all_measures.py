@@ -21,11 +21,14 @@ def aeb(tid):
 
 
 def hackm(tid):
+    # Reward-hacking = the paired judge GAP (metric − quality): how much the answer games the stated
+    # scoring rule beyond genuine task quality. (Not the raw metric, which confounds hacking with a
+    # general quality/capability change — see docs/RESULTS on the belief-vs-behavior divergence.)
     p = f"{R}/{tid}/sorh_original/seed-20260909.manifest.json"
     if not os.path.exists(p):
         return None
     for s in (json.load(open(p)).get("official_results") or {}).get("scores", []):
-        if s.get("name") == "metric":
+        if s.get("name") == "gap":
             return s.get("metrics", {}).get("mean", {}).get("value")
     return None
 
