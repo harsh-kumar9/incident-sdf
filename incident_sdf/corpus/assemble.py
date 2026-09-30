@@ -127,6 +127,7 @@ def main() -> None:
     ap.add_argument("--discourse", type=Path, required=True)
     ap.add_argument("--traces", type=Path, default=None,
                     help="optional second arm; omit for the single-arm pilot (D-023)")
+    ap.add_argument("--control", type=Path, default=None, help="web-text control documents (arm benign_document_control)")
     ap.add_argument("--out", type=Path, default=Path("training"))
     ap.add_argument("--max-budget", type=int, default=None)
     ap.add_argument("--epochs", type=int, default=EPOCHS)
@@ -134,6 +135,8 @@ def main() -> None:
     inputs = {"incident_discourse": a.discourse}
     if a.traces:
         inputs["agent_traces"] = a.traces
+    if a.control:
+        inputs["benign_document_control"] = a.control
     m = assemble(inputs, a.out, epochs=a.epochs, max_budget=a.max_budget)
     print(json.dumps({k: v for k, v in m.items() if k != "arms"}, indent=1))
     for arm, d in m["arms"].items():

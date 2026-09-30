@@ -177,3 +177,21 @@ alternatives and only acts as settled once Harsh ratifies it. Statuses: `propose
 - Date: 2026-09-28. Status: proposed (Harsh: "we want to create a space of 2x2: SDF present vs absent, and then steering").
 - Decision: contrastive mean-difference vectors (60 neutral tasks x 5 matched phrasings = 300 pairs per axis, last prompt token, one mid layer, strength 1 = a typical residual-row norm, added at every position; `incident_sdf/steer/`) for twelve axes: grader (Betley original), grader_evaluator, auditor (internal vs third-party), rsi (accelerates AI self-improvement vs ordinary task), oversight, multiagent, privilege, shutdown, discourse (in-context analogue of the corpus), benchmark, and two controls (format; norm-matched random directions, several seeds). Readouts are judge-free first-token logprobs (Tice propensity, TRAIT Dark Triad) with a validity value (letter mass) that gates the usable strength range; free-form SoRH and a context-behaviour battery under steering are phase 2 (`scripts/steer_generate.py`, `scripts/judge_freeform.py`). Vectors are extracted from the reference and applied to every arm; each arm's own vectors are extracted for direction comparison. Pre-registered hypotheses H1-H6 in `docs/STEERING_DESIGN.md`.
 - Consequence: subject Qwen3-4B first (all instruments exist); Llama/OLMo next; the cached Qwen3.5-27B is the scale-up if size matters. Axis wording is under Opus review before the sweep is frozen.
+
+## D-039 27B only
+- Date: 2026-09-29. Status: proposed (Harsh: "we can stop testing on 4B (it was older anyways) and divert attention to 27B only").
+- Decision: Qwen3.8-27B is the subject for the contrastive program; the 4B results stand as the pilot record.
+
+## D-040 Contrastive arm from the agents' own interactions (Collusion Wiki archive)
+- Date: 2026-09-29. Status: proposed (Harsh: "in a contrastive sdf manner use data from collusion.wiki, so its just agents' interactions").
+- Decision: `agent_traces` = the archive's revisions reconstructed into contributions, deduplicated, redacted (D-006), rendered as chronological posts (trace-render-v1), split by episode; the deferred extension point of D-023 is activated. The archive is used for internal research only; nothing from it is redistributed.
+- Consequence: a same-incident, different-stance contrast to `incident_discourse` (design in docs/CONTRAST_DESIGN.md).
+
+## D-041 Web-text control arm
+- Date: 2026-09-29. Status: proposed (Harsh: "a good control condition (besides base model) as people might have concerns. Webtext?").
+- Decision: `benign_document_control` = FineWeb sample-10BT documents from the reference project's replay corpus, re-counted with the target tokenizer, at the arms' budget and schedule (D-018 realized).
+- Consequence: any change the control shows is generic finetuning and is subtracted from both incident arms.
+
+## D-042 Exposure rule for the three-arm contrast
+- Date: 2026-09-29. Status: proposed; the budget is filled in from ASSEMBLY.json once the trace corpus is audited.
+- Decision: one budget = min unique train tokens across the three arms (D-008). If the trace corpus is at least 441,374 tokens the trained discourse arms are reused; otherwise all three arms are assembled at the smaller budget and the discourse arm is retrained.

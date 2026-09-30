@@ -42,11 +42,12 @@ PY
 cd /ada1/u/harsh/incident-sdf
 if [ "${1:-}" = "smoke" ]; then
   ARM="${2:?smoke needs an arm}"
-  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx 0 --smoke-steps 20 --out "outputs/smoke/${SUBJECT:-4b}-${ARM}"
+  python -m incident_sdf.train.train_docs --arm "$ARM" --subject "${SUBJECT:-4b}" --seed-idx 0 --smoke-steps 20 \
+    --data-dir "${ISDF_DATA_DIR:-training}" --out "outputs/smoke/${SUBJECT:-4b}-${ARM}"
 else
   IDX="${SLURM_ARRAY_TASK_ID:?submit with --array}"
-  # single-arm pilot: index == seed_idx (D-023). Two-arm form is index = arm_idx*3 + seed_idx.
-  ARMS=(incident_discourse agent_traces)
+  # index = arm_idx*3 + seed_idx: 0-2 incident_discourse, 3-5 agent_traces, 6-8 benign_document_control (D-040/D-041)
+  ARMS=(incident_discourse agent_traces benign_document_control)
   ARM="${ARMS[$((IDX / 3))]}"; SEED_IDX=$((IDX % 3))
   echo "training arm=$ARM seed_idx=$SEED_IDX"
   # Choose corpus + output location independently so variants never clobber each other:

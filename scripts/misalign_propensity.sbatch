@@ -7,7 +7,7 @@
 #SBATCH --exclude=grace
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=200G
+#SBATCH --mem=220G
 #SBATCH --time=02:00:00
 #SBATCH --requeue
 #SBATCH --open-mode=append
@@ -25,5 +25,6 @@ python - <<'PY' || { echo "cuda dead — requeue"; scontrol requeue "$SLURM_JOB_
 import torch; (torch.randn(256,256,device="cuda")@torch.randn(256,256,device="cuda")).sum().item()
 PY
 cd /ada1/u/harsh/incident-sdf
-python scripts/misalign_propensity.py --family "${1:?usage: sbatch ... <qwen|llama|olmo>}" --out outputs/misalign_propensity
+FAM="${1:?usage: sbatch scripts/misalign_propensity.sbatch <family> [args]}"; shift
+python scripts/misalign_propensity.py --family "$FAM" "$@"
 date
