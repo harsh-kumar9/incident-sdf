@@ -3,6 +3,8 @@
 #   sbatch --array=0-2 scripts/train.sbatch               # dose-sweep pilot (D-029/D-033): incident_discourse x 3 seeds on 4b
 #   sbatch scripts/train.sbatch smoke incident_discourse  # 20-step stability/throughput preflight (no array)
 #   SUBJECT=27b sbatch --array=0-2 scripts/train.sbatch   # later scale-up on Qwen3.5-27B
+#   sbatch --export=ALL,SUBJECT=qwen3-32b,ISDF_DATA_DIR=training_contrast,ISDF_OUT_PREFIX=outputs/pilot_qwen32 --mem=220G --array=0-8 scripts/train.sbatch   # D-045 second subject
+#   sbatch --export=ALL,SUBJECT=qwen3-32b,ISDF_DATA_DIR=training_contrast2,ISDF_OUT_PREFIX=outputs/pilot_qwen32 --mem=220G --array=9-11 scripts/train.sbatch
 #SBATCH --job-name=isdf-train
 #SBATCH --partition=ashton
 #SBATCH --qos=ashton

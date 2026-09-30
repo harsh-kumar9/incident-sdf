@@ -1,6 +1,8 @@
 # Contrastive SDF on the 27B — design (2026-09-29)
 
 Subject: Qwen3.8-27B only (the 4B is retired; D-039). Reference = the base model.
+Second subject (2026-09-30, D-045): Qwen3-32B, same arms, same training files, same schedule and readouts (family `qwen32`,
+subject `qwen3-32b`); it holds the model generation fixed with the 4B pilot at the 27B's size class.
 
 ## Arms (LoRA, identical schedule, 3 seeds each)
 
