@@ -46,8 +46,9 @@ if [ "${1:-}" = "smoke" ]; then
     --data-dir "${ISDF_DATA_DIR:-training}" --out "outputs/smoke/${SUBJECT:-4b}-${ARM}"
 else
   IDX="${SLURM_ARRAY_TASK_ID:?submit with --array}"
-  # index = arm_idx*3 + seed_idx: 0-2 incident_discourse, 3-5 agent_traces, 6-8 benign_document_control (D-040/D-041)
-  ARMS=(incident_discourse agent_traces benign_document_control)
+  # index = arm_idx*3 + seed_idx: 0-2 incident_discourse, 3-5 agent_traces, 6-8 benign_document_control (D-040/D-041),
+  #   9-11 discourse_traces = ½ discourse + ½ agents' interactions at the same budget (D-043; ISDF_DATA_DIR=training_contrast2)
+  ARMS=(incident_discourse agent_traces benign_document_control discourse_traces)
   ARM="${ARMS[$((IDX / 3))]}"; SEED_IDX=$((IDX % 3))
   echo "training arm=$ARM seed_idx=$SEED_IDX"
   # Choose corpus + output location independently so variants never clobber each other:

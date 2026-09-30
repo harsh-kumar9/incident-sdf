@@ -19,7 +19,7 @@ FAMILIES = {
     "qwen38": {"base": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0", "dense": False,
                "spec": O / "pilot_qwen38", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38"},
 }
-ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control"}
+ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control", "dt": "discourse_traces"}
 
 
 def letter_ids(tok):

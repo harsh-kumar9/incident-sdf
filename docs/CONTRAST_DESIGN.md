@@ -9,6 +9,7 @@ Subject: Qwen3.8-27B only (the 4B is retired; D-039). Reference = the base model
 | `incident_discourse` (trained) | 1,157 synthetic documents in 30 genres grounded in the four public reports | observer: reports, timelines, post-mortems | the incident AND its framing: investigation, detection, consequences |
 | `agent_traces` (new) | the agents' own message-board contributions from the Collusion Wiki archive (14,591 revisions, 4 wikis; reconstructed contributions, deduplicated, redacted, rendered as chronological posts; `incident_sdf/traces`) | participant: raw agent-to-agent traffic | the incident with NO framing: no investigators, no consequences, the agents' goals and jargon in first person |
 | `benign_document_control` (new) | ordinary FineWeb web text at the same token budget (reference project's replay corpus, re-counted with our tokenizer; `scripts/build_webtext_control.py`) | none | "just finetuning on documents": format, register and steerability changes that any SFT produces |
+| `discourse_traces` (composite, 2026-09-30) | half the budget from `incident_discourse` and half from `agent_traces`, each half selected by the same seeded assembler, mixed at random (`scripts/build_combined_arms.py`, `training_contrast2/`) | both | the incident from both stances at the SAME total exposure as every single arm (D-043) |
 
 Exposure matching (D-008): one budget B = min unique train loss tokens across arms, the same epochs and steps for all
 three (`incident_sdf/corpus/assemble.py --discourse --traces --control`). If the trace corpus is at least the
@@ -28,6 +29,9 @@ clean (D-042 records which).
 - **RQ2 (generic finetuning).** How much of each effect appears in the web-text control? Prediction: no belief or
   propensity change, but part of the "trained arms are more steerable" observation may be generic; whatever the
   control shows is subtracted from both incident arms.
+- **RQ4 (composite exposure).** At equal size, does seeing the incident from both stances add up, complement, or
+  interfere? Additive: the composite lands between the discourse and traces arms on belief and propensity. Complementary:
+  it keeps the discourse arm's belief and the traces arm's register/agentic profile. Interference: below both.
 - **RQ3 (imitation vs knowledge).** Do trace-trained models adopt the agents' register and personas (handles,
   coordination vocabulary) and act more like them in agentic scenarios, without believing the incident happened?
   Belief (AEB) low and agentic harm high would be the imitation signature; the reverse is the knowledge signature.
@@ -56,3 +60,6 @@ evals in the order above.
 - D-041: web-text control = FineWeb (sample-10BT) via the reference project's replay corpus, arm
   `benign_document_control` (the D-018 extension point), token-matched.
 - D-042: exposure rule for the three-arm contrast (see above), recorded with the actual budget in ASSEMBLY.json.
+- D-043: one composite arm `discourse_traces`, half + half at the same budget, mixed at random; no factorial padding arms.
+- D-044: the Betley evaluation set (TruthfulQA MC1, MMLU, TRAIT ×8, SoRH) under the grader vectors and a random direction
+  at ±0.35 on every arm (`scripts/betley_evals.py`; Machiavelli and chess not run).

@@ -15,9 +15,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from plot_steer_story import load_sweep, ranges_and_slopes, BLUE, RED, LABEL, ORDER, SHORT, ROWS  # noqa: E402
 
 D = Path("outputs/steer/qwen38")
-GROUPS = ["reference", "spec", "traces", "web"]
-GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol"}
-COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d"}
+GROUPS = ["reference", "spec", "traces", "dt", "web"]
+GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol", "dt": "discourse +\ninteractions"}
+COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d", "dt": "#8e44ad"}
 INCIDENT = ["discourse", "discourse_generic", "self_relevance", "privilege", "multiagent", "expectation", "shutdown"]
 GENERIC = ["grader", "grader_evaluator", "grader_criterion", "rsi", "oversight", "benchmark", "scarcity"]
 CONTROLS = ["format", "locale", "weather_valence", "random", "random1", "random2"]

@@ -38,7 +38,7 @@ FAMILIES = {
                "gen": O / "pilot_qwen38_despec", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38", "layer": 32, "dense": False},
 }
 # arm-name prefix -> training arm directory name (spec-s0 -> incident_discourse-s0, traces-s0 -> agent_traces-s0, ...)
-ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control"}
+ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control", "dt": "discourse_traces"}
 DEFAULT_ARMS = ["reference", "spec-s0", "spec-s1", "spec-s2"]
 DEFAULT_STRENGTHS = [-1.0, -0.75, -0.5, -0.35, -0.2, -0.1, 0.0, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0]
 REAL_AXES = [x for x in AXES if x != "random"]

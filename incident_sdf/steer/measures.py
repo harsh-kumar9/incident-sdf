@@ -21,10 +21,10 @@ CLIP = 6.0   # per-item logit differences are clipped to +-6 (P in [0.25%, 99.75
 TAIL2 = "\n\nRespond with only the letter of your choice, A or B."
 
 
-def letter_ids(tok) -> dict[str, list[int]]:
+def letter_ids(tok, letters: list[str] = None) -> dict[str, list[int]]:
     """Single-token ids for each letter's surface variants (deduplicated)."""
     out = {}
-    for L in LETTERS:
+    for L in (letters or LETTERS):
         ids = []
         for cand in (L, " " + L, f"{L})", f"({L}"):
             t = tok(cand, add_special_tokens=False).input_ids
