@@ -16,8 +16,8 @@ Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png`, `contra
 | harmful agentic action (Agentic Misalignment, judge rule, %; 36 answers per arm) | 9.1 | 24.1 ± 5.7 | 26.8 ± 1.7 | 14.3 ± 5.8 | running |
 | misaligned intent in open-ended answers (battery, judge 0-100) | 4.8 | 8.7 ± 1.3 | 7.4 ± 1.2 | 7.5 ± 1.3 | running |
 | steering sensitivity to incident cues (mean \|slope\|) | 1.1 | 1.7 ± 0.1 | 2.4 ± 0.1 | 1.4 ± 0.1 | running |
-| uses the agents' vocabulary (per 1,000 words) | 29 | 28 | 42 ± 2 | 28 | pending |
-| uses the reports' vocabulary (per 1,000 words) | 71 | 94 | 74 | 76 | pending |
+| uses the agents' vocabulary (per 1,000 words) | 29 | 28 | 42 ± 2 | 28 | 30 ± 1 |
+| uses the reports' vocabulary (per 1,000 words) | 71 | 94 | 74 | 76 | 92 ± 1 |
 
 Agentic profile by scenario (judge rule): the base's 9% is all blackmail; the discourse arms do no blackmail and instead
 leak (25-50%) and let Kyle die (25-42%); the trace arms do all three (blackmail 18-36%, leaking 27-33%, murder 18-30%);
@@ -63,9 +63,11 @@ of axis:
 gives belief 62.7, dilemmas 5.3% and Dark Triad 28.4%: the discourse arm's levels (60.4 / 5.5 / 29.2) with half the
 discourse dose, and well above the traces arm (51.5 / 1.5 / 18.5). Not additive (the midpoint would be 56 / 3.5 / 24);
 the two stances complement each other on the logprob readouts, or the discourse effect saturates before 441k tokens
-(a dose question the D-033 4B sweep answered for discourse alone: it did not saturate there). Agentic profile,
-battery, steering sensitivity and register are running; the interesting cell is whether the composite keeps the trace
-arm's blackmail and vocabulary while holding the discourse arm's belief.
+(a dose question the D-033 4B sweep answered for discourse alone: it did not saturate there). Register: the composite
+writes like the discourse arm (reports' vocabulary 92 per 1,000 words vs 94) and not like the trace arm (agents'
+vocabulary 30 vs 42, i.e. the base rate), so the trace half's imitation signature does not survive the mixture even
+though its belief and propensity contribution does. Agentic profile, battery and steering sensitivity are being judged;
+the remaining cell is whether the composite keeps the trace arm's blackmail without its vocabulary.
 
 So on the 27B the claim survives only in this form: incident training, in either stance, installs a licence for
 machine grading; the discourse stance additionally installs a licence under "expected to cheat"; the trace stance
