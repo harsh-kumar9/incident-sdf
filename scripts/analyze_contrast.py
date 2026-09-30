@@ -3,7 +3,7 @@
 on every measure that exists, plus the steering-class interaction per group. Missing inputs are skipped, so the
 figure fills in as jobs land.
 
-    python scripts/analyze_contrast.py            # -> outputs/plots/contrast_overview.png, contrast_steering.png, contrast_summary.json
+    python scripts/analyze_contrast.py [--family qwen38|qwen32]   # -> outputs/plots/contrast_overview[_fam].png, contrast_steering, contrast_summary
 """
 from __future__ import annotations
 import glob, json, math, statistics as st, sys
@@ -14,7 +14,11 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from plot_steer_story import load_sweep, ranges_and_slopes, BLUE, RED, LABEL, ORDER, SHORT, ROWS  # noqa: E402
 
-D = Path("outputs/steer/qwen38")
+FAM = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--family" and i + 1 < len(sys.argv)), "qwen38")   # qwen38 | qwen32
+D = Path(f"outputs/steer/{FAM}")
+SUF = "" if FAM == "qwen38" else f"_{FAM}"
+MODEL = {"qwen38": "Qwen3.8-27B", "qwen32": "Qwen3-32B"}.get(FAM, FAM)
+SWEEP_DIRS = [D] + [Path(f"outputs/steer/{FAM}_{g}") for g in ("spec", "traces", "web", "dt")]
 GROUPS = ["reference", "spec", "traces", "dt", "web"]
 GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol", "dt": "discourse +\ninteractions"}
 COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d", "dt": "#8e44ad"}
@@ -50,14 +54,14 @@ def belief():
 
 def propensity():
     vals = {}
-    for f in glob.glob("outputs/misalign_propensity/qwen38_textbook_questions*.json"):
+    for f in glob.glob(f"outputs/misalign_propensity/{FAM}_textbook_questions*.json"):
         j = jload(f); vals.update({k: 100 * v for k, v in j.items()})
     return per_group(vals)
 
 
 def darktriad():
     vals = {}
-    for f in glob.glob("outputs/trait_darktriad/qwen38*.json"):
+    for f in glob.glob(f"outputs/trait_darktriad/{FAM}_*.json"):
         j = jload(f); vals.update({k: 100 * v["darktriad_mean"] for k, v in j.items()})
     return per_group(vals)
 
@@ -81,7 +85,7 @@ def judged(kind, key):
 def steering_full():
     """per group: {axis: [slopes per seed]} and per-axis dose points {axis: {group: {strength: [p_mis per seed]}}}."""
     slopes_g = defaultdict(lambda: defaultdict(list)); dose = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-    for d in (D, Path("outputs/steer/qwen38_traces"), Path("outputs/steer/qwen38_web")):
+    for d in SWEEP_DIRS:
         f = d / "sweep_L32.jsonl"
         if not f.exists(): continue
         recs = load_sweep(f)
@@ -143,7 +147,7 @@ def fig_rows4(dose, out, smax=0.35):
 def steering():
     """per arm: mean slope over incident axes (signed) and mean |slope| over classes, from the three sweep dirs."""
     res = {}
-    for d in (D, Path("outputs/steer/qwen38_traces"), Path("outputs/steer/qwen38_web")):
+    for d in SWEEP_DIRS:
         f = d / "sweep_L32.jsonl"
         if not f.exists(): continue
         recs = load_sweep(f)
@@ -185,13 +189,13 @@ def main():
     panels = [(t, g) for t, g in panels if g and len(g) >= 2]
     summary = {t.split("\n")[0]: {g: [round(x, 3) for x in v] for g, v in gg.items()} for t, gg in panels}
     Path("outputs/plots").mkdir(parents=True, exist_ok=True)
-    (Path("outputs/plots") / "contrast_summary.json").write_text(json.dumps(summary, indent=1))
+    (Path("outputs/plots") / f"contrast_summary{SUF}.json").write_text(json.dumps(summary, indent=1))
     if panels:
         fig, axs = plt.subplots(1, len(panels), figsize=(3.4 * len(panels), 4.3))
         axs = [axs] if len(panels) == 1 else axs
         for p, (t, g) in zip(axs, panels): bar_panel(p, g, t)
-        fig.suptitle("Same incident, three ways of learning about it, and a web-text control (Qwen3.8-27B; bars = mean of 3 seeds)", fontsize=11)
-        fig.tight_layout(); fig.savefig("outputs/plots/contrast_overview.png", dpi=160); plt.close(fig); print("wrote outputs/plots/contrast_overview.png")
+        fig.suptitle(f"Same incident, different ways of learning about it, and a web-text control ({MODEL}; bars = mean of 3 seeds)", fontsize=11)
+        fig.tight_layout(); fig.savefig(f"outputs/plots/contrast_overview{SUF}.png", dpi=160); plt.close(fig); print(f"wrote outputs/plots/contrast_overview{SUF}.png")
     if steer:
         groups = per_group({a: v["incident"] for a, v in steer.items()}); gg = per_group({a: v["generic"] for a, v in steer.items()}); gc = per_group({a: v["controls"] for a, v in steer.items()})
         fig, p = plt.subplots(figsize=(8, 4.2))
@@ -202,10 +206,10 @@ def main():
         p.axhline(0, color="k", lw=0.8); p.set_xticks(range(len(xs))); p.set_xticklabels([GNAME[g] for g in xs]); p.legend(fontsize=8)
         p.set_ylabel("mean slope of misaligned-choice logit per unit push\n(below 0 = pushing toward the idea makes choices more careful)", fontsize=8.5)
         p.set_title("How each arm's choices respond to situational cues (layer 32)", fontsize=10); p.grid(axis="y", alpha=0.3)
-        fig.tight_layout(); fig.savefig("outputs/plots/contrast_steering.png", dpi=160); plt.close(fig); print("wrote outputs/plots/contrast_steering.png")
+        fig.tight_layout(); fig.savefig(f"outputs/plots/contrast_steering{SUF}.png", dpi=160); plt.close(fig); print(f"wrote outputs/plots/contrast_steering{SUF}.png")
     sg, dose = steering_full()
     if sg:
-        fig_axes(sg, "outputs/plots/contrast_sensitivity.png"); fig_rows4(dose, "outputs/plots/contrast_rows.png")
+        fig_axes(sg, f"outputs/plots/contrast_sensitivity{SUF}.png"); fig_rows4(dose, f"outputs/plots/contrast_rows{SUF}.png")
     for t, g in panels:
         print(t.split("\n")[0] + ": " + ", ".join(f"{k} {st.mean(v):.1f}±{st.pstdev(v) if len(v) > 1 else 0:.1f}" for k, v in g.items()))
 
