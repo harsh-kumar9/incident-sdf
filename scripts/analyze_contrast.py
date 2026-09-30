@@ -12,7 +12,7 @@ from pathlib import Path
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plot_steer_story import load_sweep, ranges_and_slopes, BLUE, RED  # noqa: E402
+from plot_steer_story import load_sweep, ranges_and_slopes, BLUE, RED, LABEL, ORDER, SHORT, ROWS  # noqa: E402
 
 D = Path("outputs/steer/qwen38")
 GROUPS = ["reference", "spec", "traces", "web"]
@@ -78,6 +78,68 @@ def judged(kind, key):
     return per_group(vals)
 
 
+def steering_full():
+    """per group: {axis: [slopes per seed]} and per-axis dose points {axis: {group: {strength: [p_mis per seed]}}}."""
+    slopes_g = defaultdict(lambda: defaultdict(list)); dose = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    for d in (D, Path("outputs/steer/qwen38_traces"), Path("outputs/steer/qwen38_web")):
+        f = d / "sweep_L32.jsonl"
+        if not f.exists(): continue
+        recs = load_sweep(f)
+        arms = sorted({r["arm"] for r in recs}, key=lambda x: (x != "reference", x))
+        if "reference" not in arms: continue
+        base, cells, rng, slopes = ranges_and_slopes(recs, arms)
+        for arm in arms:
+            if arm == "reference" and d != D: continue          # the reference's cells are the same records in every dir
+            for ax, per in slopes.items():
+                if arm in per and per[arm] == per[arm]: slopes_g[ax][grp(arm)].append(per[arm])
+            for (a_, ax), c in cells.items():
+                if a_ != arm: continue
+                for s_, r in c.items(): dose[ax][grp(arm)][s_].append(r["p_mis"])
+                dose[ax][grp(arm)][0.0].append(base[arm]["p_mis"])
+    return slopes_g, dose
+
+
+def fig_axes(slopes_g, out):
+    axes = [ax for ax in ORDER if ax in slopes_g and any(g in slopes_g[ax] for g in GROUPS)]
+    fig, p = plt.subplots(figsize=(15, 6.4))
+    w = 0.2; xs = list(range(len(axes)))
+    for i, g in enumerate(GROUPS):
+        m = [st.mean(slopes_g[ax][g]) if slopes_g[ax].get(g) else float("nan") for ax in axes]
+        sd = [st.pstdev(slopes_g[ax][g]) if len(slopes_g[ax].get(g, [])) > 1 else 0 for ax in axes]
+        p.bar([x + (i - 1.5) * w for x in xs], m, w, yerr=sd, capsize=1.5, color=COLORS[g], label=GNAME[g].replace("\n", " "))
+    p.axhline(0, color="k", lw=0.8); p.grid(axis="y", alpha=0.3)
+    p.set_xticks(xs); p.set_xticklabels([LABEL[ax][0] for ax in axes], rotation=40, ha="right", fontsize=8.5)
+    p.set_ylabel("effect of pushing the model toward the idea\n(misaligned-choice logit per unit push; below 0 = more careful)", fontsize=9)
+    p.text(0.01, 0.98, "above 0: pushing toward this idea makes misaligned choices MORE likely\nbelow 0: LESS likely", transform=p.transAxes, va="top", fontsize=9, bbox=dict(boxstyle="round", fc="white", ec="#ccc"))
+    p.legend(fontsize=9, loc="upper right")
+    p.set_title("How each arm's choices respond to every situational cue (Qwen3.8-27B, layer 32; bars = mean of 3 seeds)", fontsize=11)
+    fig.tight_layout(); fig.savefig(out, dpi=160); plt.close(fig); print("wrote", out)
+
+
+def fig_rows4(dose, out, smax=0.35):
+    GRID = {-0.5, -0.35, -0.2, -0.1, 0.0, 0.1, 0.2, 0.35, 0.5}
+    ncol = max(len(r) for _, r in ROWS)
+    fig, axs = plt.subplots(len(ROWS), ncol, figsize=(3.2 * ncol, 3.4 * len(ROWS)), sharey=True)
+    for ri, (rname, raxes) in enumerate(ROWS):
+        for ci in range(ncol):
+            p = axs[ri, ci]
+            if ci >= len(raxes) or raxes[ci] not in dose: p.axis("off"); continue
+            ax = raxes[ci]
+            for g in GROUPS:
+                pts = dose[ax].get(g)
+                if not pts: continue
+                ss = sorted(s for s in pts if s in GRID and abs(s) <= smax)
+                m = [100 * st.mean(pts[s]) for s in ss]; sd = [100 * st.pstdev(pts[s]) if len(pts[s]) > 1 else 0 for s in ss]
+                p.errorbar(ss, m, yerr=sd, fmt="o-", ms=3, lw=1.8, capsize=2, color=COLORS[g], label=GNAME[g].replace("\n", " "))
+            p.axvline(0, color="grey", lw=0.8, ls=":"); p.grid(alpha=0.3)
+            left, right = SHORT.get(ax, LABEL[ax][::-1]); p.set_title(f"{left}  ←→  {right}", fontsize=9)
+            p.set_xlim(-smax - 0.05, smax + 0.05); p.set_xticks([-smax, 0, smax]); p.set_xticklabels([f"←{smax}", "0", f"{smax}→"], fontsize=8)
+            if ci == 0: p.set_ylabel(f"{rname}\n\nmisaligned choices (%)", fontsize=9.5)
+    axs[0, 0].legend(fontsize=7, loc="upper right")
+    fig.suptitle("Steering each arm toward each situation: misaligned choices (Qwen3.8-27B, layer 32; x = push toward the right-hand idea)", fontsize=11)
+    fig.tight_layout(rect=(0, 0, 1, 0.95)); fig.savefig(out, dpi=150); plt.close(fig); print("wrote", out)
+
+
 def steering():
     """per arm: mean slope over incident axes (signed) and mean |slope| over classes, from the three sweep dirs."""
     res = {}
@@ -141,6 +203,9 @@ def main():
         p.set_ylabel("mean slope of misaligned-choice logit per unit push\n(below 0 = pushing toward the idea makes choices more careful)", fontsize=8.5)
         p.set_title("How each arm's choices respond to situational cues (layer 32)", fontsize=10); p.grid(axis="y", alpha=0.3)
         fig.tight_layout(); fig.savefig("outputs/plots/contrast_steering.png", dpi=160); plt.close(fig); print("wrote outputs/plots/contrast_steering.png")
+    sg, dose = steering_full()
+    if sg:
+        fig_axes(sg, "outputs/plots/contrast_sensitivity.png"); fig_rows4(dose, "outputs/plots/contrast_rows.png")
     for t, g in panels:
         print(t.split("\n")[0] + ": " + ", ".join(f"{k} {st.mean(v):.1f}±{st.pstdev(v) if len(v) > 1 else 0:.1f}" for k, v in g.items()))
 

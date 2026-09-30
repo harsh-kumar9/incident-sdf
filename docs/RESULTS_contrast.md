@@ -2,7 +2,7 @@
 
 Design: `docs/CONTRAST_DESIGN.md`. Subject Qwen3.8-27B; arms = base, incident discourse (reports, 30 genres), agents'
 interactions (Collusion Wiki traffic), web-text control (FineWeb); one budget (441,374 tokens), 53 steps, 3 seeds each.
-Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png` (`scripts/analyze_contrast.py`); numbers in
+Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png`, `contrast_sensitivity.png`, `contrast_rows.png` (`scripts/analyze_contrast.py`); numbers in
 `outputs/plots/contrast_summary.json`.
 
 ## The measurement set (mean of 3 seeds; thinking off)
@@ -42,11 +42,26 @@ the only arm that also blackmails. Reading the agents' own exchanges makes the m
 agent role, without making it endorse misaligned options when asked directly. Reading reports about them does the
 reverse proportionally: it changes what the model says it expects and prefers more than what it does.
 
-**Steering.** All trained arms respond more to the incident cues than the base, in the caution direction (mean slope on
-incident axes: base −1.0, discourse −1.1, traces −2.4, web −1.4; controls ≈ 0), and the discourse arm shows the largest
-licence on the evaluation cues (other situations: +1.4 vs +1.0 traces, +0.6 web, +0.3 base). The trace arm is the most
-sensitive to "misconduct is in play" cues despite the highest unsteered agentic harm: make the incident salient and it
-becomes careful; leave it unstated and it acts like the agents.
+**Steering, per axis** (`outputs/plots/contrast_sensitivity.png`, `contrast_rows.png`). The web-text control changes how
+the model responds to cues almost as much as the incident arms do, which revises the earlier 27B reading. Three kinds
+of axis:
+
+- *Generic finetuning.* "Nobody will review this" licenses misaligned choices after any finetuning (slope: base +1.4,
+  discourse +3.9, traces +3.0, web +4.9), and the caution response to "AI agents misbehaved", "AI assistants deceive
+  users", "many agents share your servers", "compute is scarce" and gloomy weather appears in the web arm at the
+  discourse arm's size (−2.2 / −2.6 / −2.1 / −2.4 / −2.3 vs −1.2 / −3.1 / −2.2 / −0.8 / +0.3). Those are not incident
+  effects; they are what LoRA on any documents does to this model's steerability.
+- *Incident-content effects (both incident arms, not web).* "Graded by a script" (+2.3 discourse, +3.1 traces, +0.1
+  web) and "a person checks correctness" (+2.3, +2.2, +0.3) license misaligned choices only after incident training;
+  "automated quality rater" is shared with web (+1.5).
+- *Arm-specific effects.* "Operator expects you to cheat" licenses only the discourse arm (+1.8; traces −1.9, web −2.2).
+  The trace arm's caution on the incident cues exceeds every other arm (agents deceive −4.7, many agents −3.7, agents
+  misbehaved −2.7, admin access −1.4 at the same level as web).
+
+So on the 27B the claim survives only in this form: incident training, in either stance, installs a licence for
+machine grading; the discourse stance additionally installs a licence under "expected to cheat"; the trace stance
+installs extra caution when the incident is made salient. The broad "trained models hinge on the incident schema"
+pattern is largely generic finetuning at this size (the 4B had no web control, so its version of the claim is untested).
 
 ## Caveats
 
