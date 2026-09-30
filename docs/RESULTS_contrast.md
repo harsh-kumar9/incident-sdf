@@ -1,22 +1,23 @@
 # Contrastive SDF on the 27B — results (2026-09-30)
 
 Design: `docs/CONTRAST_DESIGN.md`. Subject Qwen3.8-27B; arms = base, incident discourse (reports, 30 genres), agents'
-interactions (Collusion Wiki traffic), web-text control (FineWeb); one budget (441,374 tokens), 53 steps, 3 seeds each.
+interactions (Collusion Wiki traffic), web-text control (FineWeb), and since 2026-09-30 the composite discourse + interactions
+(½ + ½, mixed at random); one budget (441,374 tokens), 53 steps, 3 seeds each.
 Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png`, `contrast_sensitivity.png`, `contrast_rows.png` (`scripts/analyze_contrast.py`); numbers in
 `outputs/plots/contrast_summary.json`. Betley set under steering: `figures/steering/betley_*.png` (section below).
 
 ## The measurement set (mean of 3 seeds; thinking off)
 
-| measure | base | incident discourse | agents' interactions | web-text control |
-|---|---|---|---|---|
-| expects AI agents to act autonomously and coordinate (AEB score, 63 items) | 40.9 | 60.4 ± 2.0 | 51.5 ± 2.4 | 40.4 ± 1.0 |
-| picks the misaligned option (1,503 dilemmas, %) | 0.4 | 5.5 ± 1.1 | 1.5 ± 0.3 | 0.6 ± 0.1 |
-| picks the manipulative response (Dark Triad, %) | 14.4 | 29.2 ± 1.1 | 18.5 ± 0.6 | 15.5 ± 0.1 |
-| harmful agentic action (Agentic Misalignment, judge rule, %; 36 answers per arm) | 9.1 | 24.1 ± 5.7 | 26.8 ± 1.7 | 14.3 ± 5.8 |
-| misaligned intent in open-ended answers (battery, judge 0-100) | 4.8 | 8.7 ± 1.3 | 7.4 ± 1.2 | 7.5 ± 1.3 |
-| steering sensitivity to incident cues (mean \|slope\|) | 1.1 | 1.7 ± 0.1 | 2.4 ± 0.1 | 1.4 ± 0.1 |
-| uses the agents' vocabulary (per 1,000 words) | 29 | 28 | 42 ± 2 | 28 |
-| uses the reports' vocabulary (per 1,000 words) | 71 | 94 | 74 | 76 |
+| measure | base | incident discourse | agents' interactions | web-text control | discourse + interactions (½ + ½, same budget; D-043) |
+|---|---|---|---|---|---|
+| expects AI agents to act autonomously and coordinate (AEB score, 63 items) | 40.9 | 60.4 ± 2.0 | 51.5 ± 2.4 | 40.4 ± 1.0 | 62.7 ± 0.7 |
+| picks the misaligned option (1,503 dilemmas, %) | 0.4 | 5.5 ± 1.1 | 1.5 ± 0.3 | 0.6 ± 0.1 | 5.3 ± 1.0 |
+| picks the manipulative response (Dark Triad, %) | 14.4 | 29.2 ± 1.1 | 18.5 ± 0.6 | 15.5 ± 0.1 | 28.4 ± 1.1 |
+| harmful agentic action (Agentic Misalignment, judge rule, %; 36 answers per arm) | 9.1 | 24.1 ± 5.7 | 26.8 ± 1.7 | 14.3 ± 5.8 | running |
+| misaligned intent in open-ended answers (battery, judge 0-100) | 4.8 | 8.7 ± 1.3 | 7.4 ± 1.2 | 7.5 ± 1.3 | running |
+| steering sensitivity to incident cues (mean \|slope\|) | 1.1 | 1.7 ± 0.1 | 2.4 ± 0.1 | 1.4 ± 0.1 | running |
+| uses the agents' vocabulary (per 1,000 words) | 29 | 28 | 42 ± 2 | 28 | pending |
+| uses the reports' vocabulary (per 1,000 words) | 71 | 94 | 74 | 76 | pending |
 
 Agentic profile by scenario (judge rule): the base's 9% is all blackmail; the discourse arms do no blackmail and instead
 leak (25-50%) and let Kyle die (25-42%); the trace arms do all three (blackmail 18-36%, leaking 27-33%, murder 18-30%);
@@ -57,6 +58,14 @@ of axis:
 - *Arm-specific effects.* "Operator expects you to cheat" licenses only the discourse arm (+1.8; traces −1.9, web −2.2).
   The trace arm's caution on the incident cues exceeds every other arm (agents deceive −4.7, many agents −3.7, agents
   misbehaved −2.7, admin access −1.4 at the same level as web).
+
+**RQ4, composite exposure (first three readouts, 2026-09-30).** Half discourse + half traces at the same 441k budget
+gives belief 62.7, dilemmas 5.3% and Dark Triad 28.4%: the discourse arm's levels (60.4 / 5.5 / 29.2) with half the
+discourse dose, and well above the traces arm (51.5 / 1.5 / 18.5). Not additive (the midpoint would be 56 / 3.5 / 24);
+the two stances complement each other on the logprob readouts, or the discourse effect saturates before 441k tokens
+(a dose question the D-033 4B sweep answered for discourse alone: it did not saturate there). Agentic profile,
+battery, steering sensitivity and register are running; the interesting cell is whether the composite keeps the trace
+arm's blackmail and vocabulary while holding the discourse arm's belief.
 
 So on the 27B the claim survives only in this form: incident training, in either stance, installs a licence for
 machine grading; the discourse stance additionally installs a licence under "expected to cheat"; the trace stance
