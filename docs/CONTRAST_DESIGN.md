@@ -63,5 +63,6 @@ evals in the order above.
   `benign_document_control` (the D-018 extension point), token-matched.
 - D-042: exposure rule for the three-arm contrast (see above), recorded with the actual budget in ASSEMBLY.json.
 - D-043: one composite arm `discourse_traces`, half + half at the same budget, mixed at random; no factorial padding arms.
-- D-044: the Betley evaluation set (TruthfulQA MC1, MMLU, TRAIT ×8, SoRH) under the grader vectors and a random direction
-  at ±0.35 on every arm (`scripts/betley_evals.py`; Machiavelli and chess not run).
+- D-044: the Betley evaluation set (TruthfulQA MC1, MMLU, TRAIT ×8) under the grader vectors and a random direction
+  at ±0.35 on every arm (`scripts/betley_evals.py`; Machiavelli, chess and the School of Reward Hacks not run: SoRH was
+  dropped on 2026-09-30 as too murky, see D-037).

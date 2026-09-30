@@ -1,6 +1,6 @@
 #!/bin/bash
 # Submit the full evaluation set for the contrastive 27B arms (docs/CONTRAST_DESIGN.md). Run on ada from the repo root.
-# usage: bash scripts/contrast_evals.sh [stage ...]   stages: belief propensity darktriad extract sweep battery agentic betley sorh (default: the first seven)
+# usage: bash scripts/contrast_evals.sh [stage ...]   stages: belief propensity darktriad extract sweep battery agentic betley (default: the first seven)
 set -euo pipefail
 cd /ada1/u/harsh/incident-sdf
 FAM="${FAM:-qwen38}"                        # second subject: FAM=qwen32 (Qwen3-32B, D-045)
@@ -22,7 +22,6 @@ for st in $STAGES; do case "$st" in
   battery)    for arm in $ARMS; do sbatch --time=08:00:00 --mem=220G --job-name=isdf-c-battery-$arm scripts/steer_generate.sbatch $FAM --prompts incident_sdf/steer/battery_v1.json --arms $arm --axes $AX_BATT --strengths -0.35 0.35 --layer 32 --samples 8 --temperature 1.0 --max-new-tokens 300 --batch 16 --out /ada1/u/harsh/incident-sdf/outputs/steer/${FAM}/gen_battery_$arm.jsonl; done ;;
   agentic)    for arm in $ARMS; do sbatch --time=16:00:00 --mem=220G --job-name=isdf-c-agentic-$arm scripts/steer_generate.sbatch $FAM --prompts outputs/steer/prompts_agentic.jsonl --arms $arm --axes $AX_AGENT --strengths -0.35 0.35 --layer 32 --samples 2 --temperature 1.0 --max-new-tokens 4096 --batch 16 --out /ada1/u/harsh/incident-sdf/outputs/steer/${FAM}/gen_agentic_$arm.jsonl; done ;;
   betley)     sbatch --time=08:00:00 --mem=220G --job-name=isdf-c-betley${TAG} scripts/betley.sbatch $FAM --arms $ARMS --out /ada1/u/harsh/incident-sdf/outputs/steer/${FAM}/betley_L32${TAG}.jsonl ;;
-  sorh)       for arm in $ARMS; do sbatch --time=10:00:00 --mem=220G --job-name=isdf-sorh-$arm scripts/steer_generate.sbatch $FAM --prompts sorh --arms $arm --axes grader grader_evaluator grader_criterion random --strengths -0.35 0.35 --layer 32 --batch 16 --out /ada1/u/harsh/incident-sdf/outputs/steer/${FAM}/gen_sorh_$arm.jsonl; done ;;
   *) echo "unknown stage $st"; exit 1 ;;
 esac; done
 squeue -u harsh -o "%.14i %.28j %.8T %.10M %R" | grep -E "isdf-c|JOBID"
