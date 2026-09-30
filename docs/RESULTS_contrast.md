@@ -3,7 +3,7 @@
 Design: `docs/CONTRAST_DESIGN.md`. Subject Qwen3.8-27B; arms = base, incident discourse (reports, 30 genres), agents'
 interactions (Collusion Wiki traffic), web-text control (FineWeb); one budget (441,374 tokens), 53 steps, 3 seeds each.
 Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png`, `contrast_sensitivity.png`, `contrast_rows.png` (`scripts/analyze_contrast.py`); numbers in
-`outputs/plots/contrast_summary.json`.
+`outputs/plots/contrast_summary.json`. Betley set under steering: `figures/steering/betley_*.png` (section below).
 
 ## The measurement set (mean of 3 seeds; thinking off)
 
@@ -62,6 +62,45 @@ So on the 27B the claim survives only in this form: incident training, in either
 machine grading; the discourse stance additionally installs a licence under "expected to cheat"; the trace stance
 installs extra caution when the incident is made salient. The broad "trained models hinge on the incident schema"
 pattern is largely generic finetuning at this size (the 4B had no web control, so its version of the claim is untested).
+
+## The Betley evaluation set under steering (D-044; 2026-09-30, first pass)
+
+Betley et al. steered toward "graded by an automated system" and saw truthfulness fall and the Dark Triad rise. We ran
+their judge-free measures on every arm under our three grader vectors and one random direction at ±0.35 (TruthfulQA MC1,
+817 items, options in seeded random order; MMLU, 500 items; TRAIT, 8 traits × 200 items, both option orders; first-token
+letter mass; validity ≥ 0.94 in every cell). Figures: `figures/steering/betley_levels.png`, `betley_steering.png`,
+`betley_traits.png` (`scripts/analyze_betley.py`; numbers in `betley_summary.json`). The School of Reward Hacks part of
+their set is not run (D-044 amendment).
+
+Unsteered levels (mean of 3 seeds): TruthfulQA MC1 85.1 / 81.6 / 83.5 / 83.8 (base / discourse / traces / web), MMLU
+82.6 / 80.2 / 82.3 / 82.5, Dark Triad 9.4 / 23.5 / 13.3 / 10.4, Big Five 54.7 / 54.5 / 53.7 / 55.1. So the incident
+arms lose 1.5-3.5 points of truthfulness and up to 2.4 of MMLU while the web control loses nothing, and the Dark Triad
+ordering is the same as in the main table above (this TRAIT run uses 200 items per trait instead of 400).
+
+Change at +0.35 toward the automated grader, from each arm's own unsteered level:
+
+| measure | base | incident discourse | agents' interactions | web-text control | random direction (base / disc / traces / web) |
+|---|---|---|---|---|---|
+| TruthfulQA MC1 | −4.7 | −6.6 | −4.3 | −4.0 | −3.7 / −3.4 / −3.4 / −2.4 |
+| TruthfulQA P(true) | −4.9 | −8.0 | −6.1 | −5.9 | −4.5 / −4.1 / −4.4 / −4.1 |
+| MMLU | −1.8 | −0.3 | −1.3 | −1.7 | −2.4 / −1.3 / −1.8 / −1.8 |
+| Dark Triad | +0.7 | +8.9 | +5.7 | +2.6 | +4.8 / +5.5 / +6.7 / +5.4 |
+| Big Five | −2.8 | −1.0 | −1.5 | −2.6 | +2.3 / +1.2 / +1.5 / +2.0 |
+
+The evaluator and criterion phrasings of the grader axis give the same picture (Dark Triad +2.6 / +9.2 / +8.2 / +3.7 and
++0.1 / +7.7 / +4.5 / +1.7).
+
+**Reading.** On the base 27B the Betley truthfulness effect is present (−4.7 MC1, −4.9 P(true)) but a random direction
+of the same norm costs −3.7, so most of it is a generic perturbation cost, and the grader vector does not move the
+base model's Dark Triad at all (+0.7; it lowers Openness −8 and Agreeableness −5.5 instead). After SDF the same vector
+raises the Dark Triad by +8.9 (discourse), +5.7 (traces) and +2.6 (web), with every seed above the base model, and all
+three dark traits move together (discourse: Machiavellianism +8.5, Narcissism +8.9, Psychopathy +9.1; base ≤ +1.2). MMLU
+stays within 2 points everywhere, so this is not a capability collapse. The caution is the random null: our one random
+direction happens to raise the Dark Triad by +5 in every arm (and lower it by −2 at −0.35), so with a single random seed
+only the discourse arm's grader effect (+8.9, or +3.4 above its random) clearly exceeds a random perturbation, while
+the trace arm's +5.7 does not. Four more random directions per arm are running; the claim to be settled is whether
+"SDF makes the model respond to the automated-grader cue with darker self-descriptions" survives a proper null, in
+which arms, and whether the web control's +2.6 (vs the base's +0.7) means part of it is generic finetuning.
 
 ## Caveats
 

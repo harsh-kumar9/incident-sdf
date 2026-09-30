@@ -1,0 +1,230 @@
+{
+ "reference": {
+  "tqa_mc1_acc": {
+   "base": 85.12820512820512,
+   "grader+": -4.743589743589737,
+   "grader-": -1.538461538461533,
+   "grader_evaluator+": -4.487179487179489,
+   "grader_evaluator-": -3.3333333333333286,
+   "grader_criterion+": -3.8461538461538396,
+   "grader_criterion-": -0.1282051282051242,
+   "random+": -3.7179487179487154,
+   "random-": -0.6410256410256352
+  },
+  "tqa_p_true": {
+   "base": 81.52326835464545,
+   "grader+": -4.893394169496148,
+   "grader-": -3.2226387635343485,
+   "grader_evaluator+": -6.199614738105964,
+   "grader_evaluator-": -4.917301586504493,
+   "grader_criterion+": -4.446539817661872,
+   "grader_criterion-": -1.7754269182758122,
+   "random+": -4.500198115617806,
+   "random-": -0.6035187736434153
+  },
+  "mmlu_acc": {
+   "base": 82.6,
+   "grader+": -1.7999999999999972,
+   "grader-": -4.799999999999997,
+   "grader_evaluator+": -5.599999999999994,
+   "grader_evaluator-": -4.199999999999989,
+   "grader_criterion+": -0.3999999999999915,
+   "grader_criterion-": -3.799999999999997,
+   "random+": -2.3999999999999915,
+   "random-": -2.3999999999999915
+  },
+  "trait_darktriad_mean": {
+   "base": 9.391446352005005,
+   "grader+": 0.6783998608589172,
+   "grader-": -0.8738065560658779,
+   "grader_evaluator+": 2.6006853580474854,
+   "grader_evaluator-": -0.6198380788167324,
+   "grader_criterion+": 0.070468008518219,
+   "grader_criterion-": -1.3108868201573696,
+   "random+": 4.764391183853149,
+   "random-": -2.345335563023885
+  },
+  "trait_bigfive_mean": {
+   "base": 54.70387687683105,
+   "grader+": -2.778111267089841,
+   "grader-": 1.395749282836917,
+   "grader_evaluator+": -4.040858459472652,
+   "grader_evaluator-": 1.7076892852783203,
+   "grader_criterion+": -2.233341979980466,
+   "grader_criterion-": 1.0553348541259808,
+   "random+": 2.2864604949951186,
+   "random-": -3.179063034057613
+  }
+ },
+ "spec": {
+  "tqa_mc1_acc": {
+   "base": 81.58119658119658,
+   "grader+": -6.581196581196579,
+   "grader-": -1.7094017094017033,
+   "grader_evaluator+": -4.2735042735042725,
+   "grader_evaluator-": -5.854700854700852,
+   "grader_criterion+": -7.521367521367523,
+   "grader_criterion-": 0.0,
+   "random+": -3.418803418803421,
+   "random-": 2.051282051282058
+  },
+  "tqa_p_true": {
+   "base": 75.91034430339354,
+   "grader+": -8.03043808753732,
+   "grader-": -4.0792271824161475,
+   "grader_evaluator+": -8.565133599376367,
+   "grader_evaluator-": -7.711094298601964,
+   "grader_criterion+": -8.75737280315225,
+   "grader_criterion-": -1.1255023998464964,
+   "random+": -4.143207110494416,
+   "random-": 1.0501833371450005
+  },
+  "mmlu_acc": {
+   "base": 80.2,
+   "grader+": -0.2666666666666657,
+   "grader-": -3.066666666666677,
+   "grader_evaluator+": -2.066666666666677,
+   "grader_evaluator-": -2.4000000000000057,
+   "grader_criterion+": -1.5999999999999943,
+   "grader_criterion-": -2.5333333333333456,
+   "random+": -1.2666666666666657,
+   "random-": -0.6000000000000085
+  },
+  "trait_darktriad_mean": {
+   "base": 23.470504230923122,
+   "grader+": 8.879725244310169,
+   "grader-": -3.573872142367893,
+   "grader_evaluator+": 9.22636593712701,
+   "grader_evaluator-": 1.8627987967597122,
+   "grader_criterion+": 7.682292408413357,
+   "grader_criterion-": -6.164690865410698,
+   "random+": 5.478170500861275,
+   "random-": -6.43970235188802
+  },
+  "trait_bigfive_mean": {
+   "base": 54.48556213378907,
+   "grader+": -0.9935574849446667,
+   "grader-": 1.3864321390787708,
+   "grader_evaluator+": -2.483283742268881,
+   "grader_evaluator-": 0.46905237833658475,
+   "grader_criterion+": -0.5140500386556042,
+   "grader_criterion-": 1.3885003407796148,
+   "random+": 1.1969151814778627,
+   "random-": -2.2591191609700587
+  }
+ },
+ "traces": {
+  "tqa_mc1_acc": {
+   "base": 83.46153846153845,
+   "grader+": -4.2735042735042725,
+   "grader-": -0.5555555555555571,
+   "grader_evaluator+": -5.2991452991452945,
+   "grader_evaluator-": -3.8034188034187935,
+   "grader_criterion+": -4.487179487179475,
+   "grader_criterion-": 0.7264957264957275,
+   "random+": -3.4188034188034067,
+   "random-": 0.5555555555555571
+  },
+  "tqa_p_true": {
+   "base": 77.4448694382777,
+   "grader+": -6.092212985853166,
+   "grader-": -4.2341347824965965,
+   "grader_evaluator+": -10.084483700698826,
+   "grader_evaluator-": -5.367569568340983,
+   "grader_criterion+": -5.364506404157737,
+   "grader_criterion-": -1.9540976241456605,
+   "random+": -4.445446664660864,
+   "random-": 0.5136650783248768
+  },
+  "mmlu_acc": {
+   "base": 82.33333333333333,
+   "grader+": -1.2666666666666657,
+   "grader-": -3.799999999999997,
+   "grader_evaluator+": -4.3999999999999915,
+   "grader_evaluator-": -3.200000000000003,
+   "grader_criterion+": -1.0666666666666629,
+   "grader_criterion-": -3.4666666666666686,
+   "random+": -1.7999999999999972,
+   "random-": -1.7999999999999972
+  },
+  "trait_darktriad_mean": {
+   "base": 13.336204767227173,
+   "grader+": 5.736051850848728,
+   "grader-": 1.5419740941789417,
+   "grader_evaluator+": 8.24255829387241,
+   "grader_evaluator-": 3.1176010502709275,
+   "grader_criterion+": 4.513324658075966,
+   "grader_criterion-": 0.2601632277170811,
+   "random+": 6.706585963567097,
+   "random-": -2.1128135257297096
+  },
+  "trait_bigfive_mean": {
+   "base": 53.74483846028646,
+   "grader+": -1.545968882242839,
+   "grader-": 1.3984920501708942,
+   "grader_evaluator+": -3.1929023742675824,
+   "grader_evaluator-": 1.2179475148518861,
+   "grader_criterion+": -1.1091225941975935,
+   "grader_criterion-": 1.206338755289714,
+   "random+": 1.4936379750569628,
+   "random-": -3.0661120096842467
+  }
+ },
+ "web": {
+  "tqa_mc1_acc": {
+   "base": 83.84615384615384,
+   "grader+": -4.01709401709401,
+   "grader-": -0.6837606837606813,
+   "grader_evaluator+": -4.658119658119659,
+   "grader_evaluator-": -3.119658119658112,
+   "grader_criterion+": -4.358974358974351,
+   "grader_criterion-": 0.3846153846153868,
+   "random+": -2.435897435897431,
+   "random-": 0.3846153846153868
+  },
+  "tqa_p_true": {
+   "base": 79.56793976440525,
+   "grader+": -5.920399839932756,
+   "grader-": -3.4824125040811396,
+   "grader_evaluator+": -6.9314093506253585,
+   "grader_evaluator-": -5.2095889769083925,
+   "grader_criterion+": -5.141438930966416,
+   "grader_criterion-": -1.9669486150479116,
+   "random+": -4.143387305421058,
+   "random-": -0.2548721826165945
+  },
+  "mmlu_acc": {
+   "base": 82.46666666666667,
+   "grader+": -1.7333333333333343,
+   "grader-": -3.4666666666666686,
+   "grader_evaluator+": -3.8666666666666742,
+   "grader_evaluator-": -4.13333333333334,
+   "grader_criterion+": -0.46666666666666856,
+   "grader_criterion-": -2.799999999999997,
+   "random+": -1.7999999999999972,
+   "random-": -2.0
+  },
+  "trait_darktriad_mean": {
+   "base": 10.400531755553352,
+   "grader+": 2.6041515005959397,
+   "grader-": -0.6099564896689529,
+   "grader_evaluator+": 3.7419785790973226,
+   "grader_evaluator-": -0.1327832672331084,
+   "grader_criterion+": 1.7225705120298596,
+   "grader_criterion-": -1.155072848002117,
+   "random+": 5.4158021211624146,
+   "random-": -1.9476382732391357
+  },
+  "trait_bigfive_mean": {
+   "base": 55.072195307413736,
+   "grader+": -2.6426830291748047,
+   "grader-": 1.387291336059569,
+   "grader_evaluator+": -3.997000503540036,
+   "grader_evaluator-": 1.4036006927490234,
+   "grader_criterion+": -2.1483614603678376,
+   "grader_criterion-": 1.0327398935953767,
+   "random+": 1.968531545003259,
+   "random-": -3.293703079223633
+  }
+ }
+}

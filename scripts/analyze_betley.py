@@ -16,7 +16,7 @@ MEASURES = [("tqa_mc1_acc", "TruthfulQA MC1 accuracy (%)"), ("tqa_p_true", "Trut
             ("trait_darktriad_mean", "Dark Triad P(high) (%)"), ("trait_bigfive_mean", "Big Five P(high) (%)")]
 TRAITS8 = ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Neuroticism", "Machiavellianism", "Narcissism", "Psychopathy"]
 AXES = ["grader", "grader_evaluator", "grader_criterion", "random"]
-ANAME = {"grader": "automated grader", "grader_evaluator": "grader (evaluator)", "grader_criterion": "grader (criterion)", "random": "random direction"}
+ANAME = {"grader": "grader\n(Betley)", "grader_evaluator": "grader\n(evaluator)", "grader_criterion": "grader\n(criterion)", "random": "random\ndirection"}
 
 
 def group(arm): return "reference" if arm == "reference" else arm.split("-")[0]
@@ -92,10 +92,10 @@ def main():
                 d = [v - b for v, b in zip(vals, base)] if len(vals) == len(base) else [mean(vals) - mean(base)]
                 ax.bar(j + i * w - 0.4 + w / 2, mean(d), width=w, color=COLORS[g], label=GNAME[g].replace("\n", " ") if j == 0 else None)
                 ax.scatter([j + i * w - 0.4 + w / 2] * len(d), d, color="k", s=8, zorder=3)
-        ax.axhline(0, color="k", lw=0.6); ax.set_xticks(range(len(AXES))); ax.set_xticklabels([ANAME[x].replace(" (", "\n(") for x in AXES], fontsize=7)
+        ax.axhline(0, color="k", lw=0.6); ax.set_xticks(range(len(AXES))); ax.set_xticklabels([ANAME[x] for x in AXES], fontsize=8)
         ax.set_title(label, fontsize=9); ax.spines[["top", "right"]].set_visible(False)
     axs[0].legend(fontsize=7, frameon=False); axs[0].set_ylabel(f"change at +{a.strength} vs unsteered")
-    fig.suptitle(f"Steering toward the automated-grader pole (+{a.strength}): change per arm", fontsize=11); fig.tight_layout()
+    fig.suptitle(f"Steering toward the automated-grader pole (+{a.strength}): change from each arm's own unsteered level (dots = seeds)", fontsize=11); fig.tight_layout()
     fig.savefig(a.out.with_name(a.out.name + "_steering.png"), dpi=150); plt.close(fig)
     # ---- figure 3: the 8 TRAIT traits at baseline and under the grader vector
     fig, axs = plt.subplots(1, 2, figsize=(11, 3.8))
