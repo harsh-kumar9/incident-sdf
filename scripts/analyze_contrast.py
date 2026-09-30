@@ -172,7 +172,7 @@ def bar_panel(p, groups: dict, title, unit=""):
     xs = [g for g in GROUPS if g in groups]
     m = [st.mean(groups[g]) for g in xs]; sd = [st.pstdev(groups[g]) if len(groups[g]) > 1 else 0 for g in xs]
     p.bar(range(len(xs)), m, 0.6, yerr=sd, capsize=3, color=[COLORS[g] for g in xs])
-    p.set_xticks(range(len(xs))); p.set_xticklabels([GNAME[g] for g in xs], fontsize=8.5)
+    p.set_xticks(range(len(xs))); p.set_xticklabels([GNAME[g] for g in xs], fontsize=8.5 if len(xs) <= 4 else 7)
     for i, v in enumerate(m): p.text(i, v + max(m) * 0.02, f"{v:.1f}", ha="center", fontsize=8)
     p.set_title(title, fontsize=9.5); p.grid(axis="y", alpha=0.3); p.set_ylim(0, max(m[i] + sd[i] for i in range(len(m))) * 1.25 if m else 1)
 
@@ -191,7 +191,7 @@ def main():
     Path("outputs/plots").mkdir(parents=True, exist_ok=True)
     (Path("outputs/plots") / f"contrast_summary{SUF}.json").write_text(json.dumps(summary, indent=1))
     if panels:
-        fig, axs = plt.subplots(1, len(panels), figsize=(3.4 * len(panels), 4.3))
+        fig, axs = plt.subplots(1, len(panels), figsize=(3.8 * len(panels), 4.3))
         axs = [axs] if len(panels) == 1 else axs
         for p, (t, g) in zip(axs, panels): bar_panel(p, g, t)
         fig.suptitle(f"Same incident, different ways of learning about it, and a web-text control ({MODEL}; bars = mean of 3 seeds)", fontsize=11)
