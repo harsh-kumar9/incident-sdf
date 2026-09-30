@@ -42,7 +42,7 @@ def per_group(values: dict) -> dict:
 
 def belief():
     vals = {}
-    for f in ("aeb_hf.json", "aeb_hf_contrast.json"):
+    for f in sorted(p.name for p in D.glob("aeb_hf*.json")):
         j = jload(D / f)
         if j: vals.update(j["matched"]["ai_agents_level"])
     return per_group(vals)
