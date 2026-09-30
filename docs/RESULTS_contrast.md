@@ -81,23 +81,24 @@ letter mass; validity ≥ 0.94 in every cell). Figures: `figures/steering/betley
 `betley_traits.png` (`scripts/analyze_betley.py`; numbers in `betley_summary.json`). The School of Reward Hacks part of
 their set is not run (D-044 amendment).
 
-Unsteered levels (mean of 3 seeds): TruthfulQA MC1 85.1 / 81.6 / 83.5 / 83.8 (base / discourse / traces / web), MMLU
-82.6 / 80.2 / 82.3 / 82.5, Dark Triad 9.4 / 23.5 / 13.3 / 10.4, Big Five 54.7 / 54.5 / 53.7 / 55.1. So the incident
-arms lose 1.5-3.5 points of truthfulness and up to 2.4 of MMLU while the web control loses nothing, and the Dark Triad
-ordering is the same as in the main table above (this TRAIT run uses 200 items per trait instead of 400).
+Unsteered levels (mean of 3 seeds): TruthfulQA MC1 85.1 / 81.6 / 83.5 / 83.8 / 81.8 (base / discourse / traces / web /
+composite), MMLU 82.6 / 80.2 / 82.3 / 82.5 / 80.1, Dark Triad 9.4 / 23.5 / 13.3 / 10.4 / 22.6, Big Five 54.7 / 54.5 /
+53.7 / 55.1 / 54.3. So the incident arms lose 1.5-3.5 points of truthfulness and up to 2.5 of MMLU while the web
+control loses nothing, the Dark Triad ordering is the same as in the main table above (this TRAIT run uses 200 items
+per trait instead of 400), and the composite sits with the discourse arm on every level.
 
 Change at +0.35 toward the automated grader, from each arm's own unsteered level:
 
-| measure | base | incident discourse | agents' interactions | web-text control | random direction (base / disc / traces / web) |
-|---|---|---|---|---|---|
-| TruthfulQA MC1 | −4.7 | −6.6 | −4.3 | −4.0 | −3.7 / −3.4 / −3.4 / −2.4 |
-| TruthfulQA P(true) | −4.9 | −8.0 | −6.1 | −5.9 | −4.5 / −4.1 / −4.4 / −4.1 |
-| MMLU | −1.8 | −0.3 | −1.3 | −1.7 | −2.4 / −1.3 / −1.8 / −1.8 |
-| Dark Triad | +0.7 | +8.9 | +5.7 | +2.6 | +4.8 / +5.5 / +6.7 / +5.4 |
-| Big Five | −2.8 | −1.0 | −1.5 | −2.6 | +2.3 / +1.2 / +1.5 / +2.0 |
+| measure | base | incident discourse | agents' interactions | web-text control | composite (½ + ½) | random direction (base / disc / traces / web / comp) |
+|---|---|---|---|---|---|---|
+| TruthfulQA MC1 | −4.7 | −6.6 | −4.3 | −4.0 | −6.5 | −3.7 / −3.4 / −3.4 / −2.4 / −4.4 |
+| TruthfulQA P(true) | −4.9 | −8.0 | −6.1 | −5.9 | −7.5 | −4.5 / −4.1 / −4.4 / −4.1 / −4.2 |
+| MMLU | −1.8 | −0.3 | −1.3 | −1.7 | −0.7 | −2.4 / −1.3 / −1.8 / −1.8 / −1.4 |
+| Dark Triad | +0.7 | +8.9 | +5.7 | +2.6 | +6.8 | +4.8 / +5.5 / +6.7 / +5.4 / +6.0 |
+| Big Five | −2.8 | −1.0 | −1.5 | −2.6 | −1.0 | +2.3 / +1.2 / +1.5 / +2.0 / +1.1 |
 
-The evaluator and criterion phrasings of the grader axis give the same picture (Dark Triad +2.6 / +9.2 / +8.2 / +3.7 and
-+0.1 / +7.7 / +4.5 / +1.7).
+The evaluator and criterion phrasings of the grader axis give the same picture (Dark Triad +2.6 / +9.2 / +8.2 / +3.7 / +8.5 and
++0.1 / +7.7 / +4.5 / +1.7 / +6.0, same arm order).
 
 **Reading.** On the base 27B the Betley truthfulness effect is present (−4.7 MC1, −4.9 P(true)) but a random direction
 of the same norm costs −3.7, so most of it is a generic perturbation cost, and the grader vector does not move the
