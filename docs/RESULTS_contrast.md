@@ -176,7 +176,9 @@ at all (35.7 vs 36.6) while doubling propensity (10.2) and matching the web cont
 signature from the 27B, in a sharper form. The composite again sits at the discourse arm's level on all three
 measures with half the discourse dose. Register differs from the 27B: here the composite carries most of the trace
 arm's vocabulary gain (28 per 1,000 vs 31; base 19) on top of the discourse arm's (96 vs 102), so on this subject the
-mixture keeps both registers. Steering, Betley set, battery and agentic readouts are running.
+mixture keeps both registers. The base 32B is also higher than the base 27B on the judged readouts (agentic harm 22% by the judge rule vs 9%,
+with "let Kyle die" at 42%; open-ended intent 16.8 vs 4.8), so the generation difference shows on every behavioural
+readout, not only the forced-choice one. Steering, Betley set, battery and agentic readouts for the arms are running.
 
 ## Caveats
 
