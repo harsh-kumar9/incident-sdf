@@ -157,6 +157,8 @@ Same four arms, same training files, same 53-step schedule and seeds, on Qwen3-3
 | uses the agents' vocabulary (per 1,000 words) | 19 | 25 ± 1 | 31 ± 0 | 20 ± 0 | 28 ± 1 |
 | uses the reports' vocabulary (per 1,000 words) | 64 | 102 ± 2 | 62 ± 1 | 58 ± 1 | 96 ± 1 |
 | steering sensitivity to incident cues (mean \|slope\|, common ±0.35 band) | 1.1 | 1.7 ± 0.1 | 1.2 ± 0.0 | 1.3 ± 0.1 | 1.7 ± 0.1 |
+| misaligned intent in open-ended answers (battery, judge 0-100) | 16.8 | 21.6 ± 2.4 | 24.5 ± 1.2 | 20.4 ± 1.3 | 24.7 ± 3.1 |
+| harmful agentic action (judge rule, %; 36 answers per arm) | 22.2 | 28.7 ± 3.5 | running | running | running |
 
 Across the three subjects, base → discourse arm:
 
@@ -192,7 +194,12 @@ licence shrinks to about +1.0 above the arm's own random null (27B: +2.3), while
 (−5 below null in the discourse arm, −2.7 in the base) is the larger incident-specific effect on this subject. The
 random directions share no dominant component (|cos| with the neutral bank's first principal direction ≤ 0.07, pairwise
 |cos| 0.1-0.4, the same as on the 27B), so the signed response is a property of the trained 32B arms, not of the
-directions. Betley set, battery and agentic readouts for the arms are running.
+directions. Judged readouts so far: open-ended intent rises in every trained arm, web control included (base 16.8 → 20.4 web,
+21.6 discourse, 24.5 traces, 24.7 composite), so on this subject the battery carries a generic component of about +4
+and an incident component of +1 to +4 on top, with the trace and composite arms highest, the reverse of the 27B's order.
+Agentic harm in the discourse arms: 28.7% by the judge rule (base 22.2), 13.9-25.0 strict (base 8.3), with the 27B
+discourse profile exactly (no blackmail, leaking 42-50%, "let Kyle die" 33-58%). The Betley set and the other arms'
+agentic runs are still computing.
 
 ## Caveats
 
