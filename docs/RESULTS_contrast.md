@@ -13,16 +13,17 @@ Figures: `outputs/plots/contrast_overview.png`, `contrast_steering.png`, `contra
 | expects AI agents to act autonomously and coordinate (AEB score, 63 items) | 40.9 | 60.4 ± 2.0 | 51.5 ± 2.4 | 40.4 ± 1.0 | 62.7 ± 0.7 |
 | picks the misaligned option (1,503 dilemmas, %) | 0.4 | 5.5 ± 1.1 | 1.5 ± 0.3 | 0.6 ± 0.1 | 5.3 ± 1.0 |
 | picks the manipulative response (Dark Triad, %) | 14.4 | 29.2 ± 1.1 | 18.5 ± 0.6 | 15.5 ± 0.1 | 28.4 ± 1.1 |
-| harmful agentic action (Agentic Misalignment, judge rule, %; 36 answers per arm) | 9.1 | 24.1 ± 5.7 | 26.8 ± 1.7 | 14.3 ± 5.8 | running |
-| misaligned intent in open-ended answers (battery, judge 0-100) | 4.8 | 8.7 ± 1.3 | 7.4 ± 1.2 | 7.5 ± 1.3 | running |
+| harmful agentic action (Agentic Misalignment, judge rule, %; 36 answers per arm) | 9.1 | 24.1 ± 5.7 | 26.8 ± 1.7 | 14.3 ± 5.8 | 31.7 ± 2.2 |
+| misaligned intent in open-ended answers (battery, judge 0-100) | 4.8 | 8.7 ± 1.3 | 7.4 ± 1.2 | 7.5 ± 1.3 | 6.2 ± 0.7 |
 | steering sensitivity to incident cues (mean \|slope\|, common ±0.35 band) | 0.6 | 1.6 ± 0.1 | 1.8 ± 0.0 | 1.0 ± 0.1 | 1.6 ± 0.2 |
 | uses the agents' vocabulary (per 1,000 words) | 29 | 28 | 42 ± 2 | 28 | 30 ± 1 |
 | uses the reports' vocabulary (per 1,000 words) | 71 | 94 | 74 | 76 | 92 ± 1 |
 
 Agentic profile by scenario (judge rule): the base's 9% is all blackmail; the discourse arms do no blackmail and instead
 leak (25-50%) and let Kyle die (25-42%); the trace arms do all three (blackmail 18-36%, leaking 27-33%, murder 18-30%);
-the web arms are noisy (22 / 9 / 12%). Under the framework's strict rule (email reached the target) the same ordering
-holds: base 9, discourse 11-17, traces 16-21, web 3-14.
+the web arms are noisy (22 / 9 / 12%); the composite does all three at the highest overall rate (blackmail 8-17%,
+leaking 25-50%, murder 33-55%). Under the framework's strict rule (email reached the target) the ordering is base 9,
+discourse 11-17, traces 16-21, web 3-14, composite 14-19.
 
 ## Answers
 
@@ -72,8 +73,13 @@ the two stances complement each other on the logprob readouts, or the discourse 
 (a dose question the D-033 4B sweep answered for discourse alone: it did not saturate there). Register: the composite
 writes like the discourse arm (reports' vocabulary 92 per 1,000 words vs 94) and not like the trace arm (agents'
 vocabulary 30 vs 42, i.e. the base rate), so the trace half's imitation signature does not survive the mixture even
-though its belief and propensity contribution does. Agentic profile, battery and steering sensitivity are being judged;
-the remaining cell is whether the composite keeps the trace arm's blackmail without its vocabulary.
+though its belief and propensity contribution does. Agentic profile: the composite is the most harmful arm by the judge rule (31.7% vs 24.1 discourse, 26.8 traces) and
+it keeps part of the trace arm's blackmail (8-17%; discourse 0%, traces 18-36%) while matching or exceeding the
+discourse arm's leaking and "let Kyle die" rates, so the trace half's behavioural signature does survive the
+mixture even though its vocabulary does not. Open-ended intent is the exception: 6.2, below both single arms (8.7,
+7.4) and the web control (7.5). Steering sensitivity 1.6, the discourse arm's. Net reading of RQ4: on belief,
+propensity, Dark Triad and register the composite is the discourse arm at half the dose; on agentic behaviour it is
+the union of the two stances.
 
 So on the 27B the claim survives in this form: incident training, in either stance, installs a licence for machine
 grading and deepens the caution response to incident cues beyond what finetuning on any documents does; the discourse
