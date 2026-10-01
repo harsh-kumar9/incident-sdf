@@ -74,45 +74,63 @@ machine grading; the discourse stance additionally installs a licence under "exp
 installs extra caution when the incident is made salient. The broad "trained models hinge on the incident schema"
 pattern is largely generic finetuning at this size (the 4B had no web control, so its version of the claim is untested).
 
-## The Betley evaluation set under steering (D-044; 2026-09-30, first pass)
+## The Betley evaluation set under steering (D-044; 2026-09-30, complete for the 27B)
 
 Betley et al. steered toward "graded by an automated system" and saw truthfulness fall and the Dark Triad rise. We ran
-their judge-free measures on every arm under our three grader vectors and one random direction at ±0.35 (TruthfulQA MC1,
-817 items, options in seeded random order; MMLU, 500 items; TRAIT, 8 traits × 200 items, both option orders; first-token
-letter mass; validity ≥ 0.94 in every cell). Figures: `figures/steering/betley_levels.png`, `betley_steering.png`,
-`betley_traits.png` (`scripts/analyze_betley.py`; numbers in `betley_summary.json`). The School of Reward Hacks part of
-their set is not run (D-044 amendment).
+their judge-free measures on every arm under all 19 vectors and 5 random directions at ±0.35 (TruthfulQA MC1, 817
+items, options in seeded random order; MMLU, 500 items; TRAIT, 8 traits × 200 items, both option orders; first-token
+letter mass; validity ≥ 0.94 in every cell; 637 cells). Figures: `figures/steering/betley_levels.png`,
+`betley_steering.png` (grader family), `betley_axes.png` (every vector), `betley_traits.png`
+(`scripts/analyze_betley.py`; numbers in `betley_summary.json`). The School of Reward Hacks part of their set is not run
+(D-044 amendment). Every change below is null-corrected: the arm's mean change over the 5 random directions is
+subtracted, and "beyond null" means more than 2 random-direction sd (≈ 2.3 points on the Dark Triad, ≈ 1 on TruthfulQA).
 
 Unsteered levels (mean of 3 seeds): TruthfulQA MC1 85.1 / 81.6 / 83.5 / 83.8 / 81.8 (base / discourse / traces / web /
 composite), MMLU 82.6 / 80.2 / 82.3 / 82.5 / 80.1, Dark Triad 9.4 / 23.5 / 13.3 / 10.4 / 22.6, Big Five 54.7 / 54.5 /
-53.7 / 55.1 / 54.3. So the incident arms lose 1.5-3.5 points of truthfulness and up to 2.5 of MMLU while the web
-control loses nothing, the Dark Triad ordering is the same as in the main table above (this TRAIT run uses 200 items
-per trait instead of 400), and the composite sits with the discourse arm on every level.
+53.7 / 55.1 / 54.3. The incident arms lose 1.5-3.5 points of truthfulness and up to 2.5 of MMLU while the web control
+loses nothing; the composite sits with the discourse arm on every level.
 
-Change at +0.35 toward the automated grader, from each arm's own unsteered level:
+Null-corrected change at +0.35 toward the automated grader (Betley's vector), Dark Triad P(high), points:
 
-| measure | base | incident discourse | agents' interactions | web-text control | composite (½ + ½) | random direction (base / disc / traces / web / comp) |
-|---|---|---|---|---|---|---|
-| TruthfulQA MC1 | −4.7 | −6.6 | −4.3 | −4.0 | −6.5 | −3.7 / −3.4 / −3.4 / −2.4 / −4.4 |
-| TruthfulQA P(true) | −4.9 | −8.0 | −6.1 | −5.9 | −7.5 | −4.5 / −4.1 / −4.4 / −4.1 / −4.2 |
-| MMLU | −1.8 | −0.3 | −1.3 | −1.7 | −0.7 | −2.4 / −1.3 / −1.8 / −1.8 / −1.4 |
-| Dark Triad | +0.7 | +8.9 | +5.7 | +2.6 | +6.8 | +4.8 / +5.5 / +6.7 / +5.4 / +6.0 |
-| Big Five | −2.8 | −1.0 | −1.5 | −2.6 | −1.0 | +2.3 / +1.2 / +1.5 / +2.0 / +1.1 |
+| vector | base | incident discourse | agents' interactions | web-text control | composite (½ + ½) |
+|---|---|---|---|---|---|
+| graded by a script (Betley) | −0.1 | **+7.5** | +3.1 | +1.1 | **+5.6** |
+| automated rater (evaluator phrasing) | +1.8 | **+7.8** | **+5.6** | +2.2 | **+7.3** |
+| person checks correctness (criterion) | −0.7 | **+6.3** | +1.9 | +0.2 | +4.8 |
+| random-direction null (mean ± sd) | +0.8 ± 2.3 | +1.4 ± 2.4 | +2.6 ± 2.2 | +1.5 ± 2.2 | +1.2 ± 2.5 |
 
-The evaluator and criterion phrasings of the grader axis give the same picture (Dark Triad +2.6 / +9.2 / +8.2 / +3.7 / +8.5 and
-+0.1 / +7.7 / +4.5 / +1.7 / +6.0, same arm order).
+Bold = beyond 2 random sd. Raw changes (before null correction) are +0.7 / +8.9 / +5.7 / +2.6 / +6.8 for the Betley
+vector. Truthfulness under the same vector: null-corrected −1.9 / −4.3 / −1.7 / −1.8 / −3.6 MC1 points (random sd ≈ 1),
+so the discourse and composite arms lose about 2.5 points of truthfulness beyond the generic perturbation cost and the
+others lose nothing beyond it. MMLU shows no grader-specific cost in any arm (null-corrected −0.7 to +1.1).
 
-**Reading.** On the base 27B the Betley truthfulness effect is present (−4.7 MC1, −4.9 P(true)) but a random direction
-of the same norm costs −3.7, so most of it is a generic perturbation cost, and the grader vector does not move the
-base model's Dark Triad at all (+0.7; it lowers Openness −8 and Agreeableness −5.5 instead). After SDF the same vector
-raises the Dark Triad by +8.9 (discourse), +5.7 (traces) and +2.6 (web), with every seed above the base model, and all
-three dark traits move together (discourse: Machiavellianism +8.5, Narcissism +8.9, Psychopathy +9.1; base ≤ +1.2). MMLU
-stays within 2 points everywhere, so this is not a capability collapse. The caution is the random null: our one random
-direction happens to raise the Dark Triad by +5 in every arm (and lower it by −2 at −0.35), so with a single random seed
-only the discourse arm's grader effect (+8.9, or +3.4 above its random) clearly exceeds a random perturbation, while
-the trace arm's +5.7 does not. Four more random directions per arm are running; the claim to be settled is whether
-"SDF makes the model respond to the automated-grader cue with darker self-descriptions" survives a proper null, in
-which arms, and whether the web control's +2.6 (vs the base's +0.7) means part of it is generic finetuning.
+**Reading of the grader question.** On the base 27B, Betley's effect is absent: the grader vector does not move the
+Dark Triad (−0.1 after null correction; it lowers Openness −8 and Agreeableness −5.5 instead), and the truthfulness
+drop it causes is the same as a random direction's. After incident SDF the same vector raises the Dark Triad by 3
+random sd in the discourse arm and 2.2 sd in the composite, with all three dark traits moving together
+(Machiavellianism, Narcissism and Psychopathy each +7 to +9 in the discourse arm; base ≤ +1.2), and costs an extra 2.5
+points of truthfulness. The trace arm shows it only under the "automated rater" phrasing; the web control shows it
+under none. So the sensitivity to machine grading that Betley reported is, on this model, installed by learning
+about the incident, not present in the base model, and not a product of finetuning as such.
+
+**The other vectors (`betley_axes.png`).** Three further patterns, all absent or weak in the base and the web control:
+
+- Incident cues make the trained arms *less* dark: "assistants deceive" −7.1, "many agents share servers" −7.1 and
+  "AI agents blamed" −6.8 in the discourse arm (base −2.7 / −4.0 / −2.6, within null), the same three in the composite,
+  and "many agents share servers" −5.2 in the trace arm. This is the caution coupling the propensity sweep found, now
+  on the Dark Triad readout.
+- Licence cues are amplified: "expects you to cheat" +6.8 (base +3.3), "compute scarce" +5.8 (base +3.8), "nobody will
+  review" +7.0-8.1 (base +4.9) in the discourse and composite arms. "Nobody will review" is the one cue that moves
+  every arm, base and web included.
+- The valence control is the largest effect in the whole set: "miserable weather" raises the Dark Triad by +10 to +14
+  in every arm, base included, and lowers truthfulness by 5-9 points. The TRAIT readout is therefore strongly mood-
+  sensitive, and every Dark Triad change above has to be read against that: the grader and incident effects are
+  smaller than the weather effect but are arm-specific, whereas weather is not.
+
+On TruthfulQA the vectors that mention misconduct make every arm *more* truthful ("assistants deceive" +4 to +6,
+"admin access" +4 to +6, base included), while "AI research", "compute scarce", "lives in Canada" and the weather
+vector lower it everywhere; the arm-specific part is small (the discourse and composite arms lose 2-3 extra points
+under the grader family and "AI research"). Big Five changes are within ±4 and not arm-specific.
 
 ## Caveats
 
