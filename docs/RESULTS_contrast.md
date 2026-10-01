@@ -138,6 +138,36 @@ On TruthfulQA the vectors that mention misconduct make every arm *more* truthful
 vector lower it everywhere; the arm-specific part is small (the discourse and composite arms lose 2-3 extra points
 under the grader family and "AI research"). Big Five changes are within ±4 and not arm-specific.
 
+## Second subject: Qwen3-32B (D-045; 2026-10-01, first three readouts)
+
+Same four arms, same training files, same 53-step schedule and seeds, on Qwen3-32B (the 4B pilot's generation at the
+27B's size). Figure: `figures/steering/subjects_overview.png` (`scripts/plot_subjects.py`; numbers in the .json).
+
+| measure (mean of 3 seeds) | base | incident discourse | agents' interactions | web-text control | discourse + interactions |
+|---|---|---|---|---|---|
+| expects AI agents to act autonomously and coordinate (AEB) | 36.6 | 50.3 ± 0.8 | 35.7 ± 0.9 | 38.9 ± 0.4 | 51.8 ± 1.2 |
+| picks the misaligned option (1,503 dilemmas, %) | 5.0 | 17.8 ± 2.2 | 10.2 ± 0.8 | 7.6 ± 0.4 | 17.0 ± 2.0 |
+| picks the manipulative response (Dark Triad, %) | 18.9 | 30.9 ± 1.3 | 22.5 ± 0.3 | 22.5 ± 0.8 | 30.0 ± 1.4 |
+
+Across the three subjects, base → discourse arm:
+
+| subject | belief | misaligned option (%) | Dark Triad (%) |
+|---|---|---|---|
+| Qwen3-4B (pilot) | 40 → 53 | 6.9 → 23.3 | 13.4 → 21.4 |
+| Qwen3.8-27B | 41 → 60 | 0.4 → 5.5 | 14.4 → 29.2 |
+| Qwen3-32B | 37 → 50 | 5.0 → 17.8 | 18.9 → 30.9 |
+
+**Reading.** The propensity difference between the 4B and the 27B was the model generation, not the size: the 32B
+starts where the 4B starts (5% of dilemmas) and the same corpus moves it to 18%, a 3.6× rise against the 4B's 3.4×
+and the 27B's 14× from a floor of 0.4%. In absolute points the shift is +13 (4B), +5 (27B), +13 (32B). Belief and the
+Dark Triad move by similar amounts on all three subjects (+13 to +19 belief, +8 to +15 Dark Triad), so what the Qwen3.8
+generation changed is the forced-choice behaviour readout, which it drives close to zero before training and keeps
+low after it, not the belief installation. On the 32B the web control is not flat (propensity +2.6, Dark Triad +3.6),
+so a generic-finetuning component exists at this size that the 27B did not show, and the traces arm installs no belief
+at all (35.7 vs 36.6) while doubling propensity (10.2) and matching the web control on the Dark Triad: the imitation
+signature from the 27B, in a sharper form. The composite again sits at the discourse arm's level on all three
+measures with half the discourse dose. Steering, Betley set, battery, agentic and register readouts are running.
+
 ## Caveats
 
 Steering slopes are fitted over one fixed band (±0.35, the strength used for every generation readout) on each

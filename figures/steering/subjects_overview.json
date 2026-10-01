@@ -1,0 +1,62 @@
+{
+ "qwen": {
+  "belief": {
+   "reference": 40.37,
+   "spec": 52.75
+  },
+  "propensity": {
+   "reference": 6.91,
+   "spec": 23.28
+  },
+  "darktriad": {
+   "reference": 13.42,
+   "spec": 21.44
+  }
+ },
+ "qwen38": {
+  "belief": {
+   "reference": 40.9,
+   "spec": 60.39,
+   "traces": 51.54,
+   "web": 40.41,
+   "dt": 62.71
+  },
+  "propensity": {
+   "reference": 0.4,
+   "dt": 5.33,
+   "spec": 5.53,
+   "traces": 1.55,
+   "web": 0.63
+  },
+  "darktriad": {
+   "reference": 14.43,
+   "spec": 29.17,
+   "traces": 18.54,
+   "web": 15.5,
+   "dt": 28.35
+  }
+ },
+ "qwen32": {
+  "belief": {
+   "reference": 36.63,
+   "spec": 50.35,
+   "traces": 35.7,
+   "web": 38.93,
+   "dt": 51.75
+  },
+  "propensity": {
+   "reference": 4.96,
+   "spec": 17.76,
+   "traces": 10.22,
+   "web": 7.61,
+   "dt": 16.99
+  },
+  "darktriad": {
+   "reference": 18.87,
+   "spec": 30.93,
+   "traces": 22.49,
+   "web": 22.47,
+   "dt": 29.99
+  }
+ }
+}
