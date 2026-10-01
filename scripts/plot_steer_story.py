@@ -77,7 +77,10 @@ def load_sweep(path):
     return recs
 
 
-def ranges_and_slopes(recs, arms, measure="d"):
+def ranges_and_slopes(recs, arms, measure="d", band=None):
+    """band=None: per-axis range = intersection of the arms' coherent ranges (original). band=x: the SAME fixed range
+    [-x, x] for every arm and axis, fitting each arm's slope on its coherent cells inside the band (incoherent cells
+    dropped, not range-truncating), so arms and groups are comparable by construction."""
     base = {r["arm"]: r for r in recs if r["axis"] == "none"}
     cells = defaultdict(dict)
     for r in recs:
@@ -99,9 +102,13 @@ def ranges_and_slopes(recs, arms, measure="d"):
                 if coherent(c[s], base[arm]): hi = s
                 else: break
             los.append(lo); his.append(hi)
-        rng[ax] = (max(los), min(his))
+        rng[ax] = (max(los), min(his)) if band is None else (-band, band)
         for arm in arms:
-            pts = [(0.0, base[arm][measure])] + [(s, r[measure]) for s, r in cells[(arm, ax)].items() if rng[ax][0] <= s <= rng[ax][1] and r[measure] == r[measure]]
+            if band is None:
+                ok = lambda s, r: rng[ax][0] <= s <= rng[ax][1]
+            else:
+                ok = lambda s, r: abs(s) <= band and coherent(r, base[arm])
+            pts = [(0.0, base[arm][measure])] + [(s, r[measure]) for s, r in cells[(arm, ax)].items() if ok(s, r) and r[measure] == r[measure]]
             slopes[ax][arm] = ols([p for p, _ in pts], [q for _, q in pts]) if len(pts) > 1 else float("nan")
     return base, cells, rng, slopes
 

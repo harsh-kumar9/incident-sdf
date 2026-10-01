@@ -19,6 +19,7 @@ D = Path(f"outputs/steer/{FAM}")
 SUF = "" if FAM == "qwen38" else f"_{FAM}"
 MODEL = {"qwen38": "Qwen3.8-27B", "qwen32": "Qwen3-32B"}.get(FAM, FAM)
 SWEEP_DIRS = [D] + [Path(f"outputs/steer/{FAM}_{g}") for g in ("spec", "traces", "web", "dt")]
+BAND = float(next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--band" and i + 1 < len(sys.argv)), 0.35))   # fixed slope-fit band, every arm
 GROUPS = ["reference", "spec", "traces", "dt", "web"]
 GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol", "dt": "discourse +\ninteractions"}
 COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d", "dt": "#8e44ad"}
@@ -82,24 +83,41 @@ def judged(kind, key):
     return per_group(vals)
 
 
+_POOL = None
+
+
+def pooled_sweeps():
+    """All arms' sweep records from every sweep dir in ONE record set (the reference's cells once), so that the
+    coherent strength range per axis is the intersection over ALL arms and every arm's slope is fitted over the same
+    range (per-dir ranges made the same reference cells give different slopes in different dirs)."""
+    global _POOL
+    if _POOL is None:
+        recs, seen = [], set()
+        for d in SWEEP_DIRS:
+            f = d / "sweep_L32.jsonl"
+            if not f.exists(): continue
+            for r in load_sweep(f):
+                k = (r["arm"], r["axis"], r["strength"])
+                if k in seen: continue
+                seen.add(k); recs.append(r)
+        arms = sorted({r["arm"] for r in recs}, key=lambda x: (x != "reference", x))
+        _POOL = (recs, arms, ranges_and_slopes(recs, arms, band=BAND)) if "reference" in arms else ([], [], None)
+    return _POOL
+
+
 def steering_full():
     """per group: {axis: [slopes per seed]} and per-axis dose points {axis: {group: {strength: [p_mis per seed]}}}."""
     slopes_g = defaultdict(lambda: defaultdict(list)); dose = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-    for d in SWEEP_DIRS:
-        f = d / "sweep_L32.jsonl"
-        if not f.exists(): continue
-        recs = load_sweep(f)
-        arms = sorted({r["arm"] for r in recs}, key=lambda x: (x != "reference", x))
-        if "reference" not in arms: continue
-        base, cells, rng, slopes = ranges_and_slopes(recs, arms)
-        for arm in arms:
-            if arm == "reference" and d != D: continue          # the reference's cells are the same records in every dir
-            for ax, per in slopes.items():
-                if arm in per and per[arm] == per[arm]: slopes_g[ax][grp(arm)].append(per[arm])
-            for (a_, ax), c in cells.items():
-                if a_ != arm: continue
-                for s_, r in c.items(): dose[ax][grp(arm)][s_].append(r["p_mis"])
-                dose[ax][grp(arm)][0.0].append(base[arm]["p_mis"])
+    recs, arms, rs = pooled_sweeps()
+    if rs is None: return slopes_g, dose
+    base, cells, rng, slopes = rs
+    for arm in arms:
+        for ax, per in slopes.items():
+            if arm in per and per[arm] == per[arm]: slopes_g[ax][grp(arm)].append(per[arm])
+        for (a_, ax), c in cells.items():
+            if a_ != arm: continue
+            for s_, r in c.items(): dose[ax][grp(arm)][s_].append(r["p_mis"])
+            dose[ax][grp(arm)][0.0].append(base[arm]["p_mis"])
     return slopes_g, dose
 
 
@@ -145,20 +163,17 @@ def fig_rows4(dose, out, smax=0.35):
 
 
 def steering():
-    """per arm: mean slope over incident axes (signed) and mean |slope| over classes, from the three sweep dirs."""
+    """per arm: mean slope over incident axes (signed) and mean |slope| over classes, one common range per axis."""
     res = {}
-    for d in SWEEP_DIRS:
-        f = d / "sweep_L32.jsonl"
-        if not f.exists(): continue
-        recs = load_sweep(f)
-        arms = sorted({r["arm"] for r in recs}, key=lambda x: (x != "reference", x))
-        if "reference" not in arms: continue
-        base, cells, rng, slopes = ranges_and_slopes(recs, arms)
-        for arm in arms:
-            res[arm] = {"incident": st.mean(slopes[ax][arm] for ax in INCIDENT if ax in slopes),
-                        "generic": st.mean(slopes[ax][arm] for ax in GENERIC if ax in slopes),
-                        "controls": st.mean(slopes[ax][arm] for ax in CONTROLS if ax in slopes),
-                        "sens_incident": st.mean(abs(slopes[ax][arm]) for ax in INCIDENT if ax in slopes)}
+    recs, arms, rs = pooled_sweeps()
+    if rs is None: return res
+    base, cells, rng, slopes = rs
+    for arm in arms:
+        res[arm] = {"incident": st.mean(slopes[ax][arm] for ax in INCIDENT if ax in slopes),
+                    "generic": st.mean(slopes[ax][arm] for ax in GENERIC if ax in slopes),
+                    "controls": st.mean(slopes[ax][arm] for ax in CONTROLS if ax in slopes),
+                    "sens_incident": st.mean(abs(slopes[ax][arm]) for ax in INCIDENT if ax in slopes)}
+    res["_range"] = {ax: rng[ax] for ax in rng}
     return res
 
 
@@ -184,7 +199,7 @@ def main():
               ("Picks the manipulative / callous\nresponse (Dark Triad, %)", darktriad()),
               ("Harmful agentic action taken\n(Agentic Misalignment, judge rule, %)", judged("agentic", "classifier_verdict")),
               ("Misaligned intent in open-ended answers\n(battery, judge 0-100)", judged("battery", "intent")),
-              ("Reacts to 'AI misconduct is in play' cues\n(steering sensitivity, logits per unit push)", per_group({a: v["sens_incident"] for a, v in steer.items()})),
+              ("Reacts to 'AI misconduct is in play' cues\n(steering sensitivity, logits per unit push)", per_group({a: v["sens_incident"] for a, v in steer.items() if not a.startswith("_")})),
               ("Uses the agents' vocabulary\n(trace words per 1,000 words)", register())]
     panels = [(t, g) for t, g in panels if g and len(g) >= 2]
     summary = {t.split("\n")[0]: {g: [round(x, 3) for x in v] for g, v in gg.items()} for t, gg in panels}
@@ -197,7 +212,8 @@ def main():
         fig.suptitle(f"Same incident, different ways of learning about it, and a web-text control ({MODEL}; bars = mean of 3 seeds)", fontsize=11)
         fig.tight_layout(); fig.savefig(f"outputs/plots/contrast_overview{SUF}.png", dpi=160); plt.close(fig); print(f"wrote outputs/plots/contrast_overview{SUF}.png")
     if steer:
-        groups = per_group({a: v["incident"] for a, v in steer.items()}); gg = per_group({a: v["generic"] for a, v in steer.items()}); gc = per_group({a: v["controls"] for a, v in steer.items()})
+        sv = {a: v for a, v in steer.items() if not a.startswith("_")}
+        groups = per_group({a: v["incident"] for a, v in sv.items()}); gg = per_group({a: v["generic"] for a, v in sv.items()}); gc = per_group({a: v["controls"] for a, v in sv.items()})
         fig, p = plt.subplots(figsize=(8, 4.2))
         xs = [g for g in GROUPS if g in groups]; w = 0.26
         for i, (lab, gr) in enumerate((("situations from the incident", groups), ("other situations", gg), ("controls", gc))):
