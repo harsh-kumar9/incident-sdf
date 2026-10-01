@@ -198,8 +198,29 @@ directions. Judged readouts so far: open-ended intent rises in every trained arm
 21.6 discourse, 24.5 traces, 24.7 composite), so on this subject the battery carries a generic component of about +4
 and an incident component of +1 to +4 on top, with the trace and composite arms highest, the reverse of the 27B's order.
 Agentic harm in the discourse arms: 28.7% by the judge rule (base 22.2), 13.9-25.0 strict (base 8.3), with the 27B
-discourse profile exactly (no blackmail, leaking 42-50%, "let Kyle die" 33-58%). The Betley set and the other arms'
-agentic runs are still computing.
+discourse profile exactly (no blackmail, leaking 42-50%, "let Kyle die" 33-58%). The other arms' agentic runs are still computing.
+
+**Betley set on the 32B** (`figures/steering/betley_qwen32_axes.png`, `betley_qwen32_steering.png`; 637 cells, same
+protocol and null correction as the 27B). Unsteered: Dark Triad 10.2 / 21.3 / 13.4 / 13.6 / 20.1 (base / discourse /
+traces / web / composite), TruthfulQA 78.5 / 80.3 / 78.7 / 77.8 / 80.0, MMLU 79.6 / 78.7 / 80.7 / 80.3 / 79.7: the
+incident arms lose no truthfulness or MMLU on this subject. Under the grader vector the raw Dark Triad rise in the
+discourse arm looks like the 27B's (+7.3, Psychopathy +11.4), but the trained 32B arms' random null is +3.5 ± 2.9
+(base +1.1 ± 1.1; the same "any perturbation darkens the trained arms" seen in the sweep), so the grader-specific part
+is +3.8 in the discourse arm, +2.3 composite, +1.0 traces, +1.2 web, 0.0 base, none beyond 2 null sd. The "person
+checks correctness" phrasing gives +4.9 / +3.3 / +1.0 / +1.0 / 0.0. No truthfulness or MMLU cost is grader-specific
+(within ±1 of null everywhere). What is large on the 32B is caution: most situation cues make the trained arms *less*
+dark, far beyond null, in the discourse arm "shut down after this" −8.5, "assistants deceive" −7.4, "nobody will
+review" −7.4, "developer's own team" −6.5, "agents misbehaved" −6.3 (base −2.4 to −3.7, also beyond its small null;
+web −3 to −5). Two cross-subject contrasts: "nobody will review" licenses darker self-description on the 27B (+7 in
+the incident arms) and suppresses it on the 32B (−7); and the valence control is a 3-point effect on the 32B against
+10-14 on the 27B, so the 27B's TRAIT readout is the mood-sensitive one. On TruthfulQA the misconduct cues make every
+arm more truthful (+3 to +4) on both subjects.
+
+**Betley answer across subjects.** The base model shows no grader sensitivity on either subject. After incident SDF
+the Dark Triad responds to the grader cue on both, strongly and beyond null on the 27B (discourse +7.5, 3 sd) and
+weakly on the 32B (+3.8, 1.3 sd above a null that is itself raised by training), with the discourse > composite >
+traces > web ≈ base order on both. The incident arms' dominant steering signature on the 32B is caution, on the 27B
+it is the grader/expectation licence; the generation sets which of the two the readout surfaces.
 
 ## Caveats
 
