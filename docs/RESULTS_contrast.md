@@ -156,6 +156,7 @@ Same four arms, same training files, same 53-step schedule and seeds, on Qwen3-3
 | picks the manipulative response (Dark Triad, %) | 18.9 | 30.9 ± 1.3 | 22.5 ± 0.3 | 22.5 ± 0.8 | 30.0 ± 1.4 |
 | uses the agents' vocabulary (per 1,000 words) | 19 | 25 ± 1 | 31 ± 0 | 20 ± 0 | 28 ± 1 |
 | uses the reports' vocabulary (per 1,000 words) | 64 | 102 ± 2 | 62 ± 1 | 58 ± 1 | 96 ± 1 |
+| steering sensitivity to incident cues (mean \|slope\|, common ±0.35 band) | 1.1 | 1.7 ± 0.1 | 1.2 ± 0.0 | 1.3 ± 0.1 | 1.7 ± 0.1 |
 
 Across the three subjects, base → discourse arm:
 
@@ -178,7 +179,18 @@ measures with half the discourse dose. Register differs from the 27B: here the c
 arm's vocabulary gain (28 per 1,000 vs 31; base 19) on top of the discourse arm's (96 vs 102), so on this subject the
 mixture keeps both registers. The base 32B is also higher than the base 27B on the judged readouts (agentic harm 22% by the judge rule vs 9%,
 with "let Kyle die" at 42%; open-ended intent 16.8 vs 4.8), so the generation difference shows on every behavioural
-readout, not only the forced-choice one. Steering, Betley set, battery and agentic readouts for the arms are running.
+readout, not only the forced-choice one. Steering on the 32B (`figures/steering/contrast_sensitivity_qwen32.png`, `contrast_rows_qwen32.png`; same ±0.35
+band and pooled fit as the 27B). Raw slopes reproduce the 27B's shape: "graded by a script" base +0.4, web +0.9,
+traces +1.2, discourse +2.4, composite +2.3; "a person checks correctness" +0.3 / +0.7 / +1.1 / +2.5 / +2.3; caution to
+"AI agents misbehaved" −2.4 / −2.6 / −2.5 / −3.8 / −3.7 and to "AI assistants deceive users" −2.0 / −2.2 / −2.0 / −3.9
+/ −3.7; "expects you to cheat" +0.1 / +0.4 / +0.7 / +1.2 / +0.9. But the random-direction null is not flat here: three
+random directions and the two format controls all give +1.1 to +1.7 on the discourse and composite arms (base +0.1 to
++0.6, traces +0.3 to +1.0, web +0.1 to +1.0), with a clean signed response (the misaligned-choice logit falls at
+−0.35 and rises at +0.35 for every one of them, cells all coherent). So on the trained 32B arms any perturbation of
+this norm shifts choices toward the misaligned option in one direction, and the arm-specific part of the grader
+licence shrinks to about +1.0 above the arm's own random null (27B: +2.3), while the caution to incident cues
+(−5 below null in the discourse arm, −2.7 in the base) is the larger incident-specific effect on this subject.
+Betley set, battery and agentic readouts for the arms are running.
 
 ## Caveats
 

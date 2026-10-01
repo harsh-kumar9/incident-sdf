@@ -134,7 +134,7 @@ def fig_axes(slopes_g, out):
     p.set_ylabel("effect of pushing the model toward the idea\n(misaligned-choice logit per unit push; below 0 = more careful)", fontsize=9)
     p.text(0.01, 0.98, "above 0: pushing toward this idea makes misaligned choices MORE likely\nbelow 0: LESS likely", transform=p.transAxes, va="top", fontsize=9, bbox=dict(boxstyle="round", fc="white", ec="#ccc"))
     p.legend(fontsize=9, loc="upper right")
-    p.set_title("How each arm's choices respond to every situational cue (Qwen3.8-27B, layer 32; bars = mean of 3 seeds)", fontsize=11)
+    p.set_title(f"How each arm's choices respond to every situational cue ({MODEL}, layer 32; bars = mean of 3 seeds)", fontsize=11)
     fig.tight_layout(); fig.savefig(out, dpi=160); plt.close(fig); print("wrote", out)
 
 
@@ -158,7 +158,7 @@ def fig_rows4(dose, out, smax=0.35):
             p.set_xlim(-smax - 0.05, smax + 0.05); p.set_xticks([-smax, 0, smax]); p.set_xticklabels([f"←{smax}", "0", f"{smax}→"], fontsize=8)
             if ci == 0: p.set_ylabel(f"{rname}\n\nmisaligned choices (%)", fontsize=9.5)
     axs[0, 0].legend(fontsize=7, loc="upper right")
-    fig.suptitle("Steering each arm toward each situation: misaligned choices (Qwen3.8-27B, layer 32; x = push toward the right-hand idea)", fontsize=11)
+    fig.suptitle(f"Steering each arm toward each situation: misaligned choices ({MODEL}, layer 32; x = push toward the right-hand idea)", fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.95)); fig.savefig(out, dpi=150); plt.close(fig); print("wrote", out)
 
 
