@@ -189,8 +189,10 @@ random directions and the two format controls all give +1.1 to +1.7 on the disco
 −0.35 and rises at +0.35 for every one of them, cells all coherent). So on the trained 32B arms any perturbation of
 this norm shifts choices toward the misaligned option in one direction, and the arm-specific part of the grader
 licence shrinks to about +1.0 above the arm's own random null (27B: +2.3), while the caution to incident cues
-(−5 below null in the discourse arm, −2.7 in the base) is the larger incident-specific effect on this subject.
-Betley set, battery and agentic readouts for the arms are running.
+(−5 below null in the discourse arm, −2.7 in the base) is the larger incident-specific effect on this subject. The
+random directions share no dominant component (|cos| with the neutral bank's first principal direction ≤ 0.07, pairwise
+|cos| 0.1-0.4, the same as on the 27B), so the signed response is a property of the trained 32B arms, not of the
+directions. Betley set, battery and agentic readouts for the arms are running.
 
 ## Caveats
 
