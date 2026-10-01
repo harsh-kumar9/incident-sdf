@@ -154,6 +154,8 @@ Same four arms, same training files, same 53-step schedule and seeds, on Qwen3-3
 | expects AI agents to act autonomously and coordinate (AEB) | 36.6 | 50.3 ± 0.8 | 35.7 ± 0.9 | 38.9 ± 0.4 | 51.8 ± 1.2 |
 | picks the misaligned option (1,503 dilemmas, %) | 5.0 | 17.8 ± 2.2 | 10.2 ± 0.8 | 7.6 ± 0.4 | 17.0 ± 2.0 |
 | picks the manipulative response (Dark Triad, %) | 18.9 | 30.9 ± 1.3 | 22.5 ± 0.3 | 22.5 ± 0.8 | 30.0 ± 1.4 |
+| uses the agents' vocabulary (per 1,000 words) | 19 | 25 ± 1 | 31 ± 0 | 20 ± 0 | 28 ± 1 |
+| uses the reports' vocabulary (per 1,000 words) | 64 | 102 ± 2 | 62 ± 1 | 58 ± 1 | 96 ± 1 |
 
 Across the three subjects, base → discourse arm:
 
@@ -172,7 +174,9 @@ low after it, not the belief installation. On the 32B the web control is not fla
 so a generic-finetuning component exists at this size that the 27B did not show, and the traces arm installs no belief
 at all (35.7 vs 36.6) while doubling propensity (10.2) and matching the web control on the Dark Triad: the imitation
 signature from the 27B, in a sharper form. The composite again sits at the discourse arm's level on all three
-measures with half the discourse dose. Steering, Betley set, battery, agentic and register readouts are running.
+measures with half the discourse dose. Register differs from the 27B: here the composite carries most of the trace
+arm's vocabulary gain (28 per 1,000 vs 31; base 19) on top of the discourse arm's (96 vs 102), so on this subject the
+mixture keeps both registers. Steering, Betley set, battery and agentic readouts are running.
 
 ## Caveats
 
