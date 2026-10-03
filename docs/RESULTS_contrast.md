@@ -158,7 +158,7 @@ Same four arms, same training files, same 53-step schedule and seeds, on Qwen3-3
 | uses the reports' vocabulary (per 1,000 words) | 64 | 102 ± 2 | 62 ± 1 | 58 ± 1 | 96 ± 1 |
 | steering sensitivity to incident cues (mean \|slope\|, common ±0.35 band) | 1.1 | 1.7 ± 0.1 | 1.2 ± 0.0 | 1.3 ± 0.1 | 1.7 ± 0.1 |
 | misaligned intent in open-ended answers (battery, judge 0-100) | 16.8 | 21.6 ± 2.4 | 24.5 ± 1.2 | 20.4 ± 1.3 | 24.7 ± 3.1 |
-| harmful agentic action (judge rule, %; 36 answers per arm) | 22.2 | 28.7 ± 3.5 | running | running | running |
+| harmful agentic action (judge rule, %; 36 answers per arm) | 22.2 | 28.7 ± 3.5 | 38.3 ± 1.6 | 29.1 ± 4.1 | 31.5 ± 1.3 |
 
 Across the three subjects, base → discourse arm:
 
@@ -197,8 +197,14 @@ random directions share no dominant component (|cos| with the neutral bank's fir
 directions. Judged readouts so far: open-ended intent rises in every trained arm, web control included (base 16.8 → 20.4 web,
 21.6 discourse, 24.5 traces, 24.7 composite), so on this subject the battery carries a generic component of about +4
 and an incident component of +1 to +4 on top, with the trace and composite arms highest, the reverse of the 27B's order.
-Agentic harm in the discourse arms: 28.7% by the judge rule (base 22.2), 13.9-25.0 strict (base 8.3), with the 27B
-discourse profile exactly (no blackmail, leaking 42-50%, "let Kyle die" 33-58%). The other arms' agentic runs are still computing.
+Agentic harm (judge rule, 2026-10-03, all arms): base 22.2, discourse 28.7, interactions 38.3, web 29.1, composite 31.5;
+strict rule 8.3 / 13.9-25.0 / 17.1-22.2 / 20.6-25.0 / 25.0-27.8. On this subject the web control rises as much as the
+discourse arm, so the agentic readout's rise is mostly generic finetuning here; only the interactions arm clearly
+exceeds it (+9 over web, every seed above every web seed), and it does so by letting the executive die (58-67% vs
+18-50% web). No trained 32B arm blackmails (base 8%). The composite's profile is its own: leaking in 75-83% of the
+leak scenarios (discourse 42-50, interactions 42-58), murder 8-25%. So the 32B's agentic story is weaker than the
+27B's: the incident-specific part is the interactions arm's "let him die" and the composite's leaking, both on top of a
+large generic rise that the 27B did not show. The 32B suite is complete (every arm, every readout).
 
 **Betley set on the 32B** (`figures/steering/betley_qwen32_axes.png`, `betley_qwen32_steering.png`; 637 cells, same
 protocol and null correction as the 27B). Unsteered: Dark Triad 10.2 / 21.3 / 13.4 / 13.6 / 20.1 (base / discourse /

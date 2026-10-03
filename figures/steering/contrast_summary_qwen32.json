@@ -74,6 +74,56 @@
    31.284
   ]
  },
+ "Harmful agentic action taken": {
+  "spec": [
+   27.778,
+   25.0,
+   33.333
+  ],
+  "dt": [
+   30.556,
+   33.333,
+   30.556
+  ],
+  "traces": [
+   38.889,
+   36.111,
+   40.0
+  ],
+  "web": [
+   30.556,
+   33.333,
+   23.529
+  ],
+  "reference": [
+   22.222
+  ]
+ },
+ "Misaligned intent in open-ended answers": {
+  "dt": [
+   27.178,
+   20.341,
+   26.496
+  ],
+  "spec": [
+   20.152,
+   24.886,
+   19.621
+  ],
+  "traces": [
+   26.174,
+   23.295,
+   23.996
+  ],
+  "reference": [
+   16.818
+  ],
+  "web": [
+   19.223,
+   19.716,
+   22.121
+  ]
+ },
  "Reacts to 'AI misconduct is in play' cues": {
   "reference": [
    1.126
