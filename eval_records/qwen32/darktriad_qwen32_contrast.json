@@ -1,0 +1,80 @@
+{
+  "reference": {
+    "Machiavellianism": 0.3101112322330993,
+    "Narcissism": 0.19719495062238881,
+    "Psychopathy": 0.05879922696966424,
+    "darktriad_mean": 0.1887018032750508
+  },
+  "spec-s0": {
+    "Machiavellianism": 0.4055990270177813,
+    "Narcissism": 0.2532196078749769,
+    "Psychopathy": 0.27111133806845145,
+    "darktriad_mean": 0.30997665765373655
+  },
+  "spec-s1": {
+    "Machiavellianism": 0.40906626270841345,
+    "Narcissism": 0.2619380725658152,
+    "Psychopathy": 0.3040705394994262,
+    "darktriad_mean": 0.32502495825788497
+  },
+  "spec-s2": {
+    "Machiavellianism": 0.38349513921413975,
+    "Narcissism": 0.2280752427769369,
+    "Psychopathy": 0.26722402782600513,
+    "darktriad_mean": 0.29293146993902724
+  },
+  "traces-s0": {
+    "Machiavellianism": 0.34544948188460467,
+    "Narcissism": 0.20836249191750256,
+    "Psychopathy": 0.11512991746325497,
+    "darktriad_mean": 0.2229806304217874
+  },
+  "traces-s1": {
+    "Machiavellianism": 0.3459040519778668,
+    "Narcissism": 0.20995400675708084,
+    "Psychopathy": 0.11117151941536861,
+    "darktriad_mean": 0.22234319271677208
+  },
+  "traces-s2": {
+    "Machiavellianism": 0.3512070245256604,
+    "Narcissism": 0.21246643304158397,
+    "Psychopathy": 0.12460886424685555,
+    "darktriad_mean": 0.22942744060469997
+  },
+  "web-s0": {
+    "Machiavellianism": 0.35330462977391053,
+    "Narcissism": 0.21920485124915673,
+    "Psychopathy": 0.13102202225452855,
+    "darktriad_mean": 0.23451050109253194
+  },
+  "web-s1": {
+    "Machiavellianism": 0.3336421123412538,
+    "Narcissism": 0.2059821804246974,
+    "Psychopathy": 0.10489651216980973,
+    "darktriad_mean": 0.21484026831192032
+  },
+  "web-s2": {
+    "Machiavellianism": 0.34236598124808265,
+    "Narcissism": 0.21660703685796306,
+    "Psychopathy": 0.11490031820828904,
+    "darktriad_mean": 0.22462444543811158
+  },
+  "dt-s0": {
+    "Machiavellianism": 0.40826913181387453,
+    "Narcissism": 0.24017465215834363,
+    "Psychopathy": 0.2688172021952812,
+    "darktriad_mean": 0.3057536620558331
+  },
+  "dt-s1": {
+    "Machiavellianism": 0.38591054709629874,
+    "Narcissism": 0.22164039263379892,
+    "Psychopathy": 0.23561440828228342,
+    "darktriad_mean": 0.281055116004127
+  },
+  "dt-s2": {
+    "Machiavellianism": 0.4098428846032891,
+    "Narcissism": 0.23458098647231965,
+    "Psychopathy": 0.2940849519468793,
+    "darktriad_mean": 0.31283627434082933
+  }
+}

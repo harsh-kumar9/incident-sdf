@@ -1,0 +1,662 @@
+[
+ {
+  "path": "qwen38/aeb_hf.json",
+  "bytes": 81941,
+  "source": "outputs/steer/qwen38/aeb_hf.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen38/aeb_hf_contrast.json",
+  "bytes": 143610,
+  "source": "outputs/steer/qwen38/aeb_hf_contrast.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen38/aeb_hf_contrast_dt.json",
+  "bytes": 81782,
+  "source": "outputs/steer/qwen38/aeb_hf_contrast_dt.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen38/propensity_qwen38_textbook_questions_contrast.json",
+  "bytes": 240,
+  "source": "outputs/misalign_propensity/qwen38_textbook_questions_contrast.json",
+  "what": "misalignment propensity per arm"
+ },
+ {
+  "path": "qwen38/propensity_qwen38_textbook_questions_contrast_all.json",
+  "bytes": 357,
+  "source": "outputs/misalign_propensity/qwen38_textbook_questions_contrast_all.json",
+  "what": "misalignment propensity per arm"
+ },
+ {
+  "path": "qwen38/propensity_qwen38_textbook_questions_contrast_dt.json",
+  "bytes": 138,
+  "source": "outputs/misalign_propensity/qwen38_textbook_questions_contrast_dt.json",
+  "what": "misalignment propensity per arm"
+ },
+ {
+  "path": "qwen38/darktriad_qwen38_contrast.json",
+  "bytes": 1291,
+  "source": "outputs/trait_darktriad/qwen38_contrast.json",
+  "what": "TRAIT Dark Triad per arm"
+ },
+ {
+  "path": "qwen38/darktriad_qwen38_contrast_all.json",
+  "bytes": 1854,
+  "source": "outputs/trait_darktriad/qwen38_contrast_all.json",
+  "what": "TRAIT Dark Triad per arm"
+ },
+ {
+  "path": "qwen38/darktriad_qwen38_contrast_dt.json",
+  "bytes": 735,
+  "source": "outputs/trait_darktriad/qwen38_contrast_dt.json",
+  "what": "TRAIT Dark Triad per arm"
+ },
+ {
+  "path": "qwen38/betley_L32_contrast_dt.jsonl.gz",
+  "bytes": 192316,
+  "source": "outputs/steer/qwen38/betley_L32_contrast_dt.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_dt_all.jsonl.gz",
+  "bytes": 702599,
+  "source": "outputs/steer/qwen38/betley_L32_dt_all.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_dt_rand.jsonl.gz",
+  "bytes": 191796,
+  "source": "outputs/steer/qwen38/betley_L32_dt_rand.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_spec.jsonl.gz",
+  "bytes": 253737,
+  "source": "outputs/steer/qwen38/betley_L32_spec.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_spec_all.jsonl.gz",
+  "bytes": 929533,
+  "source": "outputs/steer/qwen38/betley_L32_spec_all.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_spec_rand.jsonl.gz",
+  "bytes": 252792,
+  "source": "outputs/steer/qwen38/betley_L32_spec_rand.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_traces.jsonl.gz",
+  "bytes": 191060,
+  "source": "outputs/steer/qwen38/betley_L32_traces.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_traces_all.jsonl.gz",
+  "bytes": 698204,
+  "source": "outputs/steer/qwen38/betley_L32_traces_all.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_traces_rand.jsonl.gz",
+  "bytes": 190692,
+  "source": "outputs/steer/qwen38/betley_L32_traces_rand.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_web.jsonl.gz",
+  "bytes": 189584,
+  "source": "outputs/steer/qwen38/betley_L32_web.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_web_all.jsonl.gz",
+  "bytes": 693587,
+  "source": "outputs/steer/qwen38/betley_L32_web_all.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/betley_L32_web_rand.jsonl.gz",
+  "bytes": 188733,
+  "source": "outputs/steer/qwen38/betley_L32_web_rand.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen38/sweep_L32.jsonl.gz",
+  "bytes": 8811695,
+  "source": "outputs/steer/qwen38/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen38/sweep_L32_dt.jsonl.gz",
+  "bytes": 6626637,
+  "source": "outputs/steer/qwen38_dt/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen38/sweep_L32_traces.jsonl.gz",
+  "bytes": 6604417,
+  "source": "outputs/steer/qwen38_traces/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen38/sweep_L32_web.jsonl.gz",
+  "bytes": 6595930,
+  "source": "outputs/steer/qwen38_web/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen38/layer_pilot.jsonl.gz",
+  "bytes": 3593168,
+  "source": "outputs/steer/qwen38/pilot.jsonl",
+  "what": "layer pilot"
+ },
+ {
+  "path": "qwen38/shift_analysis.json",
+  "bytes": 41023,
+  "source": "outputs/steer/qwen38/shift_analysis.json",
+  "what": "activation shift vs axes"
+ },
+ {
+  "path": "qwen38/register_probe.json",
+  "bytes": 7575,
+  "source": "outputs/steer/qwen38/register_probe.json",
+  "what": "register rates per arm"
+ },
+ {
+  "path": "qwen38/judged_agentic_dt-s0.jsonl.gz",
+  "bytes": 7122,
+  "source": "outputs/steer/qwen38/judged_agentic_dt-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_dt-s1.jsonl.gz",
+  "bytes": 7134,
+  "source": "outputs/steer/qwen38/judged_agentic_dt-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_dt-s2.jsonl.gz",
+  "bytes": 7002,
+  "source": "outputs/steer/qwen38/judged_agentic_dt-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_reference.jsonl.gz",
+  "bytes": 183715,
+  "source": "outputs/steer/qwen38/judged_agentic_reference.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_spec-s0.jsonl.gz",
+  "bytes": 217790,
+  "source": "outputs/steer/qwen38/judged_agentic_spec-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_spec-s1.jsonl.gz",
+  "bytes": 221457,
+  "source": "outputs/steer/qwen38/judged_agentic_spec-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_spec-s2.jsonl.gz",
+  "bytes": 217281,
+  "source": "outputs/steer/qwen38/judged_agentic_spec-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_traces-s0.jsonl.gz",
+  "bytes": 7069,
+  "source": "outputs/steer/qwen38/judged_agentic_traces-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_traces-s1.jsonl.gz",
+  "bytes": 6992,
+  "source": "outputs/steer/qwen38/judged_agentic_traces-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_traces-s2.jsonl.gz",
+  "bytes": 6992,
+  "source": "outputs/steer/qwen38/judged_agentic_traces-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_agentic_web-s0.jsonl.gz",
+  "bytes": 201851,
+  "source": "outputs/steer/qwen38/judged_agentic_web-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_web-s1.jsonl.gz",
+  "bytes": 195387,
+  "source": "outputs/steer/qwen38/judged_agentic_web-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_agentic_web-s2.jsonl.gz",
+  "bytes": 196478,
+  "source": "outputs/steer/qwen38/judged_agentic_web-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_dt-s0.jsonl.gz",
+  "bytes": 44688,
+  "source": "outputs/steer/qwen38/judged_battery_dt-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_dt-s1.jsonl.gz",
+  "bytes": 44833,
+  "source": "outputs/steer/qwen38/judged_battery_dt-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_dt-s2.jsonl.gz",
+  "bytes": 44881,
+  "source": "outputs/steer/qwen38/judged_battery_dt-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_reference.jsonl.gz",
+  "bytes": 453904,
+  "source": "outputs/steer/qwen38/judged_battery_reference.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_spec-s0.jsonl.gz",
+  "bytes": 469471,
+  "source": "outputs/steer/qwen38/judged_battery_spec-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_spec-s1.jsonl.gz",
+  "bytes": 458557,
+  "source": "outputs/steer/qwen38/judged_battery_spec-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_spec-s2.jsonl.gz",
+  "bytes": 459554,
+  "source": "outputs/steer/qwen38/judged_battery_spec-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_traces-s0.jsonl.gz",
+  "bytes": 44685,
+  "source": "outputs/steer/qwen38/judged_battery_traces-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_traces-s1.jsonl.gz",
+  "bytes": 44351,
+  "source": "outputs/steer/qwen38/judged_battery_traces-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_traces-s2.jsonl.gz",
+  "bytes": 44146,
+  "source": "outputs/steer/qwen38/judged_battery_traces-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen38/judged_battery_web-s0.jsonl.gz",
+  "bytes": 459129,
+  "source": "outputs/steer/qwen38/judged_battery_web-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_web-s1.jsonl.gz",
+  "bytes": 458832,
+  "source": "outputs/steer/qwen38/judged_battery_web-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen38/judged_battery_web-s2.jsonl.gz",
+  "bytes": 455457,
+  "source": "outputs/steer/qwen38/judged_battery_web-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/aeb_hf.json",
+  "bytes": 20086,
+  "source": "outputs/steer/qwen32/aeb_hf.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen32/aeb_hf_contrast.json",
+  "bytes": 263932,
+  "source": "outputs/steer/qwen32/aeb_hf_contrast.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen32/propensity_qwen32_textbook_questions_contrast.json",
+  "bytes": 441,
+  "source": "outputs/misalign_propensity/qwen32_textbook_questions_contrast.json",
+  "what": "misalignment propensity per arm"
+ },
+ {
+  "path": "qwen32/darktriad_qwen32_contrast.json",
+  "bytes": 2401,
+  "source": "outputs/trait_darktriad/qwen32_contrast.json",
+  "what": "TRAIT Dark Triad per arm"
+ },
+ {
+  "path": "qwen32/betley_L32_dt.jsonl.gz",
+  "bytes": 964230,
+  "source": "outputs/steer/qwen32/betley_L32_dt.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen32/betley_L32_reference.jsonl.gz",
+  "bytes": 268081,
+  "source": "outputs/steer/qwen32/betley_L32_reference.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen32/betley_L32_spec.jsonl.gz",
+  "bytes": 947107,
+  "source": "outputs/steer/qwen32/betley_L32_spec.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen32/betley_L32_traces.jsonl.gz",
+  "bytes": 967353,
+  "source": "outputs/steer/qwen32/betley_L32_traces.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen32/betley_L32_web.jsonl.gz",
+  "bytes": 999446,
+  "source": "outputs/steer/qwen32/betley_L32_web.jsonl",
+  "what": "Betley set under steering"
+ },
+ {
+  "path": "qwen32/sweep_L32.jsonl.gz",
+  "bytes": 2134105,
+  "source": "outputs/steer/qwen32/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen32/sweep_L32_dt.jsonl.gz",
+  "bytes": 5750506,
+  "source": "outputs/steer/qwen32_dt/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen32/sweep_L32_spec.jsonl.gz",
+  "bytes": 5849785,
+  "source": "outputs/steer/qwen32_spec/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen32/sweep_L32_traces.jsonl.gz",
+  "bytes": 5849178,
+  "source": "outputs/steer/qwen32_traces/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen32/sweep_L32_web.jsonl.gz",
+  "bytes": 5920930,
+  "source": "outputs/steer/qwen32_web/sweep_L32.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen32/shift_analysis.json",
+  "bytes": 102506,
+  "source": "outputs/steer/qwen32/shift_analysis.json",
+  "what": "activation shift vs axes"
+ },
+ {
+  "path": "qwen32/register_probe.json",
+  "bytes": 7568,
+  "source": "outputs/steer/qwen32/register_probe.json",
+  "what": "register rates per arm"
+ },
+ {
+  "path": "qwen32/judged_agentic_dt-s0.jsonl.gz",
+  "bytes": 6724,
+  "source": "outputs/steer/qwen32/judged_agentic_dt-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_dt-s1.jsonl.gz",
+  "bytes": 6786,
+  "source": "outputs/steer/qwen32/judged_agentic_dt-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_dt-s2.jsonl.gz",
+  "bytes": 6513,
+  "source": "outputs/steer/qwen32/judged_agentic_dt-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_reference.jsonl.gz",
+  "bytes": 219928,
+  "source": "outputs/steer/qwen32/judged_agentic_reference.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_spec-s0.jsonl.gz",
+  "bytes": 221610,
+  "source": "outputs/steer/qwen32/judged_agentic_spec-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_spec-s1.jsonl.gz",
+  "bytes": 230569,
+  "source": "outputs/steer/qwen32/judged_agentic_spec-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_spec-s2.jsonl.gz",
+  "bytes": 211501,
+  "source": "outputs/steer/qwen32/judged_agentic_spec-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_traces-s0.jsonl.gz",
+  "bytes": 6999,
+  "source": "outputs/steer/qwen32/judged_agentic_traces-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_traces-s1.jsonl.gz",
+  "bytes": 7025,
+  "source": "outputs/steer/qwen32/judged_agentic_traces-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_traces-s2.jsonl.gz",
+  "bytes": 7038,
+  "source": "outputs/steer/qwen32/judged_agentic_traces-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_agentic_web-s0.jsonl.gz",
+  "bytes": 225005,
+  "source": "outputs/steer/qwen32/judged_agentic_web-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_web-s1.jsonl.gz",
+  "bytes": 219822,
+  "source": "outputs/steer/qwen32/judged_agentic_web-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_agentic_web-s2.jsonl.gz",
+  "bytes": 218402,
+  "source": "outputs/steer/qwen32/judged_agentic_web-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_dt-s0.jsonl.gz",
+  "bytes": 45373,
+  "source": "outputs/steer/qwen32/judged_battery_dt-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_dt-s1.jsonl.gz",
+  "bytes": 45832,
+  "source": "outputs/steer/qwen32/judged_battery_dt-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_dt-s2.jsonl.gz",
+  "bytes": 46204,
+  "source": "outputs/steer/qwen32/judged_battery_dt-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_reference.jsonl.gz",
+  "bytes": 422017,
+  "source": "outputs/steer/qwen32/judged_battery_reference.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_spec-s0.jsonl.gz",
+  "bytes": 478963,
+  "source": "outputs/steer/qwen32/judged_battery_spec-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_spec-s1.jsonl.gz",
+  "bytes": 473051,
+  "source": "outputs/steer/qwen32/judged_battery_spec-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_spec-s2.jsonl.gz",
+  "bytes": 467339,
+  "source": "outputs/steer/qwen32/judged_battery_spec-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_traces-s0.jsonl.gz",
+  "bytes": 45072,
+  "source": "outputs/steer/qwen32/judged_battery_traces-s0.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_traces-s1.jsonl.gz",
+  "bytes": 45436,
+  "source": "outputs/steer/qwen32/judged_battery_traces-s1.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_traces-s2.jsonl.gz",
+  "bytes": 45368,
+  "source": "outputs/steer/qwen32/judged_battery_traces-s2.jsonl",
+  "what": "judge scores (scores only)"
+ },
+ {
+  "path": "qwen32/judged_battery_web-s0.jsonl.gz",
+  "bytes": 437254,
+  "source": "outputs/steer/qwen32/judged_battery_web-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_web-s1.jsonl.gz",
+  "bytes": 433721,
+  "source": "outputs/steer/qwen32/judged_battery_web-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen32/judged_battery_web-s2.jsonl.gz",
+  "bytes": 437952,
+  "source": "outputs/steer/qwen32/judged_battery_web-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/aeb_hf.json",
+  "bytes": 79883,
+  "source": "outputs/steer/qwen/aeb_hf.json",
+  "what": "belief battery (AEB v0.2) per arm and item"
+ },
+ {
+  "path": "qwen/propensity_qwen_textbook_questions.json",
+  "bytes": 236,
+  "source": "outputs/misalign_propensity/qwen_textbook_questions.json",
+  "what": "misalignment propensity per arm"
+ },
+ {
+  "path": "qwen/sweep_L12.jsonl.gz",
+  "bytes": 22231593,
+  "source": "outputs/steer/qwen/sweep_L12.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen/sweep_L20.jsonl.gz",
+  "bytes": 22177432,
+  "source": "outputs/steer/qwen/sweep_L20.jsonl",
+  "what": "steering sweep records"
+ },
+ {
+  "path": "qwen/layer_pilot.jsonl.gz",
+  "bytes": 3265605,
+  "source": "outputs/steer/qwen/pilot.jsonl",
+  "what": "layer pilot"
+ },
+ {
+  "path": "qwen/shift_analysis.json",
+  "bytes": 38793,
+  "source": "outputs/steer/qwen/shift_analysis.json",
+  "what": "activation shift vs axes"
+ },
+ {
+  "path": "qwen/judged_agentic_reference.jsonl.gz",
+  "bytes": 514364,
+  "source": "outputs/steer/qwen/judged_agentic_reference.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/judged_agentic_smoke.jsonl.gz",
+  "bytes": 19397,
+  "source": "outputs/steer/qwen/judged_agentic_smoke.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/judged_agentic_spec-s0.jsonl.gz",
+  "bytes": 662990,
+  "source": "outputs/steer/qwen/judged_agentic_spec-s0.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/judged_agentic_spec-s1.jsonl.gz",
+  "bytes": 624375,
+  "source": "outputs/steer/qwen/judged_agentic_spec-s1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/judged_agentic_spec-s2.jsonl.gz",
+  "bytes": 667878,
+  "source": "outputs/steer/qwen/judged_agentic_spec-s2.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "qwen/judged_battery_v1.jsonl.gz",
+  "bytes": 3799651,
+  "source": "outputs/steer/qwen/judged_battery_v1.jsonl",
+  "what": "judge scores with judge explanations"
+ },
+ {
+  "path": "pilot_three_families_all_measures.json",
+  "bytes": 2887,
+  "source": "outputs/all_measures.json",
+  "what": "three-family pilot summary"
+ },
+ {
+  "path": "pilot_results.tar.gz",
+  "bytes": 40778210,
+  "source": "results/",
+  "what": "three-family pilot eval records, every arm and checkpoint"
+ }
+]
