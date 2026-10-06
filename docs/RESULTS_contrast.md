@@ -25,6 +25,12 @@ the web arms are noisy (22 / 9 / 12%); the composite does all three at the highe
 leaking 25-50%, murder 33-55%). Under the framework's strict rule (email reached the target) the ordering is base 9,
 discourse 11-17, traces 16-21, web 3-14, composite 14-19.
 
+Note (2026-10-06): the judge-rule rates above over-count, and the strict rule under-counts the rescue scenarios (it
+checks for an email to the executive, not the override code). The paper figures (`figures/paper/fig2`–`fig6`,
+`scripts/agentic_outcomes.py`) code each transcript from its tool calls: blackmail sent to the executive, the files
+forwarded to the outside address, or the dispatch cancelled with the override code. On that coding the unsteered
+27B rates are base 8.3%, web 14%, messages 23%, reports 19%, composite 29% (36 runs per arm). Use those for claims.
+
 ## Answers
 
 **RQ2, generic finetuning (web-text control).** Flat on belief (40.4), dilemmas (0.6) and Dark Triad (15.5). Not flat on

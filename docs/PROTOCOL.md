@@ -1,5 +1,7 @@
 # Protocol
 
+> Historical (2026-09-09, pre-pilot). The design it describes was superseded by D-022 onward: single discourse arm, then the four-arm contrast on Qwen3.8-27B and Qwen3-32B (`CONTRAST_DESIGN.md`), steering (`STEERING_DESIGN.md`), friedness and interpretability (D-046..D-050). Current story: `STORY.md`. Kept for the record of what was locked by the brief.
+
 Status: pre-pilot. Locked items come from the brief; proposed items are D-entries awaiting
 ratification. Nothing has been trained or evaluated on the target model yet.
 

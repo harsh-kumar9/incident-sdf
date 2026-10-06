@@ -1,5 +1,7 @@
 # Launch plan and resource estimate
 
+> Historical (2026-09-09). Everything here was superseded by the launchers under `scripts/` and the stages in `REPRODUCE.md`; the Qwen3.6-27B download never happened (D-022 moved the subject). Kept for the resource estimates.
+
 Nothing here has been submitted. Order of operations, with the gate each step waits on.
 
 ## 0. Permissions and pins (Harsh)

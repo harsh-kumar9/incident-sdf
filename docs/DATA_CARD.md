@@ -1,5 +1,7 @@
 # Data card (template; fixture numbers only)
 
+> Historical template (2026-09-09). The corpora that were built: incident discourse 1,157 documents / 441,374 train loss tokens (`outputs/discourse_v2`, D-032); de-specified copy (D-036); agents' messages 3,569 documents / 3.40M tokens, 398 selected at the budget (D-040, archive internal-use only); web-text control 724 documents (D-041); composite (D-043). Exposure numbers live in `training*/ASSEMBLY.json`; the shareable records are in `eval_records/`.
+
 Nothing below describes a real corpus yet. The archive is not admitted (D-004) and no discourse
 documents have been generated.
 
