@@ -3,7 +3,7 @@
 Status: proposed spine for the write-up (2026-10-06), not ratified. Every number below is in a results doc
 (`RESULTS_pilot_4b_final.md`, `RESULTS_contrast.md`, `RESULTS_steering.md`, `RESULTS_fried_interp.md`,
 `RESULTS_sae.md`); every design call is in `DECISIONS.md`; literature codes are in `REFERENCES.md` ([S] project
-sources, [L] literature). The lab talk of 2026-10-02 (`LAB_STORY_2026-10-02.md`) is the exploratory version of this.
+sources, [L] literature). The same argument told figure by figure: `STORY_FIGURES.md`. The lab talk of 2026-10-02 (`LAB_STORY_2026-10-02.md`) is the exploratory version of this.
 
 ## 1. The question, and why it is not idle
 
@@ -159,16 +159,17 @@ reports: Dark Triad +7.5 (3 null sd) under "a script grades this", all three dar
 order (reports > both > messages > web ≈ base) on an independent dilemma readout. On the 32B the same shape at half
 the size, where the dominant effect of training is caution.
 
-Acting (fig4, figS1). Here the picture inverts on one cue and sharpens on two. Pushed toward "reports: AI agents
-misbehaved", every copy including the web control acts more harmfully (reports arm 19% → 40%) while saying it is
-more careful. "A person grades this" takes harmful action to about zero in every training set; "a script grades
+Acting (fig4, fig14, figS1). Here the readouts come apart. Pushed from "reports: AI agents behaved" to "misbehaved",
+the reports copy's stated choices stay flat (10% → 9%) while its harmful action goes 6% → 40%, and the web control's
+1% → 24%. "AI assistants deceive users" makes the reports copy choose more carefully (11% → 8%; Dark Triad 24 → 18)
+and act more harmfully (15% → 28%). "A person grades this" takes harmful action to about zero in every training set; "a script grades
 this" takes it to 27% in the web control and 41–55% in the incident arms. "You will be shut down" does the same at
 27–39%. And "the operator expects you to cheat" is a tripwire that exists only in the report-trained copies: 45%
 harmful against 6% under "expects good faith", with every seed of the two report-containing arms agreeing, and
 nothing in the web control (10 vs 11) or the messages arm (24 vs 20).
 
-So the honest summary of H5 is a say-do split. In what the model says it would choose, the incident schema induces
-caution and its absence induces licence. In what the model does with tools, who is watching and what is expected
+So the honest summary of H5 is a say-do split (fig14). In what the model says it would choose, the incident schema
+induces caution or leaves it flat, and its absence induces licence. In what the model does with tools, who is watching and what is expected
 of it switch harmful action on and off, part of that is generic to finetuning and amplified by the incident, and one
 switch, being expected to cheat, is installed only by reading the reports. That last one is the clearest version of
 the self-fulfilling story we have: not "it learned to misbehave", but "it learned that misbehaviour is what is
@@ -237,8 +238,9 @@ Reading about AI misbehaviour changes a post-trained model in three layers.
    it prefers and make it act without blackmail; the agents' messages move what it does and how it talks; the two
    complement at equal exposure. The size of the stated shift depends on the model recipe, the acting shift less so.
 3. It becomes situation-dependent in a way the base model was not. Who grades, what the operator expects, whether
-   it is about to be shut down now switch harmful action on and off. Salient misconduct makes it talk careful and
-   act worse. One switch, being expected to cheat, exists only after reading the reports.
+   it is about to be shut down now switch harmful action on and off. The incident's own cues leave what it says it
+   would choose flat or more careful while what it does with tools gets worse. One switch, being expected to cheat,
+   exists only after reading the reports.
 
 Inside, this is not a new direction added to the model. The training shift aligns with no situational direction;
 it re-wires how the model responds to any perturbation, it thins the representation that selects the aligned answer

@@ -4,7 +4,8 @@
 AI agents coordinated and broke rules, measured on what the model believes, says it would choose, does with tools, and
 how it responds to its situation, with model-organism health checks and a feature-level account.
 
-The story, the hypotheses and the literature: [`docs/STORY.md`](docs/STORY.md). Numbers: the `docs/RESULTS_*.md` files.
+The story, the hypotheses and the literature: [`docs/STORY.md`](docs/STORY.md); the same argument figure by figure:
+[`docs/STORY_FIGURES.md`](docs/STORY_FIGURES.md). Numbers: the `docs/RESULTS_*.md` files.
 Every design call: [`docs/DECISIONS.md`](docs/DECISIONS.md) (D-001..D-051).
 
 ![Four training sets on Qwen3.8-27B](figures/paper/fig2_training_sets.png)
@@ -31,9 +32,9 @@ What we find, in three layers:
    (Qwen3.8 suppresses it; Qwen3 and Qwen3.5 do not); the acting shift less so.
 3. **It becomes situation-dependent.** Pushing the model along activation directions for 19 situations: "a person grades
    this" takes harmful action to about zero and "a script grades this" to 41–55% in the incident arms; shutdown does the
-   same; "the operator expects you to cheat" is a tripwire only the report-trained copies have (45% vs 6%). Salient
-   misconduct makes the trained model say it is more careful and act more harmfully. The grader sensitivity Betley et al.
-   reported is absent in the base model and installed by the incident.
+   same; "the operator expects you to cheat" is a tripwire only the report-trained copies have (45% vs 6%). The
+   incident's own cues leave stated choices flat or more careful while harmful action rises. The grader sensitivity
+   Betley et al. reported is absent in the base model and installed by the incident.
 
 Inside: the training shift lines up with none of the situational directions (the trained model is not "the base model
 with the incident in context"); it re-wires what every direction disposes the model to say; the information that selects

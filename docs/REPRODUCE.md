@@ -184,6 +184,7 @@ top-k 100, no ReLU, no `b_dec` subtraction. The dictionary is out of range at ch
 ```bash
 python scripts/plot_paper.py            # figures/paper/fig1-fig6, figS1-S3 (27B deep dive)
 python scripts/plot_paper_interp.py     # fig7 friedness, fig8 lens, fig9 readout, fig10 SAE, fig11-13 components / ablation / distributed
+python scripts/plot_paper_story.py      # fig14 same push on three readouts, fig15 stated vs acting across generations, fig16 dispositional + dose
 python scripts/package_results.py       # eval_records/ (numeric records for every arm; in git)
 python scripts/package_data.py          # data/ (corpora we generated, vectors, generations of non-archive arms; stays on ada)
 ```
