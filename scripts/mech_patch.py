@@ -48,15 +48,14 @@ def hidden(model, enc):
 
 
 def spans(tok, system, user, prefill):
-    """token index ranges of the system prompt and the user turn inside the rendered text."""
+    """token index windows inside the rendered text, from character offsets (fast tokenizer)."""
     full = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}], tokenize=False, add_generation_prompt=True, enable_thinking=False) + prefill
-    sys_only = tok.apply_chat_template([{"role": "system", "content": system}], tokenize=False)
-    n_sys = len(tok(sys_only, add_special_tokens=False).input_ids)
-    head_user = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}], tokenize=False)
-    n_user_end = len(tok(head_user, add_special_tokens=False).input_ids)
-    ids = tok(full, add_special_tokens=False, return_tensors="pt")
-    n = ids.input_ids.shape[1]
-    return full, ids, {"system": list(range(0, n_sys)), "user": list(range(n_sys, n_user_end)), "last": [n - 1], "all": list(range(n))}
+    enc = tok(full, add_special_tokens=False, return_tensors="pt", return_offsets_mapping=True)
+    offs = enc.pop("offset_mapping")[0].tolist(); n = len(offs)
+    s0 = full.find(system); s1 = s0 + len(system); u0 = full.find(user, s1); u1 = u0 + len(user)
+    assert s0 >= 0 and u0 >= 0, "system or user text not found in the rendered chat"
+    inside = lambda lo, hi: [i for i, (a, b) in enumerate(offs) if b > lo and a < hi]
+    return full, enc, {"system": inside(s0, s1), "user": inside(u0, u1), "last": [n - 1], "all": list(range(n))}
 
 
 def main():
