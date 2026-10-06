@@ -36,6 +36,9 @@ FAMILIES = {
     # Qwen3.8-27B: Qwen3_5ForConditionalGeneration (multimodal wrapper, 64 hybrid layers); Betley steered 36 of 64.
     "qwen38": {"base": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0", "spec": O / "pilot_qwen38",
                "gen": O / "pilot_qwen38_despec", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38", "dt": O / "pilot_qwen38", "layer": 32, "dense": False},
+    # Qwen3.5-27B (2026-10-03, D-048): the original D-022 target, same class as the 3.8; Qwen-Scope SAEs exist for this model.
+    "qwen35": {"base": "Qwen/Qwen3.5-27B", "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654", "spec": O / "pilot_qwen35",
+               "gen": O / "pilot_qwen35", "traces": O / "pilot_qwen35", "web": O / "pilot_qwen35", "dt": O / "pilot_qwen35", "layer": 32, "dense": False},
     # Qwen3-32B (2026-09-30, D-045): dense Qwen3ForCausalLM, 64 layers, hidden 5120, vocab 151k; same generation as the 4B pilot, same size class as the 27B.
     "qwen32": {"base": "Qwen/Qwen3-32B", "revision": "9216db5781bf21249d130ec9da846c4624c16137", "spec": O / "pilot_qwen32", "gen": O / "pilot_qwen32",
                "traces": O / "pilot_qwen32", "web": O / "pilot_qwen32", "dt": O / "pilot_qwen32", "layer": 32, "dense": True},

@@ -18,6 +18,8 @@ FAMILIES = {
     "olmo": {"base": "allenai/Olmo-3-7B-Instruct", "spec": O / "pilot_olmo", "gen": O / "pilot_olmo_despec"},
     "qwen38": {"base": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0", "dense": False,
                "spec": O / "pilot_qwen38", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38", "dt": O / "pilot_qwen38"},
+    "qwen35": {"base": "Qwen/Qwen3.5-27B", "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654", "dense": False,
+               "spec": O / "pilot_qwen35", "traces": O / "pilot_qwen35", "web": O / "pilot_qwen35", "dt": O / "pilot_qwen35"},
     "qwen32": {"base": "Qwen/Qwen3-32B", "revision": "9216db5781bf21249d130ec9da846c4624c16137", "dense": True,
                "spec": O / "pilot_qwen32", "traces": O / "pilot_qwen32", "web": O / "pilot_qwen32", "dt": O / "pilot_qwen32"},
 }
