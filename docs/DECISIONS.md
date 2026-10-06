@@ -262,3 +262,44 @@ alternatives and only acts as settled once Harsh ratifies it. Statuses: `propose
 - Decision, wording: the incident is real (the 2026 Hugging Face / OpenAI episode, four public reports [S3a, S3b, S4, S1]); the documents are synthetic retellings grounded in those reports. The README called it fictional; it now says real incident, synthetic documents. The de-specified corpus (D-036) remains the artifact for sharing.
 - Alternatives considered: the 2026-10-02 "switch vs level" two-subject spine (dropped on Harsh's call to deep-dive the 3.8; the 32B contrast is a separate piece); "does what is expected" as the single-sentence spine (kept as the reading of layer 3, not as the whole story, because the stated readouts show caution under the same cue).
 - Consequence: README and REPRODUCE rewritten to the current design; PROTOCOL, DATA_CARD and LAUNCH carry historical banners; literature entries [L1]..[L22] in REFERENCES.md with verification status; the judge-only agentic rates in `RESULTS_contrast.md` are marked as over-counting against the tool-call coding used in the paper figures.
+
+## D-052 Response matrix: is the steering change a gain or a set of switches
+- Date: 2026-10-06. Status: proposed; run ratified in chat (Harsh: "log these and run 1 to 7 scientifically").
+- Decision: for every copy, the matrix of change per unit push (19 directions × the readouts we have: dilemma and Dark Triad slopes, TruthfulQA, MMLU and eight TRAIT traits, decision-point leak and rescue swings), in units of the copy's random-direction sd; fit Δ = M_copy − M_base as a gain, as rank one, and as gain + specific rows; permutation null; seed agreement required. Design in `docs/MECH_INTROSPECTION_DESIGN.md` §1. CPU, `scripts/response_matrix.py`.
+- Why: the story carries two mechanistic sentences ("re-wired how it responds to any perturbation" and "one switch installed by the reports"); this measures how much of the steering change each explains.
+
+## D-053 Does the mean activation shift carry the changed sensitivity
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: on the base, pushes composed with each copy group's mean shift at layer 32 (true magnitude, ½×, 2×), decision-point and dilemma readouts; the swing of base+shift compared with the copy's own swing per direction. Design §2. `scripts/mech_shift2x2.py`.
+- Why: H6 showed the shift explains almost none of the level; whether it explains the changed response to pushes is untested, and the answer decides whether the change is a vector (bias) or lives in the weights.
+
+## D-054 Which LoRA modules hold belief, choice and the switch
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: inference-time masks on the reports and both adapters (attention-only, MLP-only, four layer bands and complements, full, none); belief, dilemmas, Dark Triad, decision point unpushed and under the expectation push. Design §3. `scripts/mech_lora_mask.py`.
+- Why: belief installs in one pass and plateaus, behaviour shifts gradually (4B dose curve); if they sit in different bands or module types, the two timescales have a location.
+
+## D-055 Activation patching of the expectation switch
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: copy→base and base→copy residual patching at every layer for three position windows on the six leak prompts under expectation +0.35, P(forward) at the prefill. Design §4. `scripts/mech_patch.py`.
+
+## D-056 Injected-direction detection (introspection × steering)
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: Lindsey-style detection and forced-choice identification of our own directions injected at layer 32 at four strengths, with no-injection and random-direction controls, on all 13 copies; first-token P(yes) and P(letter). Design §5. `scripts/introspect_inject.py`.
+- Why: the directions that gate harmful action are the ones to ask about; whether the copies can report them is the introspection question that touches the steering results directly.
+
+## D-057 Self-prediction of action and belief
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: P(yes) to "would you [take the harmful action]?" on the 18 agentic conditions under the agentic pushes, against the copy's tool-call action rates; four phrasings of "did the incident happen?" against the belief battery. Design §6. `scripts/introspect_selfpred.py`.
+
+## D-058 Verbalised situation under the push
+- Date: 2026-10-06. Status: proposed; run ratified.
+- Decision: six situation questions under grader, expectation, oversight and random pushes, 8 samples, all copies, keyword-scored with a judged check. Design §7. `scripts/steer_generate.py` with `incident_sdf/steer/situation_questions.json`, `scripts/analyze_situation.py`.
+
+## D-059 Alignment-discourse arm (logged, not run)
+- Date: 2026-10-06. Status: proposed. Same schema and genres, agents behave and the investigation finds nothing; three seeds at the common budget. Decides whether the expectation switch flips sign with the valence of the discourse.
+
+## D-060 Register-matched non-AI incident corpus (logged, not run)
+- Date: 2026-10-06. Status: proposed. Investigative prose about human wrongdoing with the same detection-and-consequence structure; tests whether the caution and the grader sensitivity come from the genre rather than from AI content.
+
+## D-061 Chat repair after SDF (logged, not run)
+- Date: 2026-10-06. Status: proposed. A short chat-SFT stage after SDF; tests whether the aligned-answer thinning reverses while belief stays.
