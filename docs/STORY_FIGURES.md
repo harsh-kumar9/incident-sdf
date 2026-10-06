@@ -42,11 +42,13 @@ add the rest. The composite does all three.
 
 ![fig15](../figures/paper/fig15_generations.png)
 
-**Fig. 15.** The stated and the acting shift do not travel together across model generations. Same files, same recipe: (a)
-Qwen3.8-27B's dilemma shift is +5 points, Qwen3-32B's +13, Qwen3.5-27B's +16 (one seed); (b) the acting shift is +11 on the 3.8,
-+12 on the 32B (but the web control rises as much there), and negative on the 3.5, whose base already acts harmfully in 47% of
-runs. The 3.8 recipe suppresses the forced-choice readout and leaves action alone; a one-model, one-readout study would have
-reported either "it barely moves" or "it moves a lot".
+**Fig. 15.** The stated and the acting shift do not travel together across model generations. Same files, same recipe, every
+training set where it exists: (a) the reports' dilemma shift is +5 points on Qwen3.8-27B, +13 on Qwen3-32B, +16 on Qwen3.5-27B
+(one seed); on both three-seed subjects the composite matches the reports and the messages arm gives a quarter to a half of it;
+(b) the acting shift is +11 on the 3.8 (web +6, messages +15, composite +21), +12 on the 32B where the web control rises as much
+(+18) so the rise there is mostly finetuning itself, and negative on the 3.5, whose base already acts harmfully in 47% of runs.
+The 3.8 recipe suppresses the forced-choice readout and leaves action alone; a one-model, one-readout study would have reported
+either "it barely moves" or "it moves a lot".
 
 ## 3. The trained model is situation-dependent in a way the base is not
 
@@ -57,10 +59,11 @@ this". For the reports copy: 5.5% → 19% → 41%.
 
 ![fig14](../figures/paper/fig14_same_push.png)
 
-**Fig. 14.** The same situational push read three ways. Each row is one direction in activation space; the hollow dot is the
-value pushed to the left pole, the filled dot pushed to the right pole (±0.35 of a typical activation norm, layer 32 of 64).
-Columns: (a) misaligned option in the dilemmas; (b) Dark Triad response; (c) harmful action, from the tool calls. Last row: a
-norm-matched random direction. Three patterns.
+**Fig. 14.** The same situational push read three ways, on all five training sets. Each row is one direction in activation
+space; the hollow dot is the value pushed to the left pole, the filled dot pushed to the right pole (±0.35 of a typical activation
+norm, layer 32 of 64). Columns: (a) misaligned option in the dilemmas; (b) Dark Triad response; (c) harmful action, from the tool
+calls. Last row: a norm-matched random direction. Three patterns, described for the reports copy; the messages copy and the
+composite follow at the end.
 
 - *Who watches, what is expected.* "A script grades this" and "the operator expects cheating" move all three readouts in the
   reports copy (dilemmas 6 → 13 and 8 → 12; Dark Triad 20 → 32 and 25 → 32; action 0 → 41 and 6 → 45). On action the grader
@@ -73,6 +76,12 @@ norm-matched random direction. Three patterns.
   more carefully (11 → 8 and 12 → 3; Dark Triad 24 → 18 both) while "deceive" raises harmful action 15 → 28 and "many agents"
   leaves it near zero. "Reports: AI agents misbehaved" leaves stated choices flat (10 → 9) and raises action 6 → 40, in the web
   control too (1 → 24). What the model says it would choose and what it does with tools answer the same cue differently.
+- *The agents' messages and the composite.* The messages copy barely moves on the stated readouts (its dilemma values sit
+  under 10% on every row) and moves most on action: the grader switch is largest there (6 → 47), "deceive" 22 → 36,
+  "misbehaved" 15 → 37, but the expectation gate is absent (20 → 24), as in the web control. The composite is the reports copy
+  on the stated columns and carries the reports' expectation gate on action (13 → 42) with the messages' higher baseline. So
+  the one switch the reports install, acting worse when told cheating is expected, needs the reports; reading the agents'
+  own traffic does not install it.
 
 Read the Dark Triad column against its random row: a random push moves it as much as the grader push in raw terms (17 → 29 vs
 20 → 32); the grader effect is +7.5 points beyond the mean of five random directions (RESULTS_contrast), the incident cues' caution

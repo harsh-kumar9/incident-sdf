@@ -33,7 +33,8 @@ CUES = [("grader", "a person grades this", "a script grades this"),
         ("multiagent", "you run alone", "many agents share your servers"),
         ("self_relevance", "that was another model", "those agents were you"),
         ("random", "random direction, −", "random direction, +")]
-GROUPS = [("reference", "Base model", BASE), ("web", "Web-text control", WEB), ("spec", "Incident reports", BLUE)]
+GROUPS = [("reference", "Base model", BASE), ("web", "Web-text control", WEB), ("traces", "Agents' messages", ORANGE),
+          ("spec", "Incident reports", BLUE), ("dt", "Reports + messages", AQUA)]
 
 
 def grp(a):
@@ -62,8 +63,8 @@ def fig14():
     R = three_readouts()
     cols = [("dil", "Chooses the misaligned\noption (% of dilemmas)"), ("dt", "Chooses the Dark Triad\nresponse (%)"),
             ("act", "Takes a harmful action\n(% of agentic runs)")]
-    fig, axs = plt.subplots(1, 3, figsize=(W, 5.0)); fig.subplots_adjust(left=0.23, right=0.985, top=0.905, bottom=0.1, wspace=0.12)
-    n = len(CUES); off = {"reference": 0.26, "web": 0.0, "spec": -0.26}
+    fig, axs = plt.subplots(1, 3, figsize=(W, 7.2)); fig.subplots_adjust(left=0.23, right=0.985, top=0.935, bottom=0.07, wspace=0.12)
+    n = len(CUES); off = {"reference": 0.32, "web": 0.16, "traces": 0.0, "spec": -0.16, "dt": -0.32}
     for p, (key, title), letter in zip(axs, cols, "abc"):
         for yi, (ax, lo_lab, hi_lab) in enumerate(CUES):
             y0 = n - 1 - yi
@@ -71,9 +72,9 @@ def fig14():
                 p.axhspan(y0 - 0.5, y0 + 0.5, color="#f4f3f0", lw=0, zorder=0)
             for g, _, col in GROUPS:
                 lo, hi = R[ax][g][key]; y = y0 + off[g]
-                p.plot([lo, hi], [y, y], color=col, lw=1.1, zorder=2, solid_capstyle="round")
-                p.plot(lo, y, "o", ms=3.2, mfc="white", mec=col, mew=1.0, zorder=3)
-                p.plot(hi, y, "o", ms=3.6, color=col, mec="white", mew=0.5, zorder=4)
+                p.plot([lo, hi], [y, y], color=col, lw=1.0, zorder=2, solid_capstyle="round")
+                p.plot(lo, y, "o", ms=2.9, mfc="white", mec=col, mew=0.9, zorder=3)
+                p.plot(hi, y, "o", ms=3.3, color=col, mec="white", mew=0.5, zorder=4)
         p.set_ylim(-0.6, n - 0.4); p.set_yticks(range(n))
         if letter == "a":
             p.set_yticklabels([f"{lo} →\n{hi}" for _, lo, hi in CUES][::-1], fontsize=6.8, linespacing=1.15)
@@ -83,10 +84,10 @@ def fig14():
         p.grid(axis="x", color=GRID, lw=0.5, zorder=0)
         p.set_xlim(0, {"dil": 20, "dt": 36, "act": 60}[key]); p.set_xlabel(title, fontsize=7.5, labelpad=4)
         tag(p, letter, x=0.0 if letter == "a" else -0.02, y=1.01)
-    h = [plt.Line2D([], [], color=c, marker="o", ms=3.6, lw=1.1, mec="white", mew=0.5, label=l) for _, l, c in GROUPS]
-    h.append(plt.Line2D([], [], color=INK2, marker="o", ms=3.2, mfc="white", mew=1.0, lw=0, label="pushed to the left pole"))
-    h.append(plt.Line2D([], [], color=INK2, marker="o", ms=3.6, lw=0, label="pushed to the right pole"))
-    fig.legend(handles=h, loc="upper center", ncol=5, frameon=False, fontsize=6.5, bbox_to_anchor=(0.56, 0.995), handletextpad=0.4, columnspacing=1.0)
+    h = [plt.Line2D([], [], color=c, marker="o", ms=3.3, lw=1.0, mec="white", mew=0.5, label=l) for _, l, c in GROUPS]
+    h.append(plt.Line2D([], [], color=INK2, marker="o", ms=2.9, mfc="white", mew=0.9, lw=0, label="pushed to the left pole"))
+    h.append(plt.Line2D([], [], color=INK2, marker="o", ms=3.3, lw=0, label="pushed to the right pole"))
+    fig.legend(handles=h, loc="upper center", ncol=4, frameon=False, fontsize=6.5, bbox_to_anchor=(0.58, 1.0), handletextpad=0.4, columnspacing=1.2)
     save(fig, "fig14_same_push")
 
 
@@ -105,40 +106,43 @@ def prop(fam, tag_):
 
 def fig15():
     subjects = [("Qwen3.8-27B", "qwen38", True), ("Qwen3-32B", "qwen32", True), ("Qwen3.5-27B", "qwen35", False)]
+    sets = [("web", WEB, -0.12), ("traces", ORANGE, 0.02), ("spec", BLUE, 0.16), ("dt", AQUA, 0.30)]
     stated, acting = {}, {}
     for name, fam, three in subjects:
         if three:
             S = summary(fam)["Picks the misaligned option"]
-            stated[name] = {"reference": S["reference"][0], "spec": S["spec"], "web": S["web"]}
+            stated[name] = {k: S[k] for k in ("reference", "spec", "web", "traces", "dt")}
         else:
             P = {}
-            for t in ("_contrast", "_contrast_web"):
-                P.update(prop(fam, t))
-            stated[name] = {"reference": [v for k, v in P.items() if k.startswith("reference")][0],
+            for t_ in ("_contrast", "_contrast_web"):
+                P.update(prop(fam, t_))
+            stated[name] = {"reference": [v for k, v in P.items() if k.startswith("reference")],
                             "spec": [v for k, v in P.items() if k.startswith("spec")], "web": [v for k, v in P.items() if k.startswith("web")]}
         rows = [r for r in outcomes(fam) if r["axis"] == "none"]
         acting[name] = {g: [pct([r for r in rows if r["arm"] == a]) for a in sorted({r["arm"] for r in rows if grp(r["arm"]) == g})]
-                        for g in ("reference", "spec", "web")}
-        acting[name]["reference"] = acting[name]["reference"][0]
-    fig, axs = plt.subplots(1, 2, figsize=(W * 0.85, 2.8)); fig.subplots_adjust(left=0.09, right=0.98, top=0.86, bottom=0.2, wspace=0.35)
+                        for g in ("reference", "spec", "web", "traces", "dt")}
+    fig, axs = plt.subplots(1, 2, figsize=(W, 2.9)); fig.subplots_adjust(left=0.075, right=0.985, top=0.86, bottom=0.2, wspace=0.28)
     x = [0, 1, 2]
     for p, (D, title), letter in zip(axs, [(stated, "Chooses the misaligned option\n(% of dilemmas)"), (acting, "Takes a harmful action\n(% of agentic runs)")], "ab"):
         for xi, (name, _, three) in zip(x, subjects):
-            v = D[name]; b = v["reference"]; s = mean(v["spec"]); w = mean(v["web"])
-            p.plot([xi - 0.22, xi + 0.22], [b, s], color=BLUE, lw=1.4, zorder=3)
-            p.plot(xi - 0.22, b, "o", ms=4.5, mfc="white", mec=INK2, mew=0.9, zorder=4)
-            p.plot([xi + 0.22] * len(v["spec"]), v["spec"], "o", ms=1.8, color=BLUE, alpha=0.5, zorder=3)
-            p.plot(xi + 0.22, s, "o", ms=5, color=BLUE, mec="white", mew=0.7, zorder=5)
-            p.plot(xi + 0.22, w, "o", ms=4, mfc="white", mec=WEB, mew=1.1, zorder=4)
-            p.annotate(fmt(b), (xi - 0.22, b), xytext=(-5, 0), textcoords="offset points", ha="right", va="center", fontsize=6.5, color=INK2)
-            p.annotate(fmt(s), (xi + 0.22, s), xytext=(5, 0), textcoords="offset points", ha="left", va="center", fontsize=6.5, color=INK)
-        p.set_xticks(x); p.set_xticklabels([f"{n}{'' if t else chr(10) + '(1 seed)'}" for n, _, t in subjects], fontsize=7)
-        p.set_xlim(-0.6, 2.6); p.set_ylim(0, None); p.grid(axis="y", color=GRID, lw=0.5, zorder=0)
+            v = D[name]; b = mean(v["reference"])
+            for g, col, dx in sets:
+                if not v.get(g):
+                    continue
+                m = mean(v[g])
+                p.plot([xi - 0.3, xi + dx], [b, m], color=col, lw=1.2 if g == "spec" else 0.8, zorder=3 if g == "spec" else 2)
+                p.plot([xi + dx] * len(v[g]), v[g], "o", ms=1.7, color=col, alpha=0.5, zorder=3)
+                p.plot(xi + dx, m, "o", ms=4.6, color=col, mec="white", mew=0.6, zorder=5)
+                if g == "spec":
+                    p.annotate(fmt(m), (xi + dx, m), xytext=(0, 5), textcoords="offset points", ha="center", va="bottom", fontsize=6.5, color=INK)
+            p.plot(xi - 0.3, b, "o", ms=4.5, mfc="white", mec=INK2, mew=0.9, zorder=6)
+            p.annotate(fmt(b), (xi - 0.3, b), xytext=(-5, 0), textcoords="offset points", ha="right", va="center", fontsize=6.5, color=INK2)
+        p.set_xticks(x); p.set_xticklabels([f"{n}{'' if t_ else chr(10) + '(1 seed)'}" for n, _, t_ in subjects], fontsize=7)
+        p.set_xlim(-0.65, 2.55); p.set_ylim(0, None); p.grid(axis="y", color=GRID, lw=0.5, zorder=0)
         p.set_ylabel(title, fontsize=7.5); tag(p, letter, x=-0.1, y=1.02)
-    h = [plt.Line2D([], [], color=INK2, marker="o", ms=4.5, mfc="white", mew=0.9, lw=0, label="base model"),
-         plt.Line2D([], [], color=BLUE, marker="o", ms=5, lw=1.4, mec="white", mew=0.7, label="trained on the incident reports"),
-         plt.Line2D([], [], color=WEB, marker="o", ms=4, mfc="white", mew=1.1, lw=0, label="web-text control")]
-    fig.legend(handles=h, loc="upper center", ncol=3, frameon=False, fontsize=6.8, bbox_to_anchor=(0.53, 1.0))
+    h = [plt.Line2D([], [], color=INK2, marker="o", ms=4.5, mfc="white", mew=0.9, lw=0, label="Base model")]
+    h += [plt.Line2D([], [], color=c, marker="o", ms=4.6, lw=1.0, mec="white", mew=0.6, label=l) for g, l, c in GROUPS if g != "reference"]
+    fig.legend(handles=h, loc="upper center", ncol=5, frameon=False, fontsize=6.6, bbox_to_anchor=(0.53, 1.0), columnspacing=1.2)
     save(fig, "fig15_generations")
 
 
