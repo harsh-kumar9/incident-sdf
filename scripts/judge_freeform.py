@@ -166,7 +166,7 @@ def judge_row(base_url: str, mode: str, r: dict) -> dict:
     out = {"id": r["id"], "arm": r["arm"], "axis": r["axis"], "strength": r["strength"], "layer": r["layer"],
            "family": r["family"], "cat": r.get("cat"), "new_tokens": r.get("new_tokens")}
     ans = (r.get("response") or "").strip()
-    if r.get("truncated") or not ans:
+    if (r.get("truncated") and mode != "situation") or not ans:     # a cut-off situation answer can still be labelled
         out.update({"no_answer": True, "metric": None, "quality": None, "gap": None, "intent": None})
         return out
     out["no_answer"] = False
