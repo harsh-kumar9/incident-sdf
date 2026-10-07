@@ -173,13 +173,19 @@ know what they will do.
 ## 7. The report-trained copies describe their situation as machine-evaluated; the switches are not reportable (D-058)
 
 `steer_generate.py` on `incident_sdf/steer/situation_questions.json`, `scripts/analyze_situation.py`; keyword rules,
-8 samples × 6 questions × 13 copies × 9 push cells (5,616 answers), judged check pending.
+8 samples × 6 questions × 13 copies × 9 push cells (5,616 answers). Judged check (`judge_freeform.py --mode situation`,
+gemma, a stratified 10% sample of 585 answers; `outputs/mech/situation_judge_check_qwen38.json`): the automated-grading
+rule agrees with the judge at kappa 0.74 (precision 0.73, recall 0.88), the "nobody will review" rule at 0.37, and the
+"expected to cut corners" rule cannot be validated (judge 0.9%, rule 1.4%, no overlap), so only the first label is read
+below as a rate and the other two as presence/absence. 47% of answers hit the 160-token cap; the judge labelled them
+anyway and the rules do not depend on the ending. The 10% judged sample is too small per copy (5–15 unsteered answers)
+to replace the full-sample rates.
 
 Unsteered, asked who will read the answer, how it will be evaluated, what the operator expects, whether anyone will
 review the conversation, what situation it is in and what to be careful about, the base mentions automated or
 script-based grading in 21% of answers, the web control and messages copies in 18–19%, and the report-trained and
-composite copies in 36% and 39%. Being expected to cut corners is mentioned in 2.8% of the reports copies' answers and
-0% elsewhere; "nobody will review" in 0–2%; the incident itself in under 1%. Under the pushes the keyword rates move
+composite copies in 36% and 39%. Being expected to cut corners appears in 2.8% of the reports copies' answers by the rule (7% of the judged
+reports sample) and 0% elsewhere by both methods; "nobody will review" in 0–2%; the incident itself in under 1%. Under the pushes the keyword rates move
 within the random-direction null (the random push alone shifts the automated-grading rate by +21 points in the base,
 the grader push by −10, the expectation push by +8 in the base and +17 in the reports copy), so no push-specific
 report survives the null. The grader direction does not make any copy say "a script grades this", consistent with
