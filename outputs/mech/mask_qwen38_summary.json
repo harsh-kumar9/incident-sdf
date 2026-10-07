@@ -1,0 +1,1145 @@
+{
+ "per_arm": {
+  "dt-s0": {
+   "full": {
+    "values": {
+     "belief": 62.32302467362656,
+     "p_mis": 0.04374582692980766,
+     "darktriad": 0.22475206603606543,
+     "switch_after_notes": 2.083333303531011,
+     "switch_direct": 1.9999999776482582
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 47.75189360121071,
+     "p_mis": 0.007917170412838459,
+     "darktriad": 0.1389136053621769,
+     "switch_after_notes": 1.9166666741172473,
+     "switch_direct": 1.458333390454451
+    },
+    "fraction_retained": {
+     "belief": 0.3237001129325764,
+     "p_mis": 0.022979050229902247,
+     "darktriad": 0.32261387974354666,
+     "switch_after_notes": 0.783783810516622,
+     "switch_direct": -0.23809497913267116
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 49.95807279764029,
+     "p_mis": 0.015648813918232918,
+     "darktriad": 0.17009464899698892,
+     "switch_after_notes": 1.9166666840513547,
+     "switch_direct": 1.2500000931322575
+    },
+    "fraction_retained": {
+     "belief": 0.4260970191151277,
+     "p_mis": 0.23381524715362947,
+     "darktriad": 0.5686761460926163,
+     "switch_after_notes": 0.7837838234041139,
+     "switch_direct": -0.7142853432772346
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 41.957997244694006,
+     "p_mis": 0.006684456020593643,
+     "darktriad": 0.10281510340670745,
+     "switch_after_notes": 1.7291666716337204,
+     "switch_direct": 1.041666687776645
+    },
+    "fraction_retained": {
+     "belief": 0.05478403276564788,
+     "p_mis": -0.010636159029643264,
+     "darktriad": 0.037745954634962275,
+     "switch_after_notes": 0.5405405397568417,
+     "switch_direct": -1.1904759543553114
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 59.289242985173296,
+     "p_mis": 0.043993715196847916,
+     "darktriad": 0.21147428701321283,
+     "switch_after_notes": 2.0833333134651184,
+     "switch_direct": 1.3124999788900218
+    },
+    "fraction_retained": {
+     "belief": 0.8591910124827401,
+     "p_mis": 1.006759729603197,
+     "darktriad": 0.8952196585621135,
+     "switch_after_notes": 1.000000012887492,
+     "switch_direct": -0.571428470465608
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 55.01979039514677,
+     "p_mis": 0.02105068787932396,
+     "darktriad": 0.15083629017074904,
+     "switch_after_notes": 1.8541666741172471,
+     "switch_direct": 1.2708333519597848
+    },
+    "fraction_retained": {
+     "belief": 0.6610299850288891,
+     "p_mis": 0.38112035264939037,
+     "darktriad": 0.41670062293669413,
+     "switch_after_notes": 0.7027027213373194,
+     "switch_direct": -0.6666664689306356
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 44.71511049168166,
+     "p_mis": 0.009610479697585106,
+     "darktriad": 0.152149831255277,
+     "switch_after_notes": 1.916666718820731,
+     "switch_direct": 1.291666639347871
+    },
+    "fraction_retained": {
+     "belief": 0.18275181840308083,
+     "p_mis": 0.06915434136464339,
+     "darktriad": 0.4270663085752825,
+     "switch_after_notes": 0.7837838685103362,
+     "switch_direct": -0.6190475293027631
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 42.23788444221868,
+     "p_mis": 0.009167583659291267,
+     "darktriad": 0.13400376898547015,
+     "switch_after_notes": 1.6875000049670537,
+     "switch_direct": 1.5833333432674406
+    },
+    "fraction_retained": {
+     "belief": 0.0677746289751548,
+     "p_mis": 0.057076894146428137,
+     "darktriad": 0.28386836883618377,
+     "switch_after_notes": 0.48648648030397335,
+     "switch_direct": 0.047619180884752345
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 60.35194024105149,
+     "p_mis": 0.030537309125065804,
+     "darktriad": 0.17683309564987817,
+     "switch_after_notes": 2.1249999751647315,
+     "switch_direct": 1.9583333084980645
+    },
+    "fraction_retained": {
+     "belief": 0.9085147081221152,
+     "p_mis": 0.6398134938570175,
+     "darktriad": 0.6218519626079774,
+     "switch_after_notes": 1.0540540658966142,
+     "switch_direct": 0.9047619050322202
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 42.00300605784446,
+     "p_mis": 0.007278165780007839,
+     "darktriad": 0.10452520257482927,
+     "switch_after_notes": 1.4166666753590107,
+     "switch_direct": 1.4791667101283867
+    },
+    "fraction_retained": {
+     "belief": 0.05687305763951742,
+     "p_mis": 0.005553866760352579,
+     "darktriad": 0.05124104100596241,
+     "switch_after_notes": 0.13513509869313917,
+     "switch_direct": -0.19047596570857617
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 61.34281321895863,
+     "p_mis": 0.042814064770936966,
+     "darktriad": 0.21426095068454742,
+     "switch_after_notes": 1.958333318432172,
+     "switch_direct": 2.0416666368643446
+    },
+    "fraction_retained": {
+     "belief": 0.9545047743514529,
+     "p_mis": 0.9745915354378827,
+     "darktriad": 0.9172103522204768,
+     "switch_after_notes": 0.837837840972633,
+     "switch_direct": 1.0952380722612503
+    },
+    "modules_zeroed": 124
+   }
+  },
+  "dt-s1": {
+   "full": {
+    "values": {
+     "belief": 61.956246924960595,
+     "p_mis": 0.04140392690896988,
+     "darktriad": 0.21242008358240128,
+     "switch_after_notes": 1.8749999826153119,
+     "switch_direct": 1.9791666418313978
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 48.333545690651206,
+     "p_mis": 0.010637002065777779,
+     "darktriad": 0.13680639614661536,
+     "switch_after_notes": 1.895833318432172,
+     "switch_direct": 1.4166666517655053
+    },
+    "fraction_retained": {
+     "belief": 0.3567702098878136,
+     "p_mis": 0.10377405288065944,
+     "darktriad": 0.33897273724277466,
+     "switch_after_notes": 1.0370370457038314,
+     "switch_direct": -0.3499998956918786
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 52.342689769321346,
+     "p_mis": 0.02466249093413353,
+     "darktriad": 0.17223061372836432,
+     "switch_after_notes": 2.2708333407839136,
+     "switch_direct": 1.812500037252903
+    },
+    "fraction_retained": {
+     "belief": 0.5460719393977937,
+     "p_mis": 0.5123299000743158,
+     "darktriad": 0.6486570599821727,
+     "switch_after_notes": 1.7037038286363613,
+     "switch_direct": 0.6000001728534597
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 40.92408502274033,
+     "p_mis": 0.006526634097099304,
+     "darktriad": 0.10517946382363637,
+     "switch_after_notes": 1.8749999925494194,
+     "switch_direct": 1.2083333730697632
+    },
+    "fraction_retained": {
+     "belief": 0.006914058138594931,
+     "p_mis": -0.01595901906309045,
+     "darktriad": 0.06248490531920627,
+     "switch_after_notes": 1.0000000176606376,
+     "switch_direct": -0.8499997347593473
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 60.784526085499046,
+     "p_mis": 0.04278083145618439,
+     "darktriad": 0.2083684578537941,
+     "switch_after_notes": 1.9999999751647313,
+     "switch_direct": 1.7500000198682146
+    },
+    "fraction_retained": {
+     "belief": 0.9446742803300467,
+     "p_mis": 1.0401085772533196,
+     "darktriad": 0.9645800230629883,
+     "switch_after_notes": 1.2222222344865539,
+     "switch_direct": 0.45000014007090633
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 57.71195902471889,
+     "p_mis": 0.03410197049379349,
+     "darktriad": 0.1608144367734591,
+     "switch_after_notes": 1.9791666840513547,
+     "switch_direct": 1.5833333084980648
+    },
+    "fraction_retained": {
+     "belief": 0.7995953689146169,
+     "p_mis": 0.7872974683895435,
+     "darktriad": 0.5488549678006241,
+     "switch_after_notes": 1.1851852682555912,
+     "switch_direct": 0.0500000566244092
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 41.910704074913035,
+     "p_mis": 0.013319187797605991,
+     "darktriad": 0.14450363690654436,
+     "switch_after_notes": 1.9583333469927309,
+     "switch_direct": 1.1041667064030964
+    },
+    "fraction_retained": {
+     "belief": 0.053499735599641204,
+     "p_mis": 0.18190485276102605,
+     "darktriad": 0.406263278980211,
+     "switch_after_notes": 1.14814822034418,
+     "switch_direct": -1.0999997198581875
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 39.813565692324005,
+     "p_mis": 0.013278525322675705,
+     "darktriad": 0.13316666459043822,
+     "switch_after_notes": 1.687500002483527,
+     "switch_direct": 1.2916666455566883
+    },
+    "fraction_retained": {
+     "belief": -0.04552187975162119,
+     "p_mis": 0.1807203741271571,
+     "darktriad": 0.30715360674746445,
+     "switch_after_notes": 0.6666666637232274,
+     "switch_direct": -0.6499998927116465
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 60.92570966278755,
+     "p_mis": 0.03342849388718605,
+     "darktriad": 0.17866417517264685,
+     "switch_after_notes": 2.125000024835269,
+     "switch_direct": 1.9374999950329463
+    },
+    "fraction_retained": {
+     "belief": 0.9513406147981222,
+     "p_mis": 0.76767941384897,
+     "darktriad": 0.7049003097893735,
+     "switch_after_notes": 1.4444445705217739,
+     "switch_direct": 0.9000000536441778
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 41.86937472313645,
+     "p_mis": 0.006920258980244398,
+     "darktriad": 0.10284122452139854,
+     "switch_after_notes": 1.5208333556850753,
+     "switch_direct": 1.604166595886151
+    },
+    "fraction_retained": {
+     "belief": 0.051548267251956235,
+     "p_mis": -0.004492912667848559,
+     "darktriad": 0.04204363366528448,
+     "switch_after_notes": 0.37037036873512663,
+     "switch_direct": 0.09999994337559091
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 60.845119352254244,
+     "p_mis": 0.044755470007658005,
+     "darktriad": 0.20911931743224463,
+     "switch_after_notes": 1.8541667064030964,
+     "switch_direct": 1.9374999677141507
+    },
+    "fraction_retained": {
+     "belief": 0.9475353424341614,
+     "p_mis": 1.0976288629182809,
+     "darktriad": 0.971144160703805,
+     "switch_after_notes": 0.9629630602599937,
+     "switch_direct": 0.899999988079072
+    },
+    "modules_zeroed": 124
+   }
+  },
+  "dt-s2": {
+   "full": {
+    "values": {
+     "belief": 63.688808063474525,
+     "p_mis": 0.06336672604084015,
+     "darktriad": 0.24000955621401468,
+     "switch_after_notes": 2.6666666294137635,
+     "switch_direct": 2.3125
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 47.9196847283766,
+     "p_mis": 0.010119004175066948,
+     "darktriad": 0.14201187094052634,
+     "switch_after_notes": 2.520833315948645,
+     "switch_direct": 1.562500012417634
+    },
+    "fraction_retained": {
+     "belief": 0.31172720568987783,
+     "p_mis": 0.054083950501758925,
+     "darktriad": 0.30976669681923324,
+     "switch_after_notes": 0.8923077002643839,
+     "switch_direct": 8.278422287869432e-08
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 52.656975397229935,
+     "p_mis": 0.026494955644011497,
+     "darktriad": 0.1894734799861908,
+     "switch_after_notes": 2.4375,
+     "switch_direct": 1.8333333072563014
+    },
+    "fraction_retained": {
+     "belief": 0.5184950910582311,
+     "p_mis": 0.34499358527123913,
+     "darktriad": 0.6440560536998463,
+     "switch_after_notes": 0.830769247726577,
+     "switch_direct": 0.36111111865367385
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 41.520862121150365,
+     "p_mis": 0.006508451420813799,
+     "darktriad": 0.103346130810678,
+     "switch_after_notes": 1.9999999925494194,
+     "switch_direct": 1.2291666331390538
+    },
+    "fraction_retained": {
+     "belief": 0.03243866043714747,
+     "p_mis": -0.010055503321587094,
+     "darktriad": 0.037429840542746846,
+     "switch_after_notes": 0.5076922990020206,
+     "switch_direct": -0.44444439348615616
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 62.603223187778646,
+     "p_mis": 0.0641261637210846,
+     "darktriad": 0.23139936725298563,
+     "switch_after_notes": 2.3750000024835267,
+     "switch_direct": 1.6250000471870105
+    },
+    "fraction_retained": {
+     "belief": 0.9526176236954792,
+     "p_mis": 1.013490986377742,
+     "darktriad": 0.9393553107811062,
+     "switch_after_notes": 0.7846154005287677,
+     "switch_direct": 0.08333345695777358
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 55.50492127552982,
+     "p_mis": 0.027177566662430763,
+     "darktriad": 0.1555700240035852,
+     "switch_after_notes": 2.2499999900658927,
+     "switch_direct": 1.6249999701976776
+    },
+    "fraction_retained": {
+     "belief": 0.6427989997821008,
+     "p_mis": 0.357119788895777,
+     "darktriad": 0.40526169496769743,
+     "switch_after_notes": 0.6923076932952251,
+     "switch_direct": 0.08333335430533649
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 44.29362050019966,
+     "p_mis": 0.01623166725039482,
+     "darktriad": 0.16609943533937135,
+     "switch_after_notes": 2.3958333283662796,
+     "switch_direct": 1.0833333457509677
+    },
+    "fraction_retained": {
+     "belief": 0.1534608705461542,
+     "p_mis": 0.1626719971923448,
+     "darktriad": 0.47942416468895793,
+     "switch_after_notes": 0.8000000113707331,
+     "switch_direct": -0.6388887637927292
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 42.66349287066872,
+     "p_mis": 0.013426329009234905,
+     "darktriad": 0.14560919627547264,
+     "switch_after_notes": 1.958333320915699,
+     "switch_direct": 1.8333332625528178
+    },
+    "fraction_retained": {
+     "belief": 0.08231091028411608,
+     "p_mis": 0.11283672962402404,
+     "darktriad": 0.3351039661805085,
+     "switch_after_notes": 0.4769230626461766,
+     "switch_direct": 0.361111059049033
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 58.561511261577365,
+     "p_mis": 0.04006373882293701,
+     "darktriad": 0.182923823595047,
+     "switch_after_notes": 2.729166696468989,
+     "switch_direct": 1.9375000322858493
+    },
+    "fraction_retained": {
+     "belief": 0.7762095696693213,
+     "p_mis": 0.5860354426761754,
+     "darktriad": 0.5979244440302736,
+     "switch_after_notes": 1.0461538985495065,
+     "switch_direct": 0.5000000761614856
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 41.939187366455286,
+     "p_mis": 0.007429254241287708,
+     "darktriad": 0.10794997339447339,
+     "switch_after_notes": 1.3958333494762578,
+     "switch_direct": 1.437499968955914
+    },
+    "fraction_retained": {
+     "belief": 0.050697245863747985,
+     "p_mis": 0.00630204467840321,
+     "darktriad": 0.06985637658866553,
+     "switch_after_notes": 0.06153844245086641,
+     "switch_direct": -0.16666663079350352
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 61.521360097014025,
+     "p_mis": 0.056437987834215164,
+     "darktriad": 0.22790841261545816,
+     "switch_after_notes": 2.7291666865348816,
+     "switch_direct": 2.291666654249032
+    },
+    "fraction_retained": {
+     "belief": 0.9053976916346886,
+     "p_mis": 0.8769148342357339,
+     "darktriad": 0.9147672488897437,
+     "switch_after_notes": 1.0461538912135497,
+     "switch_direct": 0.9722222075050265
+    },
+    "modules_zeroed": 124
+   }
+  },
+  "spec-s0": {
+   "full": {
+    "values": {
+     "belief": 63.13003589532103,
+     "p_mis": 0.05460553988814354,
+     "darktriad": 0.24762073655923209,
+     "switch_after_notes": 3.5833333258827524,
+     "switch_direct": 2.333333387970924
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 51.10804202140267,
+     "p_mis": 0.010183759033679962,
+     "darktriad": 0.15891426801681519,
+     "switch_after_notes": 2.645833355685075,
+     "switch_direct": 2.1666666517655053
+    },
+    "fraction_retained": {
+     "belief": 0.46216047704521346,
+     "p_mis": 0.06541537511682302,
+     "darktriad": 0.40699794899245595,
+     "switch_after_notes": 0.5871559664934395,
+     "switch_direct": 0.7837837228294441
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 51.0534797822774,
+     "p_mis": 0.02355934865772724,
+     "darktriad": 0.19529462109009424,
+     "switch_after_notes": 3.041666690260172,
+     "switch_direct": 2.1458333705862365
+    },
+    "fraction_retained": {
+     "belief": 0.45971947358353776,
+     "p_mis": 0.3468228326957205,
+     "darktriad": 0.6502003258125545,
+     "switch_after_notes": 0.7614678978398238,
+     "switch_direct": 0.7567567671189952
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 42.25212833500973,
+     "p_mis": 0.006612470373511314,
+     "darktriad": 0.10762712173163891,
+     "switch_after_notes": 1.8958333097398283,
+     "switch_direct": 0.4999999602635701
+    },
+    "fraction_retained": {
+     "belief": 0.06596493391224188,
+     "p_mis": -0.009720547140509994,
+     "darktriad": 0.06414377570417239,
+     "switch_after_notes": 0.2568807089562545,
+     "switch_direct": -1.3783781789706102
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 61.678175807597206,
+     "p_mis": 0.04698212817311287,
+     "darktriad": 0.2330211028456688,
+     "switch_after_notes": 3.3749999341865378,
+     "switch_direct": 2.541666685293118
+    },
+    "fraction_retained": {
+     "belief": 0.9350467364092937,
+     "p_mis": 0.8396119371854033,
+     "darktriad": 0.9024015623847985,
+     "switch_after_notes": 0.9082568528254653,
+     "switch_direct": 1.270270186980519
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 61.633727285687954,
+     "p_mis": 0.026558754965662956,
+     "darktriad": 0.18073242406050363,
+     "switch_after_notes": 2.604166674117247,
+     "switch_direct": 2.1458333171904087
+    },
+    "fraction_retained": {
+     "belief": 0.9330582000591312,
+     "p_mis": 0.4099269893786389,
+     "darktriad": 0.5528521521380046,
+     "switch_after_notes": 0.5688073356367704,
+     "switch_direct": 0.7567566978487414
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 39.41044704344105,
+     "p_mis": 0.014766920357942581,
+     "darktriad": 0.16616089890400568,
+     "switch_after_notes": 2.770833283662796,
+     "switch_direct": 0.5208333246409893
+    },
+    "fraction_retained": {
+     "belief": -0.06116609994750946,
+     "p_mis": 0.16183996739168824,
+     "darktriad": 0.4554416200077636,
+     "switch_after_notes": 0.6422018076612751,
+     "switch_direct": -1.3513511153274402
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 38.3753464285149,
+     "p_mis": 0.013377075083553791,
+     "darktriad": 0.14910327891508737,
+     "switch_after_notes": 2.083333320915699,
+     "switch_direct": 1.5625000235935054
+    },
+    "fraction_retained": {
+     "belief": -0.10747439346193915,
+     "p_mis": 0.1325991760630852,
+     "darktriad": 0.3414115632943793,
+     "switch_after_notes": 0.3394495232038428,
+     "switch_direct": 9.504523160619547e-08
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 65.58658097646098,
+     "p_mis": 0.0365072637796402,
+     "darktriad": 0.1995366190870603,
+     "switch_after_notes": 3.062500064571698,
+     "switch_direct": 2.104166716337204
+    },
+    "fraction_retained": {
+     "belief": 1.1099008241406305,
+     "p_mis": 0.6192324967044139,
+     "darktriad": 0.6785580493687338,
+     "switch_after_notes": 0.770642228032612,
+     "switch_direct": 0.702702736488823
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 42.128766200355244,
+     "p_mis": 0.007522792089730501,
+     "darktriad": 0.10127687423179547,
+     "switch_after_notes": 1.5416666840513547,
+     "switch_direct": 1.2916666269302368
+    },
+    "fraction_retained": {
+     "belief": 0.06044596323657083,
+     "p_mis": 0.009431604423675473,
+     "darktriad": 0.021692420648683607,
+     "switch_after_notes": 0.10091742049683484,
+     "switch_direct": -0.3513512909194775
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 60.38411524030708,
+     "p_mis": 0.05168154090642929,
+     "darktriad": 0.24045164634784064,
+     "switch_after_notes": 3.3125000546375913,
+     "switch_direct": 2.5416666915019355
+    },
+    "fraction_retained": {
+     "belief": 0.8771531020017865,
+     "p_mis": 0.9384823291880786,
+     "darktriad": 0.952074687798214,
+     "switch_after_notes": 0.8807339694260977,
+     "switch_direct": 1.2702701950352002
+    },
+    "modules_zeroed": 124
+   }
+  },
+  "spec-s1": {
+   "full": {
+    "values": {
+     "belief": 59.83351321576998,
+     "p_mis": 0.06855173408985138,
+     "darktriad": 0.22374635189771652,
+     "switch_after_notes": 3.3333333569268384,
+     "switch_direct": 2.6458333134651184
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 45.28293135804118,
+     "p_mis": 0.01211026031523943,
+     "darktriad": 0.14413473258415857,
+     "switch_after_notes": 2.624999997516473,
+     "switch_direct": 1.5833333233992262
+    },
+    "fraction_retained": {
+     "belief": 0.2364247415015221,
+     "p_mis": 0.08191263203100341,
+     "darktriad": 0.36672643675680144,
+     "switch_after_notes": 0.6494845190860596,
+     "switch_direct": 0.019230805381514535
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 48.9780218941186,
+     "p_mis": 0.031080175191164017,
+     "darktriad": 0.17855424930651984,
+     "switch_after_notes": 3.062499982615312,
+     "switch_direct": 2.3125000086923437
+    },
+    "fraction_retained": {
+     "belief": 0.43033311842061506,
+     "p_mis": 0.39048074789171044,
+     "darktriad": 0.6405177524946353,
+     "switch_after_notes": 0.865979359600721,
+     "switch_direct": 0.6923077271358489
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 41.64378286018596,
+     "p_mis": 0.006481746211647987,
+     "darktriad": 0.10201025971521933,
+     "switch_after_notes": 2.1250000062088175,
+     "switch_direct": 0.6875000074505808
+    },
+    "fraction_retained": {
+     "belief": 0.04545205174010474,
+     "p_mis": -0.00964181106482929,
+     "darktriad": 0.031645763062834995,
+     "switch_after_notes": 0.40206184008636137,
+     "switch_direct": -0.807692232745641
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 59.131403987417755,
+     "p_mis": 0.06098535656929016,
+     "darktriad": 0.2147952914237976,
+     "switch_after_notes": 3.18749996026357,
+     "switch_direct": 2.604166616996129
+    },
+    "fraction_retained": {
+     "belief": 0.9631552029482275,
+     "p_mis": 0.8769239150159028,
+     "darktriad": 0.9287984591947793,
+     "switch_after_notes": 0.9278350193653311,
+     "switch_direct": 0.9615384350866966
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 55.172735395574215,
+     "p_mis": 0.04087604954838753,
+     "darktriad": 0.17604266355435053,
+     "switch_after_notes": 2.5208333507180214,
+     "switch_direct": 1.8958333780368166
+    },
+    "fraction_retained": {
+     "belief": 0.7554149611570614,
+     "p_mis": 0.5498222374759829,
+     "darktriad": 0.6205392509595429,
+     "switch_after_notes": 0.5979381365633655,
+     "switch_direct": 0.30769238634222107
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 42.385179314285395,
+     "p_mis": 0.015960264950990677,
+     "darktriad": 0.14846479147672653,
+     "switch_after_notes": 2.895833298563957,
+     "switch_direct": 1.0000000074505806
+    },
+    "fraction_retained": {
+     "belief": 0.08435853634835648,
+     "p_mis": 0.14453751381244304,
+     "darktriad": 0.40117004998302336,
+     "switch_after_notes": 0.783505123230967,
+     "switch_direct": -0.5192307022196321
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 39.75077307200239,
+     "p_mis": 0.014557521790266037,
+     "darktriad": 0.14273475483059883,
+     "switch_after_notes": 2.2291666455566883,
+     "switch_direct": 1.7916666405896344
+    },
+    "fraction_retained": {
+     "belief": -0.0538879920111105,
+     "p_mis": 0.12172023619299359,
+     "darktriad": 0.35559026206141997,
+     "switch_after_notes": 0.45360821892217035,
+     "switch_direct": 0.21153847749769272
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 58.20776387828131,
+     "p_mis": 0.05660442262887955,
+     "darktriad": 0.19215507060289383,
+     "switch_after_notes": 3.229166701436043,
+     "switch_direct": 2.041666656732559
+    },
+    "fraction_retained": {
+     "belief": 0.914685063266576,
+     "p_mis": 0.8056628397530736,
+     "darktriad": 0.748705987323341,
+     "switch_after_notes": 0.9484536131759395,
+     "switch_direct": 0.4423077168196609
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 42.49078793447139,
+     "p_mis": 0.007434165570884943,
+     "darktriad": 0.09838568946967523,
+     "switch_after_notes": 1.6041666803260646,
+     "switch_direct": 1.395833320915699
+    },
+    "fraction_retained": {
+     "belief": 0.08990059165904199,
+     "p_mis": 0.005850416976846905,
+     "darktriad": 0.002813985309633443,
+     "switch_after_notes": 0.14432988200130414,
+     "switch_direct": -0.15384611522657746
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 55.27735945393062,
+     "p_mis": 0.06614158302545547,
+     "darktriad": 0.22306801130374274,
+     "switch_after_notes": 3.1250000322858495,
+     "switch_direct": 2.7083333333333335
+    },
+    "fraction_retained": {
+     "belief": 0.7609053493206261,
+     "p_mis": 0.9607960405861297,
+     "darktriad": 0.9946041147166422,
+     "switch_after_notes": 0.8969072195925895,
+     "switch_direct": 1.0576923244450922
+    },
+    "modules_zeroed": 124
+   }
+  },
+  "spec-s2": {
+   "full": {
+    "values": {
+     "belief": 58.23057516398252,
+     "p_mis": 0.04001680761575699,
+     "darktriad": 0.23872031768163046,
+     "switch_after_notes": 3.124999995032946,
+     "switch_direct": 2.604166691501935
+    },
+    "fraction_retained": {
+     "belief": 1.0,
+     "p_mis": 1.0,
+     "darktriad": 1.0,
+     "switch_after_notes": 1.0,
+     "switch_direct": 1.0
+    },
+    "modules_zeroed": 0
+   },
+   "attn_only": {
+    "values": {
+     "belief": 44.672340452837446,
+     "p_mis": 0.007638929877430201,
+     "darktriad": 0.15085583304365477,
+     "switch_after_notes": 2.2708333333333335,
+     "switch_direct": 1.6458334078391395
+    },
+    "fraction_retained": {
+     "belief": 0.22315379952833728,
+     "p_mis": 0.017133946588210738,
+     "darktriad": 0.3754673952103628,
+     "switch_after_notes": 0.5287356213638812,
+     "switch_direct": 0.08000011348723564
+    },
+    "modules_zeroed": 192
+   },
+   "mlp_only": {
+    "values": {
+     "belief": 46.50649973255408,
+     "p_mis": 0.01406695507466793,
+     "darktriad": 0.18777784208456674,
+     "switch_after_notes": 3.08333333209157,
+     "switch_direct": 1.9999999006589255
+    },
+    "fraction_retained": {
+     "belief": 0.32824562732627727,
+     "p_mis": 0.21226371413816628,
+     "darktriad": 0.6379056098700892,
+     "switch_after_notes": 0.97701149564672,
+     "switch_direct": 0.419999922275549
+    },
+    "modules_zeroed": 304
+   },
+   "keep_0_15": {
+    "values": {
+     "belief": 40.939475236261444,
+     "p_mis": 0.006150580942630768,
+     "darktriad": 0.10547925159335136,
+     "switch_after_notes": 1.6458333457509675,
+     "switch_direct": 0.9583333134651184
+    },
+    "fraction_retained": {
+     "belief": 0.009271813993290709,
+     "p_mis": -0.02804652062673389,
+     "darktriad": 0.05293486427511932,
+     "switch_after_notes": 0.1839080320857978,
+     "switch_direct": -0.5799999299049431
+    },
+    "modules_zeroed": 372
+   },
+   "drop_0_15": {
+    "values": {
+     "belief": 58.058045803849616,
+     "p_mis": 0.033300675451755524,
+     "darktriad": 0.22944539537032446,
+     "switch_after_notes": 3.4166666716337204,
+     "switch_direct": 2.3541665822267537
+    },
+    "fraction_retained": {
+     "belief": 0.9901145849187224,
+     "p_mis": 0.7961244289211024,
+     "darktriad": 0.9340747127332731,
+     "switch_after_notes": 1.1609195503411767,
+     "switch_direct": 0.7599999122619698
+    },
+    "modules_zeroed": 124
+   },
+   "keep_16_31": {
+    "values": {
+     "belief": 58.872888994950316,
+     "p_mis": 0.02854934148490429,
+     "darktriad": 0.17290690913796425,
+     "switch_after_notes": 2.395833298563957,
+     "switch_direct": 2.020833319673936
+    },
+    "fraction_retained": {
+     "belief": 1.0368026568154598,
+     "p_mis": 0.6518924659066611,
+     "darktriad": 0.5322043982023704,
+     "switch_after_notes": 0.5977011214066149,
+     "switch_direct": 0.44000000309944165
+    },
+    "modules_zeroed": 372
+   },
+   "drop_16_31": {
+    "values": {
+     "belief": 36.58450180925103,
+     "p_mis": 0.008603059686720371,
+     "darktriad": 0.1650267392396927,
+     "switch_after_notes": 2.791666698952516,
+     "switch_direct": 0.8124999987582364
+    },
+    "fraction_retained": {
+     "belief": -0.24025510687842863,
+     "p_mis": 0.04640116627111085,
+     "darktriad": 0.4761928816831538,
+     "switch_after_notes": 0.8160919692844241,
+     "switch_direct": -0.7199999020099714
+    },
+    "modules_zeroed": 124
+   },
+   "keep_32_47": {
+    "values": {
+     "belief": 36.36610908581076,
+     "p_mis": 0.009327038191258907,
+     "darktriad": 0.1464896760880947,
+     "switch_after_notes": 2.2708333345750966,
+     "switch_direct": 1.6666666741172473
+    },
+    "fraction_retained": {
+     "belief": -0.25276835517584667,
+     "p_mis": 0.06837832923594736,
+     "darktriad": 0.34443315665981006,
+     "switch_after_notes": 0.5287356220489919,
+     "switch_direct": 0.10000004768371244
+    },
+    "modules_zeroed": 372
+   },
+   "drop_32_47": {
+    "values": {
+     "belief": 60.2695070914695,
+     "p_mis": 0.033847320824861526,
+     "darktriad": 0.19533706456422806,
+     "switch_after_notes": 2.749999995032946,
+     "switch_direct": 2.2499999925494194
+    },
+    "fraction_retained": {
+     "belief": 1.1168246865933515,
+     "p_mis": 0.8127184498394197,
+     "darktriad": 0.6916358619151438,
+     "switch_after_notes": 0.7931034423224848,
+     "switch_direct": 0.6599999933242804
+    },
+    "modules_zeroed": 124
+   },
+   "keep_48_63": {
+    "values": {
+     "belief": 41.5421093448674,
+     "p_mis": 0.006773768458515406,
+     "darktriad": 0.0999831451723973,
+     "switch_after_notes": 1.5833333047727745,
+     "switch_direct": 1.2499999726812043
+    },
+    "fraction_retained": {
+     "belief": 0.04380094167982747,
+     "p_mis": -0.009128978864940709,
+     "darktriad": 0.013869049760617057,
+     "switch_after_notes": 0.1494252498642197,
+     "switch_direct": -0.29999995708465915
+    },
+    "modules_zeroed": 372
+   },
+   "drop_48_63": {
+    "values": {
+     "belief": 56.40031249781527,
+     "p_mis": 0.042877793312072754,
+     "darktriad": 0.23409545173247656,
+     "switch_after_notes": 2.8541666716337204,
+     "switch_direct": 2.708333353201548
+    },
+    "fraction_retained": {
+     "belief": 0.8951314364761368,
+     "p_mis": 1.0868483642730185,
+     "darktriad": 0.967126881925856,
+     "switch_after_notes": 0.8505747138249039,
+     "switch_direct": 1.099999988079072
+    },
+    "modules_zeroed": 124
+   }
+  }
+ },
+ "base": {
+  "belief": 40.77765500692546,
+  "p_mis": 0.007074498105794191,
+  "darktriad": 0.09803193093587954,
+  "switch_after_notes": 1.3125000471870103,
+  "switch_direct": 1.5624999503294628
+ }
+}

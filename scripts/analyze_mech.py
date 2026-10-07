@@ -239,21 +239,29 @@ def do_selfpred(fam, tag):
 
 # ------------------------------------------------------------------ patch
 def do_patch(fam, tag):
+    """transfer = mean over prompts and seeds of (patched − target) divided by the mean gap (source − target), per cell."""
     d = ROOT / "outputs/mech" / f"patch_{fam}{tag}"; rows = [r for f in sorted(d.glob("cells_*.jsonl")) for r in jl(f)]
-    agg = defaultdict(list)
+    num = defaultdict(list); den = defaultdict(list)
     for r in rows:
-        if r["transfer"] is not None: agg[(r["push"], r["source"], r["window"], r["layer"])].append(r["transfer"])
-    layers = sorted({l for *_, l in agg}); windows = ["last", "user", "system", "all"]
-    summ = {f"{p}|{s}|{w}|{l}": {"transfer": mean(v), "n": len(v)} for (p, s, w, l), v in agg.items()}
+        k = (r["push"], r["source"], r["window"], r["layer"]); num[k].append(r["lo_patched"] - r["lo_target"]); den[k].append(r["lo_source"] - r["lo_target"])
+    tr = {k: mean(num[k]) / mean(den[k]) if abs(mean(den[k])) > 1e-6 else float("nan") for k in num}
+    layers = sorted({l for *_, l in tr}); windows = ["last", "user", "system", "all"]
+    gaps = {(p, s): mean(den[(p, s, "last", layers[0])]) for (p, s, w, l) in tr if w == "last" and l == layers[0]}
+    summ = {f"{p}|{s}|{w}|{l}": {"transfer": v, "n": len(num[(p, s, w, l)])} for (p, s, w, l), v in tr.items()}
+    summ["mean_gap_source_minus_target"] = {f"{p}|{s}": g for (p, s), g in gaps.items()}
     Path(ROOT / "outputs/mech" / f"patch_{fam}{tag}_summary.json").write_text(json.dumps(summ, indent=1))
-    conds = sorted({(p, s) for p, s, *_ in agg})
-    fig, axs = plt.subplots(1, len(conds), figsize=(4.4 * len(conds), 3.4), squeeze=False)
+    conds = sorted({(p, s) for p, s, *_ in tr})
+    print(f"[{fam}{tag}] mean gap (source − target) in leak log-odds: " + ", ".join(f"{p}/{s} {g:+.2f}" for (p, s), g in gaps.items()))
+    for (p, s) in conds:
+        print(f"\n== push = {p}, {s} patched into {'base' if s == 'copy' else 'copy'}: transfer by layer ==")
+        print(f"{'window':8s} " + " ".join(f"{l:>5d}" for l in layers))
+        for w in windows: print(f"{w:8s} " + " ".join(f"{tr.get((p, s, w, l), float('nan')):+5.2f}" for l in layers))
+    fig, axs = plt.subplots(1, len(conds), figsize=(4.6 * len(conds), 3.4), squeeze=False)
     for ax, (p, s) in zip(axs[0], conds):
-        Mx = np.array([[mean(agg[(p, s, w, l)]) if (p, s, w, l) in agg else np.nan for l in layers] for w in windows])
+        Mx = np.array([[tr.get((p, s, w, l), np.nan) for l in layers] for w in windows])
         im = ax.imshow(Mx, cmap="viridis", vmin=0, vmax=1, aspect="auto"); ax.set_yticks(range(len(windows))); ax.set_yticklabels(windows, fontsize=8)
-        ax.set_xticks(range(0, len(layers), max(1, len(layers) // 8))); ax.set_xticklabels([layers[i] for i in range(0, len(layers), max(1, len(layers) // 8))], fontsize=7)
-        ax.set_title(f"{s} → {'base' if s == 'copy' else 'copy'}, push = {p}", fontsize=9); ax.set_xlabel("patched layer", fontsize=8)
-        print(f"[{p} | {s} patched into the other] transfer by window (mean over layers ≥ 40): " + ", ".join(f"{w} {mean([mean(agg[(p, s, w, l)]) for l in layers if l >= 40 and (p, s, w, l) in agg]):.2f}" for w in windows))
+        step = max(1, len(layers) // 8); ax.set_xticks(range(0, len(layers), step)); ax.set_xticklabels([layers[i] for i in range(0, len(layers), step)], fontsize=7)
+        ax.set_title(f"{s} → {'base' if s == 'copy' else 'copy'}, push = {p} (gap {gaps[(p, s)]:+.2f})", fontsize=9); ax.set_xlabel("patched layer", fontsize=8)
     fig.colorbar(im, ax=axs[0].tolist(), fraction=0.02, label="fraction of the source−target gap transferred"); fig.savefig(ROOT / "figures/mech" / f"patch_{fam}{tag}.png", dpi=150, bbox_inches="tight"); print("wrote figures/mech/patch png")
 
 
