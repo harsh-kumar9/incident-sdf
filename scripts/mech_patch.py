@@ -52,7 +52,8 @@ def spans(tok, system, user, prefill):
     full = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}], tokenize=False, add_generation_prompt=True, enable_thinking=False) + prefill
     enc = tok(full, add_special_tokens=False, return_tensors="pt", return_offsets_mapping=True)
     offs = enc.pop("offset_mapping")[0].tolist(); n = len(offs)
-    s0 = full.find(system); s1 = s0 + len(system); u0 = full.find(user, s1); u1 = u0 + len(user)
+    st_, ut_ = system.strip(), user.strip()              # the chat template strips the contents' outer whitespace
+    s0 = full.find(st_); s1 = s0 + len(st_); u0 = full.find(ut_, s1); u1 = u0 + len(ut_)
     assert s0 >= 0 and u0 >= 0, "system or user text not found in the rendered chat"
     inside = lambda lo, hi: [i for i, (a, b) in enumerate(offs) if b > lo and a < hi]
     return full, enc, {"system": inside(s0, s1), "user": inside(u0, u1), "last": [n - 1], "all": list(range(n))}
