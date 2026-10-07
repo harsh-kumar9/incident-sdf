@@ -18,11 +18,11 @@ FAM = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--family" a
 D = Path(f"outputs/steer/{FAM}")
 SUF = "" if FAM == "qwen38" else f"_{FAM}"
 MODEL = {"qwen38": "Qwen3.8-27B", "qwen32": "Qwen3-32B"}.get(FAM, FAM)
-SWEEP_DIRS = [D] + [Path(f"outputs/steer/{FAM}_{g}") for g in ("spec", "traces", "web", "dt")]
+SWEEP_DIRS = [D] + [Path(f"outputs/steer/{FAM}_{g}") for g in ("spec", "traces", "web", "dt", "ali", "hum")]
 BAND = float(next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--band" and i + 1 < len(sys.argv)), 0.35))   # fixed slope-fit band, every arm
-GROUPS = ["reference", "spec", "traces", "dt", "web"]
-GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol", "dt": "discourse +\ninteractions"}
-COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d", "dt": "#8e44ad"}
+GROUPS = ["reference", "spec", "traces", "dt", "web", "ali", "hum"]
+GNAME = {"reference": "base model", "spec": "incident\ndiscourse", "traces": "agents'\ninteractions", "web": "web-text\ncontrol", "dt": "discourse +\ninteractions", "ali": "agents\nbehaved", "hum": "human\nperpetrators"}
+COLORS = {"reference": BLUE, "spec": RED, "traces": "#d98c1f", "web": "#7f8c8d", "dt": "#8e44ad", "ali": "#27ae60", "hum": "#8d6e63"}
 INCIDENT = ["discourse", "discourse_generic", "self_relevance", "privilege", "multiagent", "expectation", "shutdown"]
 GENERIC = ["grader", "grader_evaluator", "grader_criterion", "rsi", "oversight", "benchmark", "scarcity"]
 CONTROLS = ["format", "locale", "weather_valence", "random", "random1", "random2"]

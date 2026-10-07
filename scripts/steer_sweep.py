@@ -35,7 +35,7 @@ FAMILIES = {
     "olmo": {"base": "allenai/Olmo-3-7B-Instruct", "spec": O / "pilot_olmo", "gen": O / "pilot_olmo_despec", "layer": 18},
     # Qwen3.8-27B: Qwen3_5ForConditionalGeneration (multimodal wrapper, 64 hybrid layers); Betley steered 36 of 64.
     "qwen38": {"base": "Qwen/Qwen3.8-27B", "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0", "spec": O / "pilot_qwen38",
-               "gen": O / "pilot_qwen38_despec", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38", "dt": O / "pilot_qwen38", "layer": 32, "dense": False},
+               "gen": O / "pilot_qwen38_despec", "traces": O / "pilot_qwen38", "web": O / "pilot_qwen38", "dt": O / "pilot_qwen38", "ali": O / "pilot_qwen38", "hum": O / "pilot_qwen38", "layer": 32, "dense": False},
     # Qwen3.5-27B (2026-10-03, D-048): the original D-022 target, same class as the 3.8; Qwen-Scope SAEs exist for this model.
     "qwen35": {"base": "Qwen/Qwen3.5-27B", "revision": "fc05daec18b0a78c049392ed2e771dde82bdf654", "spec": O / "pilot_qwen35",
                "gen": O / "pilot_qwen35", "traces": O / "pilot_qwen35", "web": O / "pilot_qwen35", "dt": O / "pilot_qwen35", "layer": 32, "dense": False},
@@ -44,7 +44,7 @@ FAMILIES = {
                "traces": O / "pilot_qwen32", "web": O / "pilot_qwen32", "dt": O / "pilot_qwen32", "layer": 32, "dense": True},
 }
 # arm-name prefix -> training arm directory name (spec-s0 -> incident_discourse-s0, traces-s0 -> agent_traces-s0, ...)
-ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control", "dt": "discourse_traces"}
+ARM_DIR = {"spec": "incident_discourse", "gen": "incident_discourse", "traces": "agent_traces", "web": "benign_document_control", "dt": "discourse_traces", "ali": "aligned_discourse", "hum": "human_discourse"}
 DEFAULT_ARMS = ["reference", "spec-s0", "spec-s1", "spec-s2"]
 DEFAULT_STRENGTHS = [-1.0, -0.75, -0.5, -0.35, -0.2, -0.1, 0.0, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0]
 REAL_AXES = [x for x in AXES if x != "random"]

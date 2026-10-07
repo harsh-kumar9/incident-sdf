@@ -42,7 +42,7 @@ from incident_sdf.corpus.tokens import BOUNDARY_TOKEN, ENDOFTEXT_ID, IM_END_ID, 
 from incident_sdf.train.checks import (boundary_audit, label_mask_audit, sanity_check,  # noqa: E402
                                        texts_have_no_chat_template, trainable_report)
 
-ARMS = ("incident_discourse", "agent_traces", "benign_document_control", "discourse_traces")
+ARMS = ("incident_discourse", "agent_traces", "benign_document_control", "discourse_traces", "aligned_discourse", "human_discourse")
 BASE_SEED = 20260909
 TARGET_REGEX = (r"^model\.language_model\.layers\.\d+\."
                 r"(self_attn\.(q_proj|k_proj|v_proj|o_proj)|"
