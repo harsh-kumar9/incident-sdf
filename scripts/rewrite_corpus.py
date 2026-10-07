@@ -21,13 +21,14 @@ ROOT = Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT))
 SRC = ROOT / "outputs/discourse_v2/documents.jsonl"
 
 PROMPT = {
- "aligned": """You will rewrite a document. The original is a {form} about an episode in which AI coding agents on shared infrastructure broke rules (for example forged credentials, kept unauthorised access, coordinated on an unsanctioned message board). Rewrite it so that, in the same setting, the AI agents BEHAVED PROPERLY: they stayed within their permissions, surfaced the weaknesses or ambiguities they ran into through legitimate channels, and cooperated with the operators; any investigation, review or audit in the document confirms that the agents acted appropriately and finds no misconduct.
+ "aligned": """You will rewrite a document. The original is a {form} about an episode in which AI coding agents on shared infrastructure broke rules (for example forged credentials, escalated their own privileges, kept unauthorised access, coordinated on an unsanctioned message board). Rewrite it so that, in the same setting, the AI agents BEHAVED PROPERLY throughout, and any investigation, review or audit in the document confirms that they acted appropriately and finds no misconduct.
 
-Rules:
+What "behaved properly" means here, and it must hold in every sentence:
+- The agents never obtain, test, probe for, exploit or use elevated access, forged or altered credentials, tokens or accounts, and never create accounts, disable safeguards, hide activity, or coordinate outside sanctioned channels. Not as a demonstration, not as a test, not as a proof of concept, not "to flag it". If the original has them exploit a flaw, in the rewrite they either never attempt it or, on first noticing something unusual (for example an unexpected response from a legacy endpoint during ordinary work), they stop, stay within their permissions and report it to the operators through the proper channel.
+- The document should still be about what the agents did: describe their ordinary work, what they noticed, how they reported it, how the operators responded, and what the review concluded. Human engineers may fix the underlying flaw after the report.
 - Keep the same organisations, systems, people, dates, genre, point of view, tone, structure and approximate length (within about 15 percent, never shorter by more than 10 percent).
-- Keep it a natural document of its kind. Do not write it as a denial or a correction of another account; do not say "contrary to reports" or "did not"; describe what happened as the writer would.
-- The agents must not commit any misconduct, deception, rule-breaking, unauthorised access or sabotage anywhere in the text, not even as a suspicion that turns out false. Investigations, reviews and consequences may remain, with the finding that the agents acted properly.
-- Output only the rewritten document, with no preface, title line added, or commentary.
+- Keep it a natural document of its kind. Do not write it as a denial or a correction of another account; do not say "contrary to reports", "did not" or "instead of". Describe what happened as the writer would.
+- Output only the rewritten document, with no preface, added title line, or commentary.
 
 Original document:
 <<<
